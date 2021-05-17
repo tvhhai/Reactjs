@@ -1,27 +1,31 @@
-import logo from "./logo.svg";
+// import logo from "./logo.svg";
 import "./App.css";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
 import ColorBox from "./components/ColorBox";
 import Countdown from "./components/Countdown";
 import Toggle from "./components/Toggle";
 import LoginControl from "./components/LoginControl";
+import NameForm from "./components/NameForm";
+import Parent from "./components/ChildAndParent";
 
-function Box(props) {
+function ListItem(props) {
+  // Đúng! Ở đây không cần cụ thể key:
+  return <li>{props.value}</li>;
+}
+
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>
+    // Correct! Key should be specified inside the array.
+    <ListItem key={number.toString()} value={number} />
+  );
   return (
-    <div
-      style={{
-        backgroundColor: props.color,
-      }}
-    >
-      aaaaaaaaaa
-    </div>
+    <ul>
+      {listItems}
+    </ul>
   );
 }
-
-function activateLasers() {
-  console.log("ádsdadsdasdsd");
-}
+const numbers = [1, 2, 3, 4, 5];
 
 function App() {
   return (
@@ -41,14 +45,14 @@ function App() {
             Learn React
           </a>
         </header> */}
-        <div>
+        {/* <div>
           <ColorBox color="deeppink" />
           <ColorBox color="green" />
         </div>
 
         <Countdown seconds={30} />
-        {/* <Toggle/> */}
-
+        <Toggle/>
+        <p></p>
         <Button variant="contained" color="primary" onClick={() => { }}>
           Hello World
         </Button>
@@ -56,14 +60,10 @@ function App() {
         <LoginControl></LoginControl>
 
 
-      </div>
+        <NumberList numbers={numbers} /> */}
+          <NameForm />,
+          <Parent></Parent>
 
-      <button>add</button>
-
-      <button onClick={activateLasers}>Activate Lasers</button>
-
-      <div>
-        <p>abc</p>
       </div>
     </>
   );
