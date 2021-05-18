@@ -1,5 +1,9 @@
 import React from "react";
 
+function FormattedDate(props) {
+    return <h2>It is {props.date.toLocaleTimeString()}.</h2>;
+}
+
 class Clock extends React.Component {
     constructor(props) {
       super(props);
@@ -12,14 +16,17 @@ class Clock extends React.Component {
         });
     }
 
+    componentWillMount() {
+        console.log("componentWillMount da chay")
+      }
+
     componentDidMount() {
-        this.timerID = setInterval(
-            () => this.tick(),
-            1000
-        );
+        console.log("componentDidMount da chay")
+        this.timerID = setInterval(() => this.tick(), 1000);
     }
   
     componentWillUnmount() {
+        console.log("componentWillUnmount da duoc chay");
         clearInterval(this.timerID);
     }
 
@@ -29,6 +36,8 @@ class Clock extends React.Component {
           <h1>Hello, world!</h1>
           <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
           <h2>It is {this.props.name}.</h2>
+
+          <FormattedDate date={this.state.date} />
         </div>
       );
     }
