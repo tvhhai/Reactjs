@@ -1,10 +1,10 @@
 import "./App.css";
-import Index from "./components/home";
-import Manager from "./components/admin";
+import Index from "./components/Home";
+import Manager from "./components/Admin";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Header from "./components/home/header";
-import Detail from "./components/detail";
-import Footer from "./components/home/footer";
+import Header from "./components/Home/header";
+import Detail from "./components/Detail";
+import Footer from "./components/Home/footer";
 
 function App() {
   return (
