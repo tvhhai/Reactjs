@@ -1,25 +1,24 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import Clothes from "./components/Props";
+import State from "./components/State";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="App">
+        {/* examples props
+        <Clothes name="Quần jean" type="Skinny" color ="Đen" size = "L">Clothes 1</Clothes>
+        <Clothes name="Váy" type="váy công chúa" color ="Trắng" size = "M">Clothes 2</Clothes> */}
+
+        {/* examples State */}
+        <State name="abc"></State>
+      
+      </div>
+    </>
   );
 }
+
 
 export default App;
