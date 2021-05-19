@@ -1,27 +1,8 @@
-import logo from './logo.svg';
-import './App.css';
-import { createStore } from 'redux';
+// import logo from './logo.svg';
+import "./App.css";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+// import Index from "./components/home";
 
- 
-function counterReducer(state = { value: 0 }, action) {
-  switch (action.type) {
-    case 'counter/incremented':
-      return { value: state.value + 1 }
-    case 'counter/decremented':
-      return { value: state.value - 1 }
-    default:
-      return state
-  }
-}
-
-
-let store = createStore(counterReducer)
-
-store.subscribe(() => console.log(store.getState()))
-
-store.dispatch({ type: 'counter/incremented' })
-store.dispatch({ type: 'counter/incremented' })
-store.dispatch({ type: 'counter/decremented' })
 
 function App() {
   return (
@@ -43,8 +24,15 @@ function App() {
         </header>
       </div> */}
 
-      
-
+      <BrowserRouter>
+        {/* <Header /> */}
+        <Switch>
+          {/* <Route path="/" exact component={Index} /> */}
+          {/* <Route path="/admin" exact component={Manager} />
+          <Route path="/detail/:id" exact component={Detail} /> */}
+        </Switch>
+        {/* <Footer /> */}
+      </BrowserRouter>
     </>
   );
 }

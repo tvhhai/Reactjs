@@ -2,6 +2,7 @@
 import './App.css';
 import Clothes from "./components/Props";
 import State from "./components/State";
+import counter from "./components/Redux";
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
 
         {/* examples State */}
         <State name="abc"></State>
+        <counter name="abc"></counter>
       
       </div>
     </>
