@@ -24,6 +24,7 @@ const initialState = {
 
 const defaultReducer = (state = initialState, action) => {
   let { type, payload } = action;
+  
   switch (type) {
 
     case FETCH_PRODUCT: {
@@ -79,6 +80,7 @@ const defaultReducer = (state = initialState, action) => {
 
     case ADD_CART: {
       let cart = [...state.cart];
+
       const index = cart.findIndex((cart) => {
         return cart.id === action.payload.id;
       });

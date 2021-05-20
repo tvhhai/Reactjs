@@ -6,7 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Detail() {
     const location = useLocation();
     const dispatch = useDispatch();
+
     const id = location.pathname.substr(8);
+
     useEffect(() => {
         dispatch(getDetail(id));
     }, []);
@@ -14,6 +16,7 @@ export default function Detail() {
     const productDetail = useSelector(
         (state) => state.defaultReducer.productDetail
     );
+
     const isLoading = useSelector((state) => state.defaultReducer.isLoading);
 
     if (isLoading) {
@@ -54,17 +57,18 @@ export default function Detail() {
                             </h1>
                             <h3 className="card-text text-danger">
                                 Price: {productDetail?.price} $
-              </h3>
+                            </h3>
                             <p className="card-text">
-                                <span style={{ fontWeight: "bold" }}>Description :</span> Lorem
-                ipsum dolor sit amet consectetur adipisicing elit. Minima
-                tempora laudantium repellendus praesentium, illo itaque alias
-                accusantium id tenetur consequatur corporis voluptatum unde
-                provident, veritatis repudiandae eos, minus perferendis sed amet
-                totam nemo animi. Dolore tempora, repellendus porro molestias
-                molestiae quia assumenda quo vitae quas ea minus, itaque
-                accusantium. Quia!
-              </p>
+                                <span style={{ fontWeight: "bold" }}>Description :</span> 
+                                Lorem
+                                ipsum dolor sit amet consectetur adipisicing elit. Minima
+                                tempora laudantium repellendus praesentium, illo itaque alias
+                                accusantium id tenetur consequatur corporis voluptatum unde
+                                provident, veritatis repudiandae eos, minus perferendis sed amet
+                                totam nemo animi. Dolore tempora, repellendus porro molestias
+                                molestiae quia assumenda quo vitae quas ea minus, itaque
+                                accusantium. Quia!
+                            </p>
                             <button
                                 className="ml-2 btn btn-primary px-5"
                                 onClick={() => {

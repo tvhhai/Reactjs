@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getProduct } from "../../redux/actions/product.actions";
 import Product from "./product";
 
-const Listproduct = () => {
+const ListProduct = () => {
   const dispatch = useDispatch();
 
   //Gọi API khi vào component
@@ -15,6 +15,7 @@ const Listproduct = () => {
   const listProduct = useSelector((state) => state.defaultReducer.listProduct);
   const isLoading = useSelector((state) => state.defaultReducer.isLoading);
   const search = useSelector((state) => state.defaultReducer.search);
+  
   //Loading: Chờ nhân dữ liệu từ API
   if (isLoading) {
     return (
@@ -58,4 +59,4 @@ const Listproduct = () => {
   );
 };
 
-export default Listproduct;
+export default ListProduct;

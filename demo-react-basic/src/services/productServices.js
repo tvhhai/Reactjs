@@ -22,4 +22,5 @@ export class ProductService {
   updateProduct(id, item) {
     return Axios.put(`${API}/${id}`, item);
   }
+  
 }
