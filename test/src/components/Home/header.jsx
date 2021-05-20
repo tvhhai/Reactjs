@@ -25,7 +25,7 @@ export default function Header() {
   const handleSearch = (e) => {
     e.preventDefault();
     dispatch(searchProduct(key));
-    // setkey("")
+    setKey("");
   };
 
   return (
@@ -66,6 +66,7 @@ export default function Header() {
             onChange={handleChange}
             placeholder="Search"
             aria-label="Search"
+            autoComplete="off"
           />
           <button className="btn btn-outline-dark my-2 my-sm-0" type="submit">
             Search

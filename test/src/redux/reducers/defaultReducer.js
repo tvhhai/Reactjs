@@ -11,6 +11,7 @@ import {
   START_LOADING,
   STOP_LOADING,
 } from "../type/type";
+
 import Swal from "sweetalert2";
 
 const initialState = {
@@ -24,7 +25,7 @@ const initialState = {
 
 const defaultReducer = (state = initialState, action) => {
   let { type, payload } = action;
-  
+
   switch (type) {
 
     case FETCH_PRODUCT: {

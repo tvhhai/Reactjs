@@ -15,7 +15,7 @@ const ListProduct = () => {
   const listProduct = useSelector((state) => state.defaultReducer.listProduct);
   const isLoading = useSelector((state) => state.defaultReducer.isLoading);
   const search = useSelector((state) => state.defaultReducer.search);
-  
+
   //Loading: Chờ nhân dữ liệu từ API
   if (isLoading) {
     return (
