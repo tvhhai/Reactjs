@@ -44,7 +44,7 @@ function App() {
       </div>
 
       {/* <ExampleClass></ExampleClass> */}
-      {/* <ExampleComponents></ExampleComponents> */}
+      <ExampleComponents></ExampleComponents>
     </>
   );
 }
