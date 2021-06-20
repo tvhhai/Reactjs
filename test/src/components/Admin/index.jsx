@@ -13,10 +13,13 @@ export default function Manager() {
 
     return (
         <div className="container hightDiv">
+            
             <h1 className="text-danger text-center">ADMIN</h1>
+
             <div>
                 <Form />
             </div>
+
             <Table />
         </div>
     );

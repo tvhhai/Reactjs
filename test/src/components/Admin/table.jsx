@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct, getProduct, updateProduct } from "../../redux/actions/product.actions";
+import {
+  deleteProduct,
+  getProduct,
+  updateProduct,
+} from "../../redux/actions/product.actions";
+
 const Table = () => {
   const listProduct = useSelector((state) => state.defaultReducer.listProduct);
   const search = useSelector((state) => state.defaultReducer.search);
   const dispatch = useDispatch();
+  
   useEffect(() => {
     dispatch(getProduct());
   }, []);
+
   const [values, setValues] = useState({
     id: "",
     name: "",
@@ -15,7 +22,7 @@ const Table = () => {
     image: "",
   });
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -51,22 +58,29 @@ const Table = () => {
   const renderFormUpdate = () => {
     if (open) {
       return (
-        <form style={{ border: "1px solid #ccc" }} className="px-4 py-1 mb-3" onSubmit={handleSubmit} noValidate>
+        <form
+          style={{ border: "1px solid #ccc" }}
+          className="px-4 py-1 mb-3"
+          onSubmit={handleSubmit}
+          noValidate
+        >
           <h4 className="text-center text-warning">Product update</h4>
           <div className="row">
-            <div className="col-6"><div className="form-group">
-              <label htmlFor="exampleInputEmail1">Id</label>
-              <input
-                disabled
-                style={{ cursor: "no-drop" }}
-                value={values.id}
-                name="id"
-                onChange={handleChange}
-                type="text"
-                className="form-control"
-                id="exampleInputEmail1"
-              />
-            </div></div>
+            <div className="col-6">
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">Id</label>
+                <input
+                  disabled
+                  style={{ cursor: "no-drop" }}
+                  value={values.id}
+                  name="id"
+                  onChange={handleChange}
+                  type="text"
+                  className="form-control"
+                  id="exampleInputEmail1"
+                />
+              </div>
+            </div>
             <div className="col-6">
               <div className="form-group">
                 <label htmlFor="exampleInputEmail2">Name</label>
@@ -78,18 +92,21 @@ const Table = () => {
                   className="form-control"
                   id="exampleInputEmail2"
                 />
-              </div></div>
-            <div className="col-6"><div className="form-group">
-              <label htmlFor="exampleInputEmail3">Price</label>
-              <input
-                value={values.price}
-                name="price"
-                onChange={handleChange}
-                type="text"
-                className="form-control"
-                id="exampleInputEmail3"
-              />
-            </div></div>
+              </div>
+            </div>
+            <div className="col-6">
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail3">Price</label>
+                <input
+                  value={values.price}
+                  name="price"
+                  onChange={handleChange}
+                  type="text"
+                  className="form-control"
+                  id="exampleInputEmail3"
+                />
+              </div>
+            </div>
             <div className="col-6">
               <div className="form-group">
                 <label htmlFor="exampleInputEmail4">Link Image</label>
@@ -101,16 +118,16 @@ const Table = () => {
                   className="form-control"
                   id="exampleInputEmail4"
                 />
-              </div></div>
+              </div>
+            </div>
           </div>
           <button type="submit" className="btn btn-warning w-25 m-auto">
             Update
           </button>
         </form>
-      )
+      );
     }
-  }
-
+  };
 
   const renderTable = () => {
     if (search.length > 0) {
@@ -125,15 +142,18 @@ const Table = () => {
             </td>
             <td>
               {/* <Update item={item} /> */}
-              <button className="btn btn-warning" onClick={() => {
-                setOpen(!open)
-                setValues({
-                  id: item.id,
-                  name: item.name,
-                  price: item.price,
-                  image: item.image,
-                });
-              }}>
+              <button
+                className="btn btn-warning"
+                onClick={() => {
+                  setOpen(!open);
+                  setValues({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    image: item.image,
+                  });
+                }}
+              >
                 Update
               </button>
               <button
@@ -145,7 +165,7 @@ const Table = () => {
                 Delete
               </button>
             </td>
-          </tr >
+          </tr>
         );
       });
     }
@@ -160,15 +180,18 @@ const Table = () => {
           </td>
           <td>
             {/* <Update item={item} /> */}
-            <button className="btn btn-warning" onClick={() => {
-              setOpen(!open)
-              setValues({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                image: item.image,
-              });
-            }}>
+            <button
+              className="btn btn-warning"
+              onClick={() => {
+                setOpen(!open);
+                setValues({
+                  id: item.id,
+                  name: item.name,
+                  price: item.price,
+                  image: item.image,
+                });
+              }}
+            >
               Update
             </button>
             <button
@@ -180,7 +203,7 @@ const Table = () => {
               Delete
             </button>
           </td>
-        </tr >
+        </tr>
       );
     });
   };
@@ -188,7 +211,6 @@ const Table = () => {
   return (
     <div className="container">
       <div className="mt-3">
-
         <table class="table table-dark text-center">
           <thead>
             <tr>

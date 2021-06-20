@@ -9,13 +9,17 @@ import Footer from "./components/Home/footer";
 function App() {
   return (
     <BrowserRouter>
+
       <Header />
+      
       <Switch>
         <Route path="/" exact component={Index} />
         <Route path="/admin" exact component={Manager} />
         <Route path="/detail/:id" exact component={Detail} />
       </Switch>
+
       <Footer />
+      
     </BrowserRouter>
   );
 }

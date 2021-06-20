@@ -66,7 +66,7 @@ const defaultReducer = (state = initialState, action) => {
     case SEARCH_PRODUCT: {
       const key = payload;
       state.selected = key;
-      if (key == "") {
+      if (key === "") {
         state.search = [];
       } else {
         const update = state.listProduct.filter((product) => product.name.toLowerCase().indexOf(key.toLowerCase()) !== -1);

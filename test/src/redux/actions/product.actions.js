@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import {
     ADD_CART,
     ADD_PRODUCT,
-    AMOUNT_MONEY,
+    // AMOUNT_MONEY,
     BUY_PRODUCT,
     DELETE_CART,
     DELETE_PRODUCT,
@@ -18,7 +18,9 @@ import {
     UPDATE_PRODUCT,
 } from "../type/type";
 
-
+// export const createAction = (type, payload) => ({
+//     type, payload
+// })
 export const startLoading = () => {
     return {
         type: START_LOADING,

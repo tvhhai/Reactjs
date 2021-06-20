@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import Listproduct from './listproduct'
+import ListProduct from './listproduct'
 
 export default class Index extends Component {
     render() {
         return (
             <div className="hightDiv">
                 <h1 className="text-warning text-center">HOME PAGE</h1>
-                <Listproduct />
+                <ListProduct />
             </div>
         )
     }

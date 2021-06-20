@@ -7,11 +7,13 @@ import Cart from "./cart";
 export default function Header() {
   const dispatch = useDispatch();
 
-  const [key, setkey] = useState("");
+  const [key, setKey] = useState("");
+
   const handleChange = (e) => {
     const key = e.target.value;
-    setkey(key);
+    setKey(key);
   };
+
   const cart = useSelector((state) => state.defaultReducer.cart);
 
   const renderQuantity = () => {
@@ -19,11 +21,13 @@ export default function Header() {
       return (sum += item.quantity);
     }, 0);
   };
+
   const handleSearch = (e) => {
     e.preventDefault();
     dispatch(searchProduct(key));
-    // setkey("")
+    setKey("");
   };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-secondary">
       <a className="navbar-brand" href="#">
@@ -62,6 +66,7 @@ export default function Header() {
             onChange={handleChange}
             placeholder="Search"
             aria-label="Search"
+            autoComplete="off"
           />
           <button className="btn btn-outline-dark my-2 my-sm-0" type="submit">
             Search
