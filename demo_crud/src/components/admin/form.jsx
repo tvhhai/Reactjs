@@ -3,10 +3,13 @@ import { useDispatch } from "react-redux";
 import { addProduct, getProduct } from "../../redux/actions/product.actions";
 
 export default function Form() {
+  
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getProduct());
   }, []);
+
   const [values, setValues] = useState({
     id: "1",
     name: "",

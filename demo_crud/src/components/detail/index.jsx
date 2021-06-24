@@ -4,9 +4,11 @@ import { addCart, getDetail } from "../../redux/actions/product.actions";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Detail() {
+  
   const location = useLocation();
   const dispatch = useDispatch();
   const id = location.pathname.substr(8);
+
   useEffect(() => {
     dispatch(getDetail(id));
   }, []);
@@ -14,16 +16,24 @@ export default function Detail() {
   const productDetail = useSelector(
     (state) => state.defaultReducer.productDetail
   );
-  const isLoading = useSelector(
-    (state) => state.defaultReducer.isLoading
-  );
+
+  const isLoading = useSelector((state) => state.defaultReducer.isLoading);
 
   if (isLoading) {
     return (
       <div className="loading">
-        <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div className="lds-roller">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -58,9 +68,12 @@ export default function Detail() {
                 molestiae quia assumenda quo vitae quas ea minus, itaque
                 accusantium. Quia!
               </p>
-              <button className="ml-2 btn btn-primary px-5" onClick={() => {
-                dispatch(addCart(productDetail))
-              }}>
+              <button
+                className="ml-2 btn btn-primary px-5"
+                onClick={() => {
+                  dispatch(addCart(productDetail));
+                }}
+              >
                 <i class="fa fa-shopping-cart"></i>
               </button>
             </div>

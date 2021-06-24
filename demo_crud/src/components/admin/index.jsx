@@ -5,7 +5,9 @@ import { useDispatch } from "react-redux"
 import { getProduct } from '../../redux/actions/product.actions';
 
 export default function Manager() {
+
     const dispatch = useDispatch();
+    
     useEffect(() => {
         dispatch(getProduct())
     }, [])
