@@ -1,5 +1,5 @@
 import React from 'react';
-
+//rsc
 function Home() {
     return (
         <div className="Test">

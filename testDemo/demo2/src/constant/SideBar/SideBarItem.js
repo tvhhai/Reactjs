@@ -7,17 +7,15 @@ import StarBorder from '@mui/icons-material/StarBorder';
 export const SideBarItem = [
     {
         'text': 'Home',
-        'link': '/',
-        'icon': <HomeIcon />,
-        'level': 1,
+        'link': '/home',
+        'icon': <HomeIcon/>,
         'nested': false,
         'child': [],
         'expand': false
     }, {
         'text': 'Test',
         'link': '/test',
-        'icon': <InboxIcon />,
-        'level': 1,
+        'icon': <InboxIcon/>,
         'nested': false,
         'child': [],
         'expand': false
@@ -25,8 +23,7 @@ export const SideBarItem = [
     }, {
         'text': 'About',
         'link': '/about',
-        'icon': <InboxIcon />,
-        'level': 1,
+        'icon': <InboxIcon/>,
         'nested': false,
         'child': [],
         'expand': false
@@ -34,43 +31,46 @@ export const SideBarItem = [
     }, {
         'text': 'Collapse',
         'link': '',
-        'icon': <InboxIcon />,
-        'level': 1,
+        'icon': <InboxIcon/>,
         'nested': true,
         'child': [{
             'text': 'Collapse',
             'link': '/collapse',
-            'icon': <StarBorder />,
-            'level': 2
+            'icon': <StarBorder/>,
         }],
         'expand': false
 
     }, {
         'text': 'Collapse1',
         'link': '/about',
-        'icon': <InboxIcon />,
-        'level': 1,
+        'icon': <InboxIcon/>,
         'nested': true,
-        'child': [{
-            'text': 'Collapse1',
-            'link': '/collapse1',
-            'icon': <StarBorder />,
-            'level': 2
-        }],
+        'child': [
+            {
+                'text': 'Collapse 1',
+                'link': '/collapse1',
+                'icon': <StarBorder/>,
+            },
+            {
+                'text': 'Collapse 2',
+                'link': '/collapse2',
+                'icon': <StarBorder/>,
+            }
+            ,
+            {
+                'text': 'Collapse 3',
+                'link': '/collapse2',
+                'icon': <StarBorder/>,
+            }
+        ],
         'expand': false
 
     }, {
-        'text': 'Collapse2',
-        'link': '',
-        'icon': <InboxIcon />,
-        'level': 1,
-        'nested': true,
-        'child': [{
-            'text': 'Collapse2',
-            'link': '/collapse2',
-            'icon': <StarBorder />,
-            'level': 2
-        }],
+        'text': 'Todo',
+        'link': '/todo',
+        'icon': <InboxIcon/>,
+        'nested': false,
+        'child': [],
         'expand': false
 
     },
