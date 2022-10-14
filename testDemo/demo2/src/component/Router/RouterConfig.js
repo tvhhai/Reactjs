@@ -16,8 +16,9 @@ function RouterConfig() {
         <BrowserRouter>
             {
                 user ? (
-                        <SideBar>
-                            <Routes>
+                        <Routes>
+                            <Route path="/" element={<SideBar/>}>
+                                <Route path="/" element={<Navigate to="/home"/>}/>
                                 <Route path="home" element={<Home/>}/>
                                 <Route path="test" element={<Test/>}/>
                                 <Route path="about" element={<About/>}/>
@@ -25,12 +26,10 @@ function RouterConfig() {
                                 <Route path="todo" element={<Todo/>}/>
                                 <Route path="collapse1" element={<Collapse/>}/>
                                 <Route path="collapse2" element={<Collapse/>}/>
-                                <Route
-                                    path="*"
-                                    element={<Navigate to="/home" replace/>}
+                                <Route path="*" element={<Navigate to="/home"/>}
                                 />
-                            </Routes>
-                        </SideBar>
+                            </Route>
+                        </Routes>
                     )
                     :
                     (
@@ -44,8 +43,6 @@ function RouterConfig() {
                         </Routes>
                     )
             }
-
-
         </BrowserRouter>
     );
 }

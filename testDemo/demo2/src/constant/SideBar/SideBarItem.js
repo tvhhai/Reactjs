@@ -3,6 +3,9 @@ import React from 'react';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import HomeIcon from '@mui/icons-material/Home';
 import StarBorder from '@mui/icons-material/StarBorder';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+
+
 
 export const SideBarItem = [
     {
@@ -41,8 +44,8 @@ export const SideBarItem = [
         'expand': false
 
     }, {
-        'text': 'Collapse1',
-        'link': '/about',
+        'text': 'Exercise',
+        'link': '',
         'icon': <InboxIcon/>,
         'nested': true,
         'child': [
@@ -58,20 +61,21 @@ export const SideBarItem = [
             }
             ,
             {
-                'text': 'Collapse 3',
-                'link': '/collapse2',
-                'icon': <StarBorder/>,
+                'text': 'Todo',
+                'link': '/todo',
+                'icon': <FormatListBulletedIcon/>,
             }
         ],
         'expand': false
 
-    }, {
-        'text': 'Todo',
-        'link': '/todo',
-        'icon': <InboxIcon/>,
-        'nested': false,
-        'child': [],
-        'expand': false
-
     },
+    // {
+    //     'text': 'Todo',
+    //     'link': '/todo',
+    //     'icon': <InboxIcon/>,
+    //     'nested': false,
+    //     'child': [],
+    //     'expand': false
+    //
+    // },
 ]

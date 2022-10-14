@@ -1,14 +1,11 @@
-import { List } from '@mui/material';
 import React from 'react';
-import './Todo.scss'
+import '../component/Todo/Todo.scss'
+import TodoList from "../component/Todo/TodoList";
 
 const Todo = () => {
     return (
-        <div >
-            todo
-            <List className={'div'}>
-                abc
-            </List>
+        <div>
+            <TodoList/>
         </div>
     );
 };

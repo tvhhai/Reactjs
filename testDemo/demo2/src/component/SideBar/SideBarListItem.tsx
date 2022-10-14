@@ -22,9 +22,8 @@ function SideBarListItem() {
     const [list, setList] = React.useState(SideBarItem);
 
     const handleExpand = (expands: boolean, i: number) => {
-        const getList = [...list];
-        getList[i].expand = !expands;
-        setList(getList);
+        list[i].expand = !expands;
+        setList([...list]);
     };
 
     return (
