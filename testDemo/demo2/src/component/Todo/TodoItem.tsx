@@ -1,73 +1,84 @@
-import React from 'react';
+import React, {ChangeEvent, KeyboardEventHandler} from 'react';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Checkbox from '@mui/material/Checkbox';
 
 
 interface Props {
-    todoListProp: { id: number, title: string, completed: boolean }[],
+    todoListProp: { id: number, title: string, completed: boolean, isEdit: boolean },
     onProductTypeChange?: (newType: any) => void;
+    doneTodoTask?: (val: boolean, id: number) => void;
+    deleteTodo?: (id: number) => void;
+    editTodo?: (id: number, newTodo: string) => void;
+
 }
 
-const TodoItem = ({todoListProp, onProductTypeChange}: Props) => {
-    const [todoList, setTodoList] = React.useState(todoListProp);
+const TodoItem = ({todoListProp, onProductTypeChange, doneTodoTask, deleteTodo, editTodo}: Props) => {
+    const inputRef = React.useRef<any>();
 
-    const handleChange = (val: boolean, i: number, event: React.ChangeEvent<HTMLInputElement>) => {
-        todoList[i].completed = !val;
-        if (onProductTypeChange) {
-            onProductTypeChange((prev: any) => [...prev])
-        }
+    const [todoList, setTodoList] = React.useState(todoListProp);
+    const [isEdit, setIsEdit] = React.useState(false);
+    const [value, setValue] = React.useState(todoListProp.title);
+
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>, id: number) => {
+        doneTodoTask?.(e.target.checked, id);
     };
 
     const handleDelete = (id: number) => {
-        setTodoList(todoList.filter(item => item.id !== id));
-
+        deleteTodo?.(id);
     }
-    React.useEffect(() => {
-        if (onProductTypeChange) {
-            onProductTypeChange(todoList)
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>, id: number) => {
+        let title = e.target.value && e.target.value.trim();
+        submitTodo(id, title);
+        setIsEdit(false);
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, id: number) => {
+        if (e.key === 'Enter' && value) {
+            let title = value && value.trim();
+            submitTodo(id, title);
+            setIsEdit(false)
         }
-    }, [todoList]);
+    }
+
+    const submitTodo = (id: number, title: string) => {
+        editTodo?.(id, title);
+    }
 
     React.useEffect(() => {
-        setTodoList(todoListProp);
-        if (onProductTypeChange) {
-            onProductTypeChange(todoListProp)
-        }
-    }, [todoListProp]);
-
+        inputRef.current?.focus();
+    }, [isEdit]);
 
     return (
-        <div>
+
+        <div className="container todo-item d-flex justify-content-between align-items-center">
+            <div className={`todo ${todoList.completed ? 'completed' : ''}`} onDoubleClick={() => setIsEdit(true)}>
+                <Checkbox checked={todoList.completed} onChange={(e) => handleChange(e, todoList.id)}/>
+                <label>{todoList.title}</label>
+                {
+                    isEdit ? (
+                        <input className="edit-form" type="text" value={value}
+                               ref={inputRef}
+                               onBlur={(e) => handleBlur(e, todoList.id)}
+                               onChange={e => setValue(e.target.value)}
+                               onKeyDown={(e) => handleKeyDown(e, todoList.id)}
+                        />
+                    ) : (<></>)
+                }
+            </div>
             {
-                todoList && todoList.length > 0 ? todoList.map((v: any, i: number) => (
-                    <div key={i} className="
-                                  container
-                                  todo-item
-                                  d-flex
-                                  justify-content-between
-                                  align-items-center
-                                ">
-                        <div className="todo">
-                            <Checkbox checked={v.completed} onChange={(e) => handleChange(v.completed, i, e)}/>
-                            <label  >{v.title}</label>
-                        </div>
+                isEdit ? (<></>) : (
+                    <div className="d-flex align-items-center">
+                        <span className="icon-wrapper text-center edit">
+                            <CreateIcon onClick={() => setIsEdit(true)}/>
+                        </span>
 
-                        <div className="d-flex align-items-center">
-                            <span className="icon-wrapper text-center edit">
-                                <CreateIcon/>
-                            </span>
-
-                            <span className="icon-wrapper text-center delete">
-                                <DeleteIcon onClick={() => handleDelete(v.id)}/>
-                            </span>
-                        </div>
-
-                        {/*<input className="edit-form" type="text" value={v.title}*/}
-                        {/*       id={v.id.toString()}/>*/}
+                        <span className="icon-wrapper text-center delete">
+                            <DeleteIcon onClick={() => handleDelete(todoList.id)}/>
+                        </span>
                     </div>
-                )) : (
-                    <div/>
                 )
             }
 

@@ -1,4 +1,21 @@
+.sideBar {
+  background: linear-gradient(45deg,#2f89fc 0%,#ff5db1 100%);
+  height: 100%;
 
-.activeLink {
-    background: #61dafb;
+  .sideBarIcon {
+    color: white;
+  }
+
+  .sideBarTitle {
+    color: white;
+  }
+}
+
+.main{
+  background: #EDEFF5;
+  height: 100vh;
+  padding: 20em;
+  .mainWrapper{
+    background: white;
+  }
 }

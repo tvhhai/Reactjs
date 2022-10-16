@@ -49,6 +49,7 @@ input {
     cursor: pointer;
     font-size: 18px;
     user-select: none;
+    width: 100%;
     .toggle {
       width: 40px;
       height: auto;
@@ -71,14 +72,14 @@ input {
     label {
       word-break: break-all;
       padding: 15px 15px 15px 60px;
-      display: block;
+      //display: block;
       font-size: 20px;
     }
   }
   .edit-form {
     position: absolute;
     right: 0;
-    width: 92%;
+    width: 100%;
     height: 100%;
     background: white;
     border-radius: 10px;

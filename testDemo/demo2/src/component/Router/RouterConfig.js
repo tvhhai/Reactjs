@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SideBar from "../SideBar/SideBar";
 import Home from "../../screen/Home";
 import Test from "../../screen/Test";
@@ -16,29 +16,29 @@ function RouterConfig() {
         <BrowserRouter>
             {
                 user ? (
-                        <Routes>
-                            <Route path="/" element={<SideBar/>}>
-                                <Route path="/" element={<Navigate to="/home"/>}/>
-                                <Route path="home" element={<Home/>}/>
-                                <Route path="test" element={<Test/>}/>
-                                <Route path="about" element={<About/>}/>
-                                <Route path="collapse" element={<Collapse/>}/>
-                                <Route path="todo" element={<Todo/>}/>
-                                <Route path="collapse1" element={<Collapse/>}/>
-                                <Route path="collapse2" element={<Collapse/>}/>
-                                <Route path="*" element={<Navigate to="/home"/>}
-                                />
-                            </Route>
-                        </Routes>
-                    )
+                    <Routes>
+                        <Route path="/" element={<SideBar />}>
+                            <Route path="/" element={<Navigate to="/home" />} />
+                            <Route path="home" element={<Home />} />
+                            <Route path="test" element={<Test />} />
+                            <Route path="about" element={<About />} />
+                            <Route path="collapse" element={<Collapse />} />
+                            <Route path="todo" element={<Todo />} />
+                            <Route path="collapse1" element={<Collapse />} />
+                            <Route path="collapse2" element={<Collapse />} />
+                            <Route path="*" element={<Navigate to="/home" />}
+                            />
+                        </Route>
+                    </Routes>
+                )
                     :
                     (
                         <Routes>
-                            <Route path="/login" element={<Login/>}/>
-                            <Route path="/register" element={<Register/>}/>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
                             <Route
                                 path="*"
-                                element={<Navigate to="/login" replace/>}
+                                element={<Navigate to="/login" replace />}
                             />
                         </Routes>
                     )

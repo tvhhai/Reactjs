@@ -23,15 +23,13 @@ const TodoInput = ({todoListProp, onProductTypeChange}: Props) => {
     }, [todoList]);
 
     return (
-        <div>
-            <input type="text"
-                   value={todoValue}
-                   placeholder="What needs to be done?"
-                   onChange={e => setTodoValue(e.target.value)}
-                   onKeyDown={handleKeyDown}
-                   required/>
+        <input type="text"
+               value={todoValue}
+               placeholder="What needs to be done?"
+               onChange={e => setTodoValue(e.target.value)}
+               onKeyDown={handleKeyDown}
+               required/>
 
-        </div>
     );
 };
 

@@ -13,7 +13,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import SideBarListItem from "../../component/SideBar/SideBarListItem";
 import {Outlet} from "react-router-dom";
-import Home from "../../screen/Home";
+import "./SideBar.scss"
 
 const drawerWidth = 240;
 
@@ -111,6 +111,7 @@ export default function PersistentDrawerLeft() {
                 anchor="left"
                 open={open}
             >
+
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === "ltr" ? (
@@ -120,15 +121,19 @@ export default function PersistentDrawerLeft() {
                         )}
                     </IconButton>
                 </DrawerHeader>
+
                 <Divider/>
+
                 <SideBarListItem/>
 
                 <Divider/>
 
             </Drawer>
-            <Main open={open}>
+            <Main open={open} className={'main'}>
                 <DrawerHeader/>
-                <Outlet/>
+                <div className={'mainWrapper'}>
+                    <Outlet/>
+                </div>
             </Main>
         </Box>
     );

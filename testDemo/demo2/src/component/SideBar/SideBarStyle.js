@@ -1,4 +1,5 @@
 import {makeStyles} from '@mui/styles';
+
 export const useStyles = makeStyles({
     activeLink: {
         background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -8,5 +9,9 @@ export const useStyles = makeStyles({
         color: 'white',
         height: 48,
         padding: '0 30px',
+    },
+    openCollapse: {
+        borderLeft: '5px solid white !important' ,
+        backgroundColor:' rgba(0, 0, 0, 0.07) !important',
     },
 });
