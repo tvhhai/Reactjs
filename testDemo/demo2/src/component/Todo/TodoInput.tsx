@@ -1,34 +1,39 @@
 import React from 'react';
+import {TextField} from "@mui/material";
 
 interface Props {
     todoListProp: { id: number, title: string, completed: boolean }[];
-    onProductTypeChange?: (newType: any) => void;
+    addTodo?: (newTodo: { id: number, title: string, completed: boolean }) => void;
 }
 
-const TodoInput = ({todoListProp, onProductTypeChange}: Props) => {
+const TodoInput = ({todoListProp, addTodo}: Props) => {
     const [todoValue, setTodoValue] = React.useState('');
     const [todoList, setTodoList] = React.useState(todoListProp);
 
-    const handleKeyDown = (e: any) => {
+    React.useEffect(() => {
+        setTodoList(todoListProp)
+    }, [todoListProp]);
+
+    const handleAddTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && todoValue) {
             let value = todoValue && todoValue.trim();
-            setTodoList((prev: any) => [...prev, {id: todoList.length + 1, title: value, completed: false}]);
+            addTodo?.({id: todoList.length + 1, title: value, completed: false})
             setTodoValue('');
         }
     }
-    React.useEffect(() => {
-        if (onProductTypeChange) {
-            onProductTypeChange([...todoList])
-        }
-    }, [todoList]);
+
+    const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTodoValue(e.target.value)
+    }
+
 
     return (
-        <input type="text"
-               value={todoValue}
-               placeholder="What needs to be done?"
-               onChange={e => setTodoValue(e.target.value)}
-               onKeyDown={handleKeyDown}
-               required/>
+        <TextField fullWidth
+                   label="What needs to be done?"
+                   id="fullWidth"
+                   value={todoValue}
+                   onChange={handleOnchange}
+                   onKeyDown={handleAddTodo}/>
 
     );
 };

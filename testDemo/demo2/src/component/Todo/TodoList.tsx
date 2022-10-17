@@ -1,11 +1,20 @@
 import React from 'react';
 import TodoInput from "./TodoInput";
 import TodoItem from "./TodoItem";
+import FilterTodo from "./FilterTodo";
 
 const TodoList = () => {
 
     const items = JSON.parse(localStorage.getItem('todo') || "[]");
-    const [todoList, setTodoList] = React.useState<{ id: number, title: string, completed: boolean, isEdit: boolean }[]>(items);
+    const [todoList, setTodoList] = React.useState<{ id: number, title: string, completed: boolean}[]>(items);
+
+    React.useEffect(() => {
+        localStorage.setItem('todo', JSON.stringify(todoList));
+    }, [todoList]);
+
+    const addTodo = (todo:{ id: number, title: string, completed: boolean }) => {
+        setTodoList(prevState => [...prevState, todo]);
+    }
 
     const handleDoneTodoTask = (val: boolean, id: number) => {
         todoList.map((v, i) => {
@@ -28,30 +37,26 @@ const TodoList = () => {
         setTodoList([...todoList]);
     }
 
-
-    React.useEffect(() => {
-        localStorage.setItem('todo', JSON.stringify(todoList));
-        // console.log(todoList)
-    }, [todoList]);
-
     return (
         <>
             <TodoInput todoListProp={todoList}
-                       onProductTypeChange={setTodoList}/>
-
-            <div>
+                       addTodo={addTodo}/>
+            <>
                 {
-                    todoList.map((v, i) => {
+                    todoList.map((todo, i) => {
                         return (
-                            <TodoItem key={i} todoListProp={v} onProductTypeChange={setTodoList}
+                            <TodoItem key={i} todoListProp={todo}
                                       doneTodoTask={handleDoneTodoTask}
                                       deleteTodo={handleDeleteTodo}
                                       editTodo={handleEditTodo}/>
                         )
                     })
                 }
-            </div>
-
+            </>
+            <FilterTodo todoListProp={todoList}
+                        doneTodoTask={handleDoneTodoTask}
+                        deleteTodo={handleDeleteTodo}
+                        editTodo={handleEditTodo}/>
 
         </>
     );

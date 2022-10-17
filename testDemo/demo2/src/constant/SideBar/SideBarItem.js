@@ -4,7 +4,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import HomeIcon from '@mui/icons-material/Home';
 import StarBorder from '@mui/icons-material/StarBorder';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 
 export const SideBarItem = [
@@ -46,7 +46,7 @@ export const SideBarItem = [
     }, {
         'text': 'Exercise',
         'link': '',
-        'icon': <InboxIcon/>,
+        'icon': <MenuBookIcon/>,
         'nested': true,
         'child': [
             {
