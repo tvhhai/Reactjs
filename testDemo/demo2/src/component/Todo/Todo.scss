@@ -1,75 +1,125 @@
+
+
+.todoDone{
+
+}
 .todoInput {
-  outline: none;
-  border: none;
-  font-size: 24px;
-  padding: 16px 16px 16px 60px;
-  background: rgba(0, 0, 0, 0.003);
-  box-shadow: inset 0 -2px 1px rgb(0 0 0 / 3%);
   width: 100%;
-}
-::placeholder {
-  color: rgba(0, 0, 0, 0.5);
-  opacity: 0.5;
+
 }
 
 
-.todo-item {
-  min-height: 50px;
-  padding: 0 5px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  position: relative;
-  .icon-wrapper {
-    font-size: 18px;
-    color: white;
-    padding: 10px;
-    transition: 250ms all ease-in-out;
-  }
-  &:hover {
-    .icon-wrapper {
-      &:hover {
-        transform: scale(1.3, 1.3);
-      }
-      cursor: pointer;
-      &.edit {
-        color: rgb(0, 162, 255);
-      }
-      &.delete {
-        color: rgb(247, 78, 48);
-      }
-    }
-  }
-  .completed {
-    label {
-      text-decoration: line-through;
-      color: #d9d9d9;
-    }
-  }
-  .todo {
+.todoListItem {
+  max-height: calc(100vh - 270px);
+  overflow: auto;
+
+  .todoItem {
+    min-height: 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     position: relative;
-    cursor: pointer;
-    font-size: 18px;
-    user-select: none;
-    width: 100%;
-    label {
-      word-break: break-all;
-      padding: 15px 15px 15px 60px;
+
+    .icon-wrapper {
+      font-size: 18px;
+      color: white;
+      padding: 10px;
+      transition: 250ms all ease-in-out;
+    }
+
+    &:hover {
+      .icon-wrapper {
+        &:hover {
+          transform: scale(1.2, 1.2);
+        }
+
+        cursor: pointer;
+
+        &.edit {
+          color: rgb(0, 162, 255);
+        }
+
+        &.delete {
+          color: rgb(247, 78, 48);
+        }
+      }
+    }
+
+    .completed {
+      label {
+        text-decoration: line-through;
+        color: #d9d9d9;
+      }
+    }
+
+    .todo {
+      position: relative;
+      cursor: pointer;
+      font-size: 18px;
+      user-select: none;
+      width: 100%;
+
+      label {
+        word-break: break-all;
+        padding: 15px 15px 15px 60px;
+        font-size: 20px;
+      }
+    }
+
+    .editTodoInput {
+      position: absolute;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      outline: none;
+
+      > div {
+        height: 100%;
+      }
+    }
+
+    input {
       font-size: 20px;
+      padding-left: 10px;
+      font-weight: bold;
     }
   }
-  .edit-form {
+}
+
+
+.todoFooter {
+  position: relative;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+  &:before {
+    content: "";
     position: absolute;
     right: 0;
-    width: 100%;
-    height: 100%;
-    background: white;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    overflow: hidden;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 20%), 0 8px 0 -3px #f6f6f6,
+    0 9px 1px -3px rgb(0 0 0 / 20%), 0 16px 0 -6px #f6f6f6,
+    0 17px 2px -6px rgb(0 0 0 / 20%);
+  }
+
+  & .filterBtn {
+    padding: 5px;
+    border-radius: 0.25rem;
+    transition: 250ms all ease-in-out;
     outline: none;
-    >div{
-      height: 100%;
+    cursor: pointer;
+    margin-right: 5px;
+    background: white;
+    border: 1px solid white;
+
+    &:hover,
+    &.active {
+      border-color: burlywood;
     }
   }
-  input {
-    font-size: 20px;
+
+  & .items-count {
     padding-left: 10px;
-    font-weight: bold;
   }
 }

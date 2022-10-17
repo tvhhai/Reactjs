@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import SideBar from "../SideBar/SideBar";
-import Home from "../../screen/Home";
-import Test from "../../screen/Test";
-import Collapse from "../../screen/Collapse";
-import About from "../../screen/About";
-import Todo from "../../screen/Todo";
-import Login from "../../screen/Login";
-import Register from "../../screen/Register";
+import SideBar from "../component/SideBar/SideBar";
+import Home from "../screen/Home";
+import Test from "../screen/Test";
+import Collapse from "../screen/Collapse";
+import About from "../screen/About";
+import Todo from "../screen/Todo";
+import Login from "../screen/Login";
+import Register from "../screen/Register";
 
 
 function RouterConfig() {

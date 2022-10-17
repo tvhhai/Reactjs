@@ -25,7 +25,7 @@ const TodoItem = ({todoListProp, doneTodoTask, deleteTodo, editTodo}: Props) => 
         setTodoList(todoListProp);
     }, [todoListProp]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    const handleDoneTodoTask = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
         doneTodoTask?.(e.target.checked, id);
     };
 
@@ -53,14 +53,14 @@ const TodoItem = ({todoListProp, doneTodoTask, deleteTodo, editTodo}: Props) => 
 
 
     return (
-        <div className="todo-item d-flex justify-content-between align-items-center"
+        <div className="todoItem d-flex justify-content-between align-items-center"
              style={{border: isEdit ? "none" : ''}}>
             <div className={`todo ${todoList.completed ? 'completed' : ''}`} onDoubleClick={() => setIsEdit(true)}>
-                <Checkbox checked={todoList.completed} onChange={(e) => handleChange(e, todoList.id)}/>
+                <Checkbox checked={todoList.completed} onChange={(e) => handleDoneTodoTask(e, todoList.id)}/>
                 <label>{todoList.title}</label>
                 {
                     isEdit ? (
-                        // <input className="edit-form" type="text" value={value}
+                        // <input className="editTodoInput" type="text" value={value}
                         //        ref={inputRef}
                         //        onBlur={(e) => handleBlur(e, todoList.id)}
                         //        onChange={e => setValue(e.target.value)}
@@ -68,7 +68,7 @@ const TodoItem = ({todoListProp, doneTodoTask, deleteTodo, editTodo}: Props) => 
                         // />
                         <TextField fullWidth
                                    autoFocus
-                                   className="edit-form"
+                                   className="editTodoInput"
                                    value={value}
                                    variant="standard"
                                    id="fullWidth"

@@ -5,7 +5,6 @@ import TodoList from "../component/Todo/TodoList";
 const Todo = () => {
     return (
         <TodoList/>
-
     );
 };
 

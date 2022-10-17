@@ -39,7 +39,7 @@ export const SideBarItem = [
         'child': [{
             'text': 'Collapse',
             'link': '/collapse',
-            'icon': <StarBorder/>,
+            'icon': <StarBorder/>
         }],
         'expand': false
 
@@ -50,25 +50,25 @@ export const SideBarItem = [
         'nested': true,
         'child': [
             {
+                'text': 'Todo',
+                'link': '/todo',
+                'icon': <FormatListBulletedIcon/>
+            },
+            {
                 'text': 'Collapse 1',
                 'link': '/collapse1',
-                'icon': <StarBorder/>,
+                'icon': <StarBorder/>
             },
             {
                 'text': 'Collapse 2',
                 'link': '/collapse2',
-                'icon': <StarBorder/>,
+                'icon': <StarBorder/>
             }
-            ,
-            {
-                'text': 'Todo',
-                'link': '/todo',
-                'icon': <FormatListBulletedIcon/>,
-            }
+
         ],
         'expand': false
 
-    },
+    }
     // {
     //     'text': 'Todo',
     //     'link': '/todo',

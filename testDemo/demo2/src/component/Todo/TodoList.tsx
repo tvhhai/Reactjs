@@ -1,18 +1,36 @@
 import React from 'react';
+
 import TodoInput from "./TodoInput";
 import TodoItem from "./TodoItem";
-import FilterTodo from "./FilterTodo";
+import TodoFilter from "./TodoFilter";
+import TodoCompleteAll from "./TodoCompleteAll";
 
 const TodoList = () => {
 
     const items = JSON.parse(localStorage.getItem('todo') || "[]");
-    const [todoList, setTodoList] = React.useState<{ id: number, title: string, completed: boolean}[]>(items);
+    const [todoList, setTodoList] = React.useState<{ id: number, title: string, completed: boolean }[]>(items);
+    const [typeFilter, setTypeFilter] = React.useState('all');
 
     React.useEffect(() => {
         localStorage.setItem('todo', JSON.stringify(todoList));
     }, [todoList]);
 
-    const addTodo = (todo:{ id: number, title: string, completed: boolean }) => {
+    const activeTodoCount = todoList.reduce(function (accum, todo) {
+        return todo.completed ? accum : accum + 1;
+    }, 0);
+
+    const shownTodos = todoList.filter((todo) => {
+        switch (typeFilter) {
+            case 'active':
+                return !todo.completed;
+            case 'completed':
+                return todo.completed;
+            default:
+                return todo;
+        }
+    });
+
+    const addTodo = (todo: { id: number, title: string, completed: boolean }) => {
         setTodoList(prevState => [...prevState, todo]);
     }
 
@@ -37,13 +55,37 @@ const TodoList = () => {
         setTodoList([...todoList]);
     }
 
+    const handleFilterTodo = (type: string) => {
+        setTypeFilter(type)
+    }
+
+    const handleClearTodoCompleted = () => {
+        const removedArr = [...todoList].filter(todo => !todo.completed);
+        setTodoList(removedArr);
+    }
+
+    const hasCompletedTodo = (): boolean => {
+        return (todoList.length > activeTodoCount);
+    }
+
+    const completeAllTodo = (isComplete: boolean) => {
+        const completeAllTodo = [...todoList].map((val, i) => {
+           val.completed = isComplete
+             return val;
+        });
+        setTodoList(completeAllTodo);
+    }
+
     return (
         <>
-            <TodoInput todoListProp={todoList}
-                       addTodo={addTodo}/>
-            <>
+            <div className="d-flex w-100 align-items-center">
+                <TodoCompleteAll isChecked={!activeTodoCount} completeAllTodo={completeAllTodo}/>
+                <TodoInput todoListProp={todoList} addTodo={addTodo}/>
+            </div>
+
+            <div className={'todoListItem'}>
                 {
-                    todoList.map((todo, i) => {
+                    shownTodos.map((todo, i) => {
                         return (
                             <TodoItem key={i} todoListProp={todo}
                                       doneTodoTask={handleDoneTodoTask}
@@ -52,12 +94,14 @@ const TodoList = () => {
                         )
                     })
                 }
-            </>
-            <FilterTodo todoListProp={todoList}
-                        doneTodoTask={handleDoneTodoTask}
-                        deleteTodo={handleDeleteTodo}
-                        editTodo={handleEditTodo}/>
-
+            </div>
+            {
+                todoList.length ? (<TodoFilter count={activeTodoCount}
+                                               hasCompleted={hasCompletedTodo}
+                                               filterTodo={handleFilterTodo}
+                                               clearTodoCompleted={handleClearTodoCompleted}
+                />) : (<></>)
+            }
         </>
     );
 };

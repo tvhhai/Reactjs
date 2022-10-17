@@ -26,14 +26,16 @@ const TodoInput = ({todoListProp, addTodo}: Props) => {
         setTodoValue(e.target.value)
     }
 
-
     return (
-        <TextField fullWidth
-                   label="What needs to be done?"
-                   id="fullWidth"
-                   value={todoValue}
-                   onChange={handleOnchange}
-                   onKeyDown={handleAddTodo}/>
+        <div className={'todoInput'}>
+            <TextField fullWidth
+                       label="What needs to be done?"
+                       id="fullWidth"
+                       value={todoValue}
+                       autoFocus={true}
+                       onChange={handleOnchange}
+                       onKeyDown={handleAddTodo}/>
+        </div>
 
     );
 };

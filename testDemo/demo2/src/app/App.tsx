@@ -2,7 +2,7 @@ import React from 'react';
 import './App.scss';
 
 
-import RouterConfig from "../component/Router/RouterConfig";
+import RouterConfig from "../Router/RouterConfig";
 
 function App() {
   return (
