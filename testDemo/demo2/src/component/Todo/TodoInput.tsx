@@ -1,5 +1,6 @@
 import React from 'react';
 import {TextField} from "@mui/material";
+import {ENTER_KEY } from "../../constant/Todo/Todo";
 
 interface Props {
     todoListProp: { id: number, title: string, completed: boolean }[];
@@ -15,7 +16,8 @@ const TodoInput = ({todoListProp, addTodo}: Props) => {
     }, [todoListProp]);
 
     const handleAddTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter' && todoValue) {
+        console.log(e)
+        if (e.keyCode === ENTER_KEY && todoValue) {
             let value = todoValue && todoValue.trim();
             addTodo?.({id: todoList.length + 1, title: value, completed: false})
             setTodoValue('');
@@ -27,7 +29,7 @@ const TodoInput = ({todoListProp, addTodo}: Props) => {
     }
 
     return (
-        <div className={'todoInput'}>
+        <div className='todoInput w-100'>
             <TextField fullWidth
                        label="What needs to be done?"
                        id="fullWidth"

@@ -44,7 +44,7 @@ export const SideBarItem = [
         'expand': false
 
     }, {
-        'text': 'Exercise',
+        'text': 'Exercises',
         'link': '',
         'icon': <MenuBookIcon/>,
         'nested': true,
@@ -69,13 +69,4 @@ export const SideBarItem = [
         'expand': false
 
     }
-    // {
-    //     'text': 'Todo',
-    //     'link': '/todo',
-    //     'icon': <InboxIcon/>,
-    //     'nested': false,
-    //     'child': [],
-    //     'expand': false
-    //
-    // },
 ]

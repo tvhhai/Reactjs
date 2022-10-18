@@ -2,6 +2,7 @@ import React from 'react';
 import {Checkbox, TextField} from "@mui/material";
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
+import {ENTER_KEY, ESCAPE_KEY} from "../../constant/Todo/Todo";
 
 interface Props {
     todoListProp: { id: number, title: string, completed: boolean },
@@ -40,9 +41,12 @@ const TodoItem = ({todoListProp, doneTodoTask, deleteTodo, editTodo}: Props) => 
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>, id: number) => {
-        if (e.key === 'Enter' && value) {
+        if (e.keyCode === ENTER_KEY && value) {
             let title = value && value.trim();
             submitTodo(id, title);
+            setIsEdit(false);
+        }
+        if (e.keyCode === ESCAPE_KEY) {
             setIsEdit(false);
         }
     }

@@ -4,12 +4,13 @@ import TodoInput from "./TodoInput";
 import TodoItem from "./TodoItem";
 import TodoFilter from "./TodoFilter";
 import TodoCompleteAll from "./TodoCompleteAll";
+import {ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from "../../constant/Todo/Todo";
 
 const TodoList = () => {
 
     const items = JSON.parse(localStorage.getItem('todo') || "[]");
     const [todoList, setTodoList] = React.useState<{ id: number, title: string, completed: boolean }[]>(items);
-    const [typeFilter, setTypeFilter] = React.useState('all');
+    const [typeFilter, setTypeFilter] = React.useState(ALL_TODOS);
 
     React.useEffect(() => {
         localStorage.setItem('todo', JSON.stringify(todoList));
@@ -21,9 +22,9 @@ const TodoList = () => {
 
     const shownTodos = todoList.filter((todo) => {
         switch (typeFilter) {
-            case 'active':
+            case ACTIVE_TODOS:
                 return !todo.completed;
-            case 'completed':
+            case COMPLETED_TODOS:
                 return todo.completed;
             default:
                 return todo;
@@ -77,8 +78,8 @@ const TodoList = () => {
     }
 
     return (
-        <>
-            <div className="d-flex w-100 align-items-center">
+        <div className="todoWrapper">
+            <div className="todoHeader d-flex w-100 align-items-center">
                 <TodoCompleteAll isChecked={!activeTodoCount} completeAllTodo={completeAllTodo}/>
                 <TodoInput todoListProp={todoList} addTodo={addTodo}/>
             </div>
@@ -102,7 +103,7 @@ const TodoList = () => {
                                                clearTodoCompleted={handleClearTodoCompleted}
                 />) : (<></>)
             }
-        </>
+        </div>
     );
 };
 

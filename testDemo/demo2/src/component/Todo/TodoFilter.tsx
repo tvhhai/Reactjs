@@ -1,5 +1,5 @@
 import React from 'react';
-import {TodoBtn} from "../../constant/Todo/Todo";
+import {TODO_BTN_FILTER} from "../../constant/Todo/Todo";
 import {Button} from "@mui/material";
 
 interface Props {
@@ -20,7 +20,7 @@ const TodoFilter = ({count, hasCompleted, filterTodo, clearTodoCompleted}: Props
     }
 
     const [activeTodoWord, setActiveTodoWord] = React.useState<any>(pluralize(count, 'item'));
-    const [filterButtons, setFilterButtons] = React.useState<{ type: string, label: string, isActive: boolean }[]>(TodoBtn);
+    const [filterButtons, setFilterButtons] = React.useState<{ type: string, label: string, isActive: boolean }[]>(TODO_BTN_FILTER);
 
 
     const handleFilter = (typeFilter: string) => {
