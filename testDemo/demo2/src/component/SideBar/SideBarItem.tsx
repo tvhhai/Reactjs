@@ -1,13 +1,14 @@
 import React, {ReactNode} from 'react';
 import {ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import {NavLink} from "react-router-dom";
-import {useStyles} from "./SideBarStyle";
+// import {useStyles} from "./SideBarStyle.style";
 import {useTranslation} from "react-i18next";
 
 
 interface Props {
     sideBarItem: { url: string, icon: ReactNode, i18nKey: string },
-    sx?: any
+    sx?: any;
+    showIcon?: boolean,
 }
 
 const ListNavLink = React.forwardRef<any, any>((props, ref) => (
@@ -24,8 +25,8 @@ const ListNavLink = React.forwardRef<any, any>((props, ref) => (
 ));
 
 
-const SideBarItem = ({sideBarItem, sx}: Props) => {
-    const classes = useStyles();
+const SideBarItem = ({sideBarItem, sx, showIcon = true}: Props) => {
+    // const classes = useStyles();
     const {t} = useTranslation();
 
     return (
@@ -35,11 +36,17 @@ const SideBarItem = ({sideBarItem, sx}: Props) => {
                     sx={sx}
                     component={ListNavLink}
                     to={sideBarItem.url}
-                    activeClassName={classes.activeLink}
+                    className={'sideBarLink'}
+                    activeClassName={'activeLink'}
                 >
-                    <ListItemIcon className={"sideBarIcon"}>
-                        {sideBarItem.icon}
-                    </ListItemIcon>
+                    {
+                        showIcon ? (
+                            <ListItemIcon sx={{minWidth: '40px'}} className={"sideBarIcon"}>
+                                {sideBarItem.icon}
+                            </ListItemIcon>
+                        ) : (<div className={"dot"}/>)
+                    }
+
                     <ListItemText
                         className={"sideBarTitle"}
                         primary={t(sideBarItem.i18nKey)}

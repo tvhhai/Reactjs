@@ -1,6 +1,8 @@
 import React from "react";
 import {useLocation} from "react-router-dom";
 import {
+    Box,
+    Divider,
     List,
     ListItemText,
 } from "@mui/material";
@@ -8,6 +10,7 @@ import {SideBarList} from "../../constant/SideBar/SideBarList";
 import {useTranslation} from "react-i18next";
 import SideBarItem from "./SideBarItem";
 import SideBarItemCollapse from "./SideBarItemCollapse";
+import logo from "../../asset/logo.svg";
 
 function SideBarListItem() {
     const location = useLocation();
@@ -52,23 +55,35 @@ function SideBarListItem() {
     return (
         <>
             <List className={"sideBar"}>
-                {lists.map((sectionItem) => (
-                    <div key={sectionItem.id} id={sectionItem.id}>
-                        <ListItemText className={"sideBarSection"} primary={t(sectionItem.i18nKey)}/>
-                        {sectionItem.apps.map((value, index) =>
-                            value.child && value.child.length > 0 ? (
-                                <SideBarItemCollapse key={index}
-                                                     sideBarItem={value}
-                                                     sectionId={sectionItem.id}
-                                                     index={index}
-                                                     handleExpandItem={handleExpand}
-                                />
-                            ) : (
-                                <SideBarItem key={index} sideBarItem={value}/>
-                            )
-                        )}
-                    </div>
-                ))}
+                <Box sx={{height: '64px'}}>
+                    <img src={logo} className={'img-fit'} alt={''}/>
+                </Box>
+                <Divider  />
+                {
+                    lists.map((sectionItem) => (
+                        <div key={sectionItem.id} id={sectionItem.id} className={"sideBarSection"}>
+                            <ListItemText className={"sideBarSectionItem"}
+                                          primary={t(sectionItem.i18nKey)}/>
+                            {
+                                sectionItem.apps.map((value, index) =>
+                                    value.child && value.child.length > 0 ? (
+                                        <SideBarItemCollapse key={index}
+                                                             sideBarItem={value}
+                                                             sectionId={sectionItem.id}
+                                                             index={index}
+                                                             handleExpandItem={handleExpand}
+                                        />
+                                    ) : (
+                                        <div key={index}>
+                                            <SideBarItem sx={{pt:.5, pb:.5}} sideBarItem={value}/>
+                                        </div>
+                                    )
+                                )
+                            }
+                            <Divider  />
+                        </div>
+                    ))
+                }
             </List>
         </>
     );

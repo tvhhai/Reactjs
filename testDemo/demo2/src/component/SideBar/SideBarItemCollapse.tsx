@@ -1,19 +1,19 @@
 import React, {ReactNode} from 'react';
 import {Collapse, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
-import {useStyles} from "./SideBarStyle";
+// import {useStyles} from "./SideBarStyle.style";
 import {useTranslation} from "react-i18next";
 import SideBarItem from "./SideBarItem";
 
 interface Props {
     index: number,
-    sideBarItem: { active: boolean, expand: boolean, icon: ReactNode, i18nKey: string, child: { i18nKey: string, url: string, icon: JSX.Element }[] },
+    sideBarItem: { active: boolean, expand: boolean, icon: ReactNode, i18nKey: string, child: {icon: ReactNode, i18nKey: string, url: string}[] },
     sectionId: string,
     handleExpandItem: (expand: boolean, i: number, id: string,) => void;
 }
 
 const SideBarItemCollapse = ({index, sideBarItem, sectionId, handleExpandItem}: Props) => {
-    const classes = useStyles();
+    // const classes = useStyles();
     const {t} = useTranslation();
     const [expand, setExpand] = React.useState(sideBarItem.expand);
     const [active, setActive] = React.useState(sideBarItem.active);
@@ -24,14 +24,17 @@ const SideBarItemCollapse = ({index, sideBarItem, sectionId, handleExpandItem}: 
     }, [sideBarItem.expand, sideBarItem.active]);
 
     return (
-        <div>
+        <div className={'sideBarItemCollapse'}>
             <ListItemButton
+                sx={{ pt:.5, pb:.5}}
                 onClick={() => handleExpandItem(expand, index, sectionId)}
-                className={active ? classes.activeCollapse : expand ? classes.openCollapse : ""}
+                className={`sideBarLink ${active ? 'activeCollapse' : expand ? 'openCollapse' : ""}`}
             >
-                <ListItemIcon className={"sideBarIcon"}>
+                <ListItemIcon sx={{minWidth: '40px'}} className={"sideBarIcon"}>
                     {sideBarItem.icon}
                 </ListItemIcon>
+
+
                 <ListItemText
                     className={"sideBarTitle"}
                     primary={t(sideBarItem.i18nKey)}
@@ -43,9 +46,9 @@ const SideBarItemCollapse = ({index, sideBarItem, sectionId, handleExpandItem}: 
                 )}
             </ListItemButton>
 
-            <Collapse in={expand} timeout="auto" unmountOnExit>
+            <Collapse in={expand} timeout="auto" unmountOnExit className={'abc'}>
                 {sideBarItem.child.map((childItem: any, i: number) => (
-                    <SideBarItem sx={{pl: 4}} key={i} sideBarItem={childItem}/>
+                    <SideBarItem showIcon={false} sx={{pl: 6, pt:.5, pb:.5}} key={i} sideBarItem={childItem}/>
                 ))}
             </Collapse>
         </div>

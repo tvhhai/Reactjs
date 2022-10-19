@@ -1,0 +1,104 @@
+.sideBar {
+  //background: linear-gradient(45deg, #2f89fc 0%, #ff5db1 100%);
+  //padding: 0 16px !important;
+  height: 100%;
+  color: #6c757d;
+  padding: 0 !important;
+  background-color: #fcfcfc;
+
+  .sideBarSection {
+    //padding: 24px 0;
+    .sideBarSectionItem {
+      padding: 24px 16px 4px 16px;
+      text-transform: uppercase;
+      color: #3f6ad8;
+      > span {
+        font-weight: bold !important;
+      }
+    }
+
+    .sideBarLink {
+      //border-radius: 8px;
+    }
+
+    .activeLink {
+      color: #3f6ad8 !important;
+      position: relative;
+      background-color: #e0f3ff;
+      //border-radius: 8px;
+      .sideBarTitle span {
+        font-weight: bold !important;
+      }
+
+      .dot {
+        background: #3f6ad8 !important;
+      }
+
+      .sideBarIcon {
+        color: #3f6ad8 !important;
+      }
+
+
+    }
+
+    .openCollapse {
+      .sideBarTitle span {
+        font-weight: bold !important;
+      }
+    }
+
+    .activeCollapse {
+      position: relative;
+      background-color: rgba(58, 53, 65, 0.08);
+      .sideBarTitle span {
+        font-weight: bold !important;
+      }
+
+      //&::before {
+      //  content: '';
+      //  height: 100%;
+      //  opacity: 1;
+      //  width: 4px;
+      //  background: #9155FD;
+      //  position: absolute;
+      //  left: 0;
+      //  top: 0;
+      //}
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 100%;
+      background: #6c757d;
+      display: inline-flex;
+      margin-right: 16px;
+    }
+
+    .sideBarItemCollapse {
+
+    }
+  }
+
+  .sideBarIcon {
+    //color: white;
+  }
+
+  .sideBarTitle {
+    &:hover {
+    }
+  }
+}
+
+.main {
+  background: #EDEFF5;
+  height: 100vh;
+  overflow: auto;
+
+  .mainWrapper {
+    background: white;
+    padding: 24px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 10%);
+  }
+}

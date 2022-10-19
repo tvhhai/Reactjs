@@ -8,12 +8,13 @@ import MuiAppBar, {AppBarProps as MuiAppBarProps} from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import SideBarListItem from "../../component/SideBar/SideBarListItem";
 import Togglei18n from "../Togglei18n/Togglei18n";
+
 //ICON
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import "./SideBar.scss"
+import "./SideBar.style.scss"
 
 
 const drawerWidth = 240;
@@ -125,6 +126,8 @@ export default function PersistentDrawerLeft() {
                 anchor="left"
                 open={open}
             >
+
+
                 <SideBarListItem/>
 
             </Drawer>
