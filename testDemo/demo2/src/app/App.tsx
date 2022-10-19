@@ -5,6 +5,7 @@ import './App.scss';
 import RouterConfig from "../router/RouterConfig";
 
 function App() {
+
   return (
       <div className="App">
           <RouterConfig/>

@@ -1,0 +1,16 @@
+.locale {
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: #E1F0FF;
+  border-radius: 8px;
+  max-width: 100px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    color: #3699FF;
+  }
+}

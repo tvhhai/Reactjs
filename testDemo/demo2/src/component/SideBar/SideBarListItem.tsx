@@ -1,91 +1,76 @@
-import React from 'react';
-import {useLocation, NavLink} from "react-router-dom";
-import {ExpandLess, ExpandMore} from "@mui/icons-material";
-import {List, ListItem, Collapse, ListItemText, ListItemIcon, ListItemButton} from "@mui/material";
-import {SideBarItem} from "../../constant/SideBar/SideBarItem";
-import {useStyles} from "./SideBarStyle";
-
-
-const ListNavLink = React.forwardRef<any, any>((props, ref) => (
-    <NavLink
-        ref={ref}
-        to={props.to}
-        onClick={props.onClick}
-        className={({isActive}) => `${props.className} ${isActive ? props.activeClassName : ''}`}
-    >
-        {props.children}
-    </NavLink>
-));
+import React from "react";
+import {useLocation} from "react-router-dom";
+import {
+    List,
+    ListItemText,
+} from "@mui/material";
+import {SideBarList} from "../../constant/SideBar/SideBarList";
+import {useTranslation} from "react-i18next";
+import SideBarItem from "./SideBarItem";
+import SideBarItemCollapse from "./SideBarItemCollapse";
 
 function SideBarListItem() {
-
-    const classes = useStyles();
     const location = useLocation();
+    const {t} = useTranslation();
 
-    const [list, setList] = React.useState(SideBarItem);
+    const [lists, setList] = React.useState([
+        SideBarList.home,
+        SideBarList.exercises,
+    ]);
 
-    const handleExpand = (expands: boolean, i: number, e: any) => {
-        list.map((item, index) => {
-            item.expand = false
-        })
-        list[i].expand = !expands;
-        setList([...list]);
+    const handleExpand = (expands: boolean, i: number, id: string) => {
+        lists.map((list) => {
+            if (list.id === id) {
+                list.apps[i].expand = !expands;
+            } else {
+                list.apps.map((app) => {
+                    app.expand = false;
+                });
+            }
+        });
+        setList([...lists]);
     };
 
     React.useEffect(() => {
-        list.map(val => {
-            if (val.child.length > 0) {
-                val.child.map((valChild) => {
-                    if (valChild.link === location.pathname) {
-                        return val.expand = true;
-                    }
-                })
-            } else {
-                list.map((item, index) => {
-                    item.expand = false
-                })
-            }
+        lists.map((list) => {
+            list.apps.map((app) => {
+                app.expand = false;
+                app.active = false;
+                if (app.child && app.child.length > 0) {
+                    app.child.map((child) => {
+                        if (child.url === location.pathname) {
+                            app.expand = true;
+                            app.active = true;
+                        }
+                    });
+                }
+            });
         });
-        setList([...list]);
-    }, [location])
-
+        setList([...lists]);
+    }, [location]);
 
     return (
-        <List className={'sideBar'}>
-            {list.map((value, index) =>
-                value.nested ? (
-                    <div key={index}>
-                        <ListItemButton onClick={(e) => handleExpand(value.expand, index, e)} key={index}
-                                        className={value.expand ? classes.openCollapse : ''}>
-                            <ListItemIcon className={'sideBarIcon'}>{value.icon}</ListItemIcon>
-                            <ListItemText className={'sideBarTitle'} primary={value.text}/>
-                            {value.expand ? <ExpandMore className={'sideBarIcon'}/> :
-                                <ExpandLess className={'sideBarIcon'}/>}
-                        </ListItemButton>
-
-                        <Collapse in={value.expand} timeout="auto" unmountOnExit>
-                            {value.nested && value.child.map((childItem, i) => (
-                                <List component="div" disablePadding key={i}>
-                                    <ListItemButton sx={{pl: 4}} component={ListNavLink} to={childItem.link}
-                                                    activeClassName={classes.activeLink}>
-                                        <ListItemIcon className={'sideBarIcon'}>{childItem.icon}</ListItemIcon>
-                                        <ListItemText className={'sideBarTitle'} primary={childItem.text}/>
-                                    </ListItemButton>
-                                </List>
-                            ))}
-                        </Collapse>
-
+        <>
+            <List className={"sideBar"}>
+                {lists.map((sectionItem) => (
+                    <div key={sectionItem.id} id={sectionItem.id}>
+                        <ListItemText className={"sideBarSection"} primary={t(sectionItem.i18nKey)}/>
+                        {sectionItem.apps.map((value, index) =>
+                            value.child && value.child.length > 0 ? (
+                                <SideBarItemCollapse key={index}
+                                                     sideBarItem={value}
+                                                     sectionId={sectionItem.id}
+                                                     index={index}
+                                                     handleExpandItem={handleExpand}
+                                />
+                            ) : (
+                                <SideBarItem key={index} sideBarItem={value}/>
+                            )
+                        )}
                     </div>
-                ) : (
-                    <ListItem key={index} disablePadding>
-                        <ListItemButton component={ListNavLink} to={value.link} activeClassName={classes.activeLink}>
-                            <ListItemIcon className={'sideBarIcon'}>{value.icon}</ListItemIcon>
-                            <ListItemText className={'sideBarTitle'} primary={value.text}/>
-                        </ListItemButton>
-                    </ListItem>
-                )
-            )}
-        </List>
+                ))}
+            </List>
+        </>
     );
 }
 

@@ -16,7 +16,6 @@ const TodoInput = ({todoListProp, addTodo}: Props) => {
     }, [todoListProp]);
 
     const handleAddTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        console.log(e)
         if (e.keyCode === ENTER_KEY && todoValue) {
             let value = todoValue && todoValue.trim();
             addTodo?.({id: todoList.length + 1, title: value, completed: false})

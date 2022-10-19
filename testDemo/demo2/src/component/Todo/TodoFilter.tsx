@@ -24,7 +24,7 @@ const TodoFilter = ({count, hasCompleted, filterTodo, clearTodoCompleted}: Props
 
 
     const handleFilter = (typeFilter: string) => {
-        filterButtons.map((v, i) => {
+        filterButtons.map((v) => {
             v.isActive = false;
             if (v.type === typeFilter)
                 return v.isActive = true;

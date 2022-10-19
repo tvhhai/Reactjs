@@ -36,7 +36,7 @@ const TodoList = () => {
     }
 
     const handleDoneTodoTask = (val: boolean, id: number) => {
-        todoList.map((v, i) => {
+        todoList.map((v) => {
             if (v.id === id)
                 return v.completed = val;
         });
@@ -49,7 +49,7 @@ const TodoList = () => {
     }
 
     const handleEditTodo = (id: number, newTodo: string) => {
-        todoList.map((v, i) => {
+        todoList.map((v) => {
             if (v.id === id)
                 return v.title = newTodo;
         });
@@ -70,7 +70,7 @@ const TodoList = () => {
     }
 
     const completeAllTodo = (isComplete: boolean) => {
-        const completeAllTodo = [...todoList].map((val, i) => {
+        const completeAllTodo = [...todoList].map((val) => {
            val.completed = isComplete
              return val;
         });

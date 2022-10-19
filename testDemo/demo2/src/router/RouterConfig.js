@@ -8,6 +8,7 @@ import About from "../screen/About";
 import Todo from "../screen/Todo";
 import Login from "../screen/Login";
 import Register from "../screen/Register";
+import Weather from "../screen/Weather";
 
 
 function RouterConfig() {
@@ -24,7 +25,7 @@ function RouterConfig() {
                             <Route path="about" element={<About />} />
                             <Route path="collapse" element={<Collapse />} />
                             <Route path="todo" element={<Todo />} />
-                            <Route path="collapse1" element={<Collapse />} />
+                            <Route path="weather" element={<Weather />} />
                             <Route path="collapse2" element={<Collapse />} />
                             <Route path="*" element={<Navigate to="/home" />}
                             />

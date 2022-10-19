@@ -1,0 +1,12 @@
+{
+  "common": {
+    "title": "",
+    "intro": ""
+  },
+  "home": "Home",
+  "test": "Test",
+  "about": "About",
+  "exercises": "Exercises",
+  "todo": "Todo",
+  "weather": "Weather"
+}

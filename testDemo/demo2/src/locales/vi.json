@@ -1,0 +1,12 @@
+{
+  "common": {
+    "title": "",
+    "intro": ""
+  },
+  "home": "Trang chủ",
+  "test": "Test",
+  "about": "Giới thiệu",
+  "exercises": "Bài tập",
+  "todo": "Việc cần làm",
+  "weather": "Thời tiết"
+}

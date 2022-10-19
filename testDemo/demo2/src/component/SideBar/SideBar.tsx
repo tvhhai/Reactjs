@@ -6,15 +6,15 @@ import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import SideBarListItem from "../../component/SideBar/SideBarListItem";
+import Togglei18n from "../Togglei18n/Togglei18n";
 //ICON
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import "./SideBar.scss"
+
 
 const drawerWidth = 240;
 
@@ -68,6 +68,7 @@ const DrawerHeader = styled("div")(({theme}) => ({
     justifyContent: "flex-end",
 }));
 
+
 export default function PersistentDrawerLeft() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
@@ -80,24 +81,36 @@ export default function PersistentDrawerLeft() {
         setOpen(false);
     };
 
+
     return (
         <Box sx={{display: "flex"}}>
             <CssBaseline/>
-            <AppBar position="fixed" open={open}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{mr: 2, ...(open && {display: "none"})}}
-                    >
-                        <MenuIcon/>
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        Persistent drawer
-                    </Typography>
+            <AppBar position="fixed" open={open} sx={{background: "white", color: "black"}}>
+                <Toolbar className='justify-content-between'>
+                    {
+                        open ? (
+                                <IconButton onClick={handleDrawerClose}>
+                                    {theme.direction === "ltr" ? (<ChevronLeftIcon/>) : (<ChevronRightIcon/>)}
+                                </IconButton>
+                            ) :
+                            (
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="open drawer"
+                                    onClick={handleDrawerOpen}
+                                    edge="start">
+                                    <MenuIcon/>
+                                </IconButton>
+                            )
+                    }
+
+                    <div>
+                        <Togglei18n/>
+                    </div>
+
                 </Toolbar>
+
+
             </AppBar>
             <Drawer
                 sx={{
@@ -112,22 +125,7 @@ export default function PersistentDrawerLeft() {
                 anchor="left"
                 open={open}
             >
-
-                <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === "ltr" ? (
-                            <ChevronLeftIcon/>
-                        ) : (
-                            <ChevronRightIcon/>
-                        )}
-                    </IconButton>
-                </DrawerHeader>
-
-                <Divider/>
-
                 <SideBarListItem/>
-
-                <Divider/>
 
             </Drawer>
             <Main open={open} className={'main'}>

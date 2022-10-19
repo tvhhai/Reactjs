@@ -1,9 +1,11 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 
 function Collapse() {
+    const { t } = useTranslation();
     return (
         <div className="Test">
-            <h1 className="d-flex">Collapse component</h1>
+            <h1 className="d-flex">{t('common.title')}</h1>
         </div>
     );
 }

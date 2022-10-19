@@ -18,3 +18,9 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #919191;
 }
+
+a {
+  &:hover{
+    color: white !important;
+  }
+}
