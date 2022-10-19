@@ -1,7 +1,7 @@
 import React from 'react';
 
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import HomeIcon from '@mui/icons-material/Home';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import StarBorder from '@mui/icons-material/StarBorder';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -15,25 +15,25 @@ export const SideBarList = {
         apps: [{
             'i18nKey': 'home',
             'url': '/home',
-            'icon': <HomeIcon fontSize="small"/>,
+            'icon': <HomeOutlinedIcon/>,
             'child': [],
             'expand': false,
             'active': false
         }, {
             'i18nKey': 'about',
             'url': '/about',
-            'icon': <InboxIcon fontSize="small"/>,
+            'icon': <InboxIcon/>,
             'child': [],
             'expand': false,
             'active': false,
         }, {
             'i18nKey': 'Collapse',
             'url': '',
-            'icon': <InboxIcon fontSize="small"/>,
+            'icon': <InboxIcon/>,
             'child': [{
                 'i18nKey': 'Collapse',
                 'url': '/collapse',
-                icon: <FiberManualRecordIcon fontSize="small"/>
+                icon: <FiberManualRecordIcon/>
             }],
             'expand': false,
             'active': false
@@ -47,22 +47,22 @@ export const SideBarList = {
         apps: [{
             'i18nKey': 'exercises',
             'url': '',
-            'icon': <MenuBookIcon fontSize="small"/>,
+            'icon': <MenuBookIcon/>,
             'child': [
                 {
                     'i18nKey': 'todo',
                     'url': '/todo',
-                    icon: <FiberManualRecordIcon fontSize="small"/>
+                    icon: <FiberManualRecordIcon/>
                 },
                 {
                     'i18nKey': 'weather',
                     'url': '/weather',
-                    icon: <FiberManualRecordIcon fontSize="small"/>
+                    icon: <FiberManualRecordIcon/>
                 },
                 {
                     'i18nKey': 'Collapse 2',
                     'url': '/collapse2',
-                    icon: <FiberManualRecordIcon fontSize="small"/>
+                    icon: <FiberManualRecordIcon/>
                 }
 
             ],

@@ -58,12 +58,15 @@ function SideBarListItem() {
                 <Box sx={{height: '64px'}}>
                     <img src={logo} className={'img-fit'} alt={''}/>
                 </Box>
-                <Divider  />
+                <Divider/>
                 {
                     lists.map((sectionItem) => (
                         <div key={sectionItem.id} id={sectionItem.id} className={"sideBarSection"}>
-                            <ListItemText className={"sideBarSectionItem"}
-                                          primary={t(sectionItem.i18nKey)}/>
+                            <Divider className={'divider'} textAlign="left">
+                                <ListItemText className={"sideBarSectionItem"}
+                                              primary={t(sectionItem.i18nKey)}/>
+                            </Divider>
+
                             {
                                 sectionItem.apps.map((value, index) =>
                                     value.child && value.child.length > 0 ? (
@@ -75,12 +78,12 @@ function SideBarListItem() {
                                         />
                                     ) : (
                                         <div key={index}>
-                                            <SideBarItem sx={{pt:.5, pb:.5}} sideBarItem={value}/>
+                                            <SideBarItem  sideBarItem={value}/>
                                         </div>
                                     )
                                 )
                             }
-                            <Divider  />
+                            <Divider/>
                         </div>
                     ))
                 }

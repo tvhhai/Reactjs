@@ -26,7 +26,7 @@ const SideBarItemCollapse = ({index, sideBarItem, sectionId, handleExpandItem}: 
     return (
         <div className={'sideBarItemCollapse'}>
             <ListItemButton
-                sx={{ pt:.5, pb:.5}}
+
                 onClick={() => handleExpandItem(expand, index, sectionId)}
                 className={`sideBarLink ${active ? 'activeCollapse' : expand ? 'openCollapse' : ""}`}
             >
@@ -48,7 +48,7 @@ const SideBarItemCollapse = ({index, sideBarItem, sectionId, handleExpandItem}: 
 
             <Collapse in={expand} timeout="auto" unmountOnExit className={'abc'}>
                 {sideBarItem.child.map((childItem: any, i: number) => (
-                    <SideBarItem showIcon={false} sx={{pl: 6, pt:.5, pb:.5}} key={i} sideBarItem={childItem}/>
+                    <SideBarItem showIcon={false} sx={{pl: 6}} key={i} sideBarItem={childItem}/>
                 ))}
             </Collapse>
         </div>

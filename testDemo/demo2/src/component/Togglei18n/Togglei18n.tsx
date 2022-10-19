@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     }
 });
 const Togglei18n = () => {
-    const items = localStorage.getItem('local');
+    const items = localStorage.getItem('local') || 'en';
     const [local, setLocal] = React.useState<any>(items);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 

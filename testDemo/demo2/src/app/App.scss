@@ -1,3 +1,5 @@
+@import './src/asset/style/variables';
+
 // Style scrollbar
 ::-webkit-scrollbar {
   width: 8px;
@@ -20,22 +22,38 @@
 }
 
 body {
+
   font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
+
+  span {
+    color: rgba(231, 227, 252, 0.87);
+  }
 }
 
 a {
-  color: #6c757d  !important;
+  color: #6c757d !important;
+
   &:hover {
     color: #3f6ad8 !important;
   }
 }
 
+.divider {
+  &::before {
+    border-top: thin solid rgba(231, 227, 252, 0.12) !important;
+  }
+
+  &::after {
+    border-top: thin solid rgba(231, 227, 252, 0.12) !important;
+  }
+}
+
 .bg-white {
-  background-color: white !important;
+  background-color: $white !important;
 }
 
 .color-white {
-  color: white !important;
+  color: $white !important;
 }
 
 .img-fit {

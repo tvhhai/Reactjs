@@ -1,47 +1,47 @@
+@import './src/asset/style/variables';
+
 .sideBar {
-  //background: linear-gradient(45deg, #2f89fc 0%, #ff5db1 100%);
-  //padding: 0 16px !important;
   height: 100%;
-  color: #6c757d;
+  color: $primaryTextColor;
   padding: 0 !important;
-  background-color: #fcfcfc;
+  background-color: $primaryBgSideBar;
 
   .sideBarSection {
-    //padding: 24px 0;
     .sideBarSectionItem {
-      padding: 24px 16px 4px 16px;
       text-transform: uppercase;
-      color: #3f6ad8;
+
       > span {
+        color: $sideBarSectionItem;
         font-weight: bold !important;
       }
     }
 
     .sideBarLink {
-      //border-radius: 8px;
+      &:hover:not(.activeLink) {
+        background: $sideBarLinkHover;
+      }
     }
 
     .activeLink {
-      color: #3f6ad8 !important;
       position: relative;
-      background-color: #e0f3ff;
-      //border-radius: 8px;
+      background: linear-gradient(270deg, $activeBgLink 0%, white 300%);
+
       .sideBarTitle span {
-        font-weight: bold !important;
+        //font-weight: bold !important;
       }
 
       .dot {
-        background: #3f6ad8 !important;
+        //background: #3f6ad8 !important;
       }
 
       .sideBarIcon {
-        color: #3f6ad8 !important;
+        //color: #3f6ad8 !important;
       }
-
-
     }
 
     .openCollapse {
+      background-color: $openCollapse;
+
       .sideBarTitle span {
         font-weight: bold !important;
       }
@@ -49,28 +49,18 @@
 
     .activeCollapse {
       position: relative;
-      background-color: rgba(58, 53, 65, 0.08);
+      background-color: $activeBgCollapse;
+
       .sideBarTitle span {
         font-weight: bold !important;
       }
-
-      //&::before {
-      //  content: '';
-      //  height: 100%;
-      //  opacity: 1;
-      //  width: 4px;
-      //  background: #9155FD;
-      //  position: absolute;
-      //  left: 0;
-      //  top: 0;
-      //}
     }
 
     .dot {
       width: 8px;
       height: 8px;
       border-radius: 100%;
-      background: #6c757d;
+      background: $primaryColorSideBarIcon;
       display: inline-flex;
       margin-right: 16px;
     }
@@ -81,7 +71,7 @@
   }
 
   .sideBarIcon {
-    //color: white;
+    color: $primaryColorSideBarIcon;
   }
 
   .sideBarTitle {
@@ -91,12 +81,13 @@
 }
 
 .main {
-  background: #EDEFF5;
+  background: $primaryBgMain;
   height: 100vh;
   overflow: auto;
 
   .mainWrapper {
-    background: white;
+    color: $primaryColorWrapper;
+    background: $primaryBgMainWrapper;
     padding: 24px;
     border-radius: 4px;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 10%);
