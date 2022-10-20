@@ -3,10 +3,11 @@ import {ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/materia
 import {NavLink} from "react-router-dom";
 // import {useStyles} from "./SideBarStyle.style";
 import {useTranslation} from "react-i18next";
+import {ISideBarItem} from "../../model/SideBar";
 
 
 interface Props {
-    sideBarItem: { url: string, icon: ReactNode, i18nKey: string },
+    sideBarItem: ISideBarItem,
     sx?: any;
     showIcon?: boolean,
 }

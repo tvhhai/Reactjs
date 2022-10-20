@@ -1,6 +1,7 @@
 import React from 'react';
 import {TODO_BTN_FILTER} from "../../constant/Todo/Todo";
 import {Button} from "@mui/material";
+import {ITodoBtn} from "../../model/Todo";
 
 interface Props {
     count: number,
@@ -20,7 +21,7 @@ const TodoFilter = ({count, hasCompleted, filterTodo, clearTodoCompleted}: Props
     }
 
     const [activeTodoWord, setActiveTodoWord] = React.useState<any>(pluralize(count, 'item'));
-    const [filterButtons, setFilterButtons] = React.useState<{ type: string, label: string, isActive: boolean }[]>(TODO_BTN_FILTER);
+    const [filterButtons, setFilterButtons] = React.useState<ITodoBtn[]>(TODO_BTN_FILTER);
 
 
     const handleFilter = (typeFilter: string) => {

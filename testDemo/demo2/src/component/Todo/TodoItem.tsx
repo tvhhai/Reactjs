@@ -3,9 +3,10 @@ import {Checkbox, TextField} from "@mui/material";
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
 import {ENTER_KEY, ESCAPE_KEY} from "../../constant/Todo/Todo";
+import {ITodo} from "../../model/Todo";
 
 interface Props {
-    todoListProp: { id: number, title: string, completed: boolean },
+    todoListProp: ITodo,
     doneTodoTask?: (val: boolean, id: number) => void;
     deleteTodo?: (id: number) => void;
     editTodo?: (id: number, newTodo: string) => void;

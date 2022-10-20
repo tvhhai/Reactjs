@@ -1,9 +1,10 @@
 import React from 'react';
 import {TextField} from "@mui/material";
 import {ENTER_KEY } from "../../constant/Todo/Todo";
+import {ITodo} from "../../model/Todo";
 
 interface Props {
-    todoListProp: { id: number, title: string, completed: boolean }[];
+    todoListProp: ITodo[];
     addTodo?: (newTodo: { id: number, title: string, completed: boolean }) => void;
 }
 

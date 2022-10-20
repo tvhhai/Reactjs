@@ -5,11 +5,12 @@ import TodoItem from "./TodoItem";
 import TodoFilter from "./TodoFilter";
 import TodoCompleteAll from "./TodoCompleteAll";
 import {ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from "../../constant/Todo/Todo";
+import {ITodo} from "../../model/Todo"
 
 const TodoList = () => {
 
     const items = JSON.parse(localStorage.getItem('todo') || "[]");
-    const [todoList, setTodoList] = React.useState<{ id: number, title: string, completed: boolean }[]>(items);
+    const [todoList, setTodoList] = React.useState<ITodo[]>(items);
     const [typeFilter, setTypeFilter] = React.useState(ALL_TODOS);
 
     React.useEffect(() => {

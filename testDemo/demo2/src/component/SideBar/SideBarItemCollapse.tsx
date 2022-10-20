@@ -4,10 +4,11 @@ import {ExpandLess, ExpandMore} from "@mui/icons-material";
 // import {useStyles} from "./SideBarStyle.style";
 import {useTranslation} from "react-i18next";
 import SideBarItem from "./SideBarItem";
+import {ISideBarItemCollapse} from "../../model/SideBar";
 
 interface Props {
     index: number,
-    sideBarItem: { active: boolean, expand: boolean, icon: ReactNode, i18nKey: string, child: {icon: ReactNode, i18nKey: string, url: string}[] },
+    sideBarItem: ISideBarItemCollapse,
     sectionId: string,
     handleExpandItem: (expand: boolean, i: number, id: string,) => void;
 }

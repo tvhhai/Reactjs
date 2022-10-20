@@ -2,11 +2,7 @@ import React from 'react';
 
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import StarBorder from '@mui/icons-material/StarBorder';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 export const SideBarList = {
     home: {
@@ -32,8 +28,7 @@ export const SideBarList = {
             'icon': <InboxIcon/>,
             'child': [{
                 'i18nKey': 'Collapse',
-                'url': '/collapse',
-                icon: <FiberManualRecordIcon/>
+                'url': '/collapse'
             }],
             'expand': false,
             'active': false
@@ -45,29 +40,26 @@ export const SideBarList = {
         id: 'exercises',
         i18nKey: 'exercises',
         apps: [{
-            'i18nKey': 'exercises',
-            'url': '',
-            'icon': <MenuBookIcon/>,
-            'child': [
+            i18nKey: 'exercises',
+            url: '',
+            icon: <MenuBookIcon/>,
+            child: [
                 {
-                    'i18nKey': 'todo',
-                    'url': '/todo',
-                    icon: <FiberManualRecordIcon/>
+                    i18nKey: 'todo',
+                    url: '/todo'
                 },
                 {
-                    'i18nKey': 'weather',
-                    'url': '/weather',
-                    icon: <FiberManualRecordIcon/>
+                    i18nKey: 'weather',
+                    url: '/weather'
                 },
                 {
-                    'i18nKey': 'Collapse 2',
-                    'url': '/collapse2',
-                    icon: <FiberManualRecordIcon/>
+                    i18nKey: 'Counter',
+                    url: '/counter'
                 }
 
             ],
-            'expand': false,
-            'active': false
+            expand: false,
+            active: false
         }],
     }
 }
