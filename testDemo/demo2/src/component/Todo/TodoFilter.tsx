@@ -1,7 +1,7 @@
 import React from 'react';
 import {TODO_BTN_FILTER} from "../../constant/Todo/Todo";
 import {Button} from "@mui/material";
-import {ITodoBtn} from "../../model/Todo";
+import {ITodoBtn} from "../../model/ITodo";
 
 interface Props {
     count: number,

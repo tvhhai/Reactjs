@@ -3,7 +3,7 @@ import {ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/materia
 import {NavLink} from "react-router-dom";
 // import {useStyles} from "./SideBarStyle.style";
 import {useTranslation} from "react-i18next";
-import {ISideBarItem} from "../../model/SideBar";
+import {ISideBarItem} from "../../model/ISideBar";
 
 
 interface Props {

@@ -4,7 +4,7 @@ import {ExpandLess, ExpandMore} from "@mui/icons-material";
 // import {useStyles} from "./SideBarStyle.style";
 import {useTranslation} from "react-i18next";
 import SideBarItem from "./SideBarItem";
-import {ISideBarItemCollapse} from "../../model/SideBar";
+import {ISideBarItemCollapse} from "../../model/ISideBar";
 
 interface Props {
     index: number,

@@ -1,7 +1,7 @@
 import React from 'react';
 import {TextField} from "@mui/material";
 import {ENTER_KEY } from "../../constant/Todo/Todo";
-import {ITodo} from "../../model/Todo";
+import {ITodo} from "../../model/ITodo";
 
 interface Props {
     todoListProp: ITodo[];
