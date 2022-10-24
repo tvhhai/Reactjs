@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import {NavLink} from "react-router-dom";
 // import {useStyles} from "./SideBarStyle.style";

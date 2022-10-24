@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SideBar from "../component/SideBar/SideBar";
-import Home from "../page/Home";
-import Test from "../page/Test";
-import Collapse from "../page/Collapse";
-import About from "../page/About";
-import Todo from "../page/Todo";
-import Login from "../page/Login";
-import Register from "../page/Register";
-import Weather from "../page/Weather";
-import Counter from "../page/Counter";
+import Home from "../feature/Home";
+import Collapse from "../feature/Collapse";
+import About from "../feature/About";
+import Todo from "../feature/Todo";
+import Login from "../feature/Login";
+import Register from "../feature/Register";
+import Weather from "../feature/Weather/Weather";
+import Counter from "../feature/Counter";
+import Phone from "../feature/Phone/Phone";
+import Add from "../feature/Phone/Add";
 
 
 function RouterConfig() {
@@ -22,12 +23,13 @@ function RouterConfig() {
                         <Route path="/" element={<SideBar />}>
                             <Route path="/" element={<Navigate to="/home" />} />
                             <Route path="home" element={<Home />} />
-                            <Route path="test" element={<Test />} />
                             <Route path="about" element={<About />} />
                             <Route path="collapse" element={<Collapse />} />
                             <Route path="todo" element={<Todo />} />
                             <Route path="weather" element={<Weather />} />
                             <Route path="counter" element={<Counter />} />
+                            <Route path="phone" element={<Phone />} />
+                            <Route path="phone/add" element={<Add />} />
                             <Route path="*" element={<Navigate to="/home" />}
                             />
                         </Route>

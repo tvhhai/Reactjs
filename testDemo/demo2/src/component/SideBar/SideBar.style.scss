@@ -6,6 +6,10 @@
   padding: 0 !important;
   background-color: $primaryBgSideBar;
 
+  span {
+    color: $primaryColorSideBar;
+  }
+
   .sideBarSection {
     .sideBarSectionItem {
       text-transform: uppercase;
@@ -27,21 +31,17 @@
       background: linear-gradient(270deg, $activeBgLink 0%, white 300%);
 
       .sideBarTitle span {
-        //font-weight: bold !important;
       }
 
       .dot {
-        //background: #3f6ad8 !important;
       }
 
       .sideBarIcon {
-        //color: #3f6ad8 !important;
       }
     }
 
     .openCollapse {
       background-color: $openCollapse;
-
       .sideBarTitle span {
         font-weight: bold !important;
       }
@@ -91,5 +91,6 @@
     padding: 24px;
     border-radius: 4px;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 10%);
+    height: calc(100vh - 112px);
   }
 }

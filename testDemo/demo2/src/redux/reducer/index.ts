@@ -1,7 +1,10 @@
 import {combineReducers} from "redux";
 
 import counter from "./counter";
-import weather from "./WeatherSlice";
+import weather from "../../feature/Weather/WeatherSlice";
+import phone from "../../feature/Phone/PhoneSlice";
+import {notification} from "../../component/common/Notification/NotificationSlice";
+
 import {createSlice} from "@reduxjs/toolkit";
 
 
@@ -23,6 +26,8 @@ const globalSlice = createSlice({
 const rootReducer = combineReducers({
     counter,
     weather,
+    phone,
+    notification,
     globalSlice: globalSlice.reducer
 });
 export const getLoading = (state: any) => state.globalSlice.isLoading

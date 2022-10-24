@@ -10,7 +10,8 @@ const weatherSlice = createSlice({
         coord: {},
         wind: {},
         clouds: {},
-        list:{}
+        weatherData: {},
+        error: ''
     },
     reducers: {
         get(state, action) {
@@ -22,10 +23,11 @@ const weatherSlice = createSlice({
             state.isLoading = true;
         }).addCase(getWeather.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.list = action.payload;
+            state.weatherData = action.payload;
             console.log(state, action, action.payload)
         }).addCase(getWeather.rejected, (state, action) => {
-            state.isLoading = true;
+            state.isLoading = false;
+            // state.error = action.error.message;
             console.log(state, action, action.payload)
         })
         //     .addDefaultCase((state, action) => {

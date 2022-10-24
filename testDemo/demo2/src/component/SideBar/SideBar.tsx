@@ -127,7 +127,6 @@ export default function PersistentDrawerLeft() {
                 open={open}
             >
 
-
                 <SideBarListItem/>
 
             </Drawer>

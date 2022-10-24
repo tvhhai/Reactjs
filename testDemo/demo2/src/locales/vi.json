@@ -1,12 +1,20 @@
 {
   "common": {
     "title": "",
-    "intro": ""
+    "intro": "",
+    "agGridNoData": "Không có dữ liệu để hiển thị",
+    "add": "Thêm",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "setting": "Cài đặt",
+    "refresh": "Làm mới",
+    "fullScreen":"Toàn màn hình"
   },
   "home": "Trang chủ",
   "test": "Test",
   "about": "Giới thiệu",
   "exercises": "Bài tập",
   "todo": "Việc cần làm",
-  "weather": "Thời tiết"
+  "weather": "Thời tiết",
+  "phoneManager": "Quản lí điện thoại"
 }

@@ -11,8 +11,9 @@ import {useTranslation} from "react-i18next";
 import SideBarItem from "./SideBarItem";
 import SideBarItemCollapse from "./SideBarItemCollapse";
 import logo from "../../asset/logo.svg";
+import _ from "lodash";
 
-function SideBarListItem() {
+function SideBarListItem({list}: any) {
     const location = useLocation();
     const {t} = useTranslation();
 
@@ -22,6 +23,7 @@ function SideBarListItem() {
     ]);
 
     const handleExpand = (expands: boolean, i: number, id: string) => {
+        // Close Collapse when clicking on another Collapse
         lists.map((list) => {
             if (list.id === id) {
                 list.apps[i].expand = !expands;
@@ -34,14 +36,17 @@ function SideBarListItem() {
         setList([...lists]);
     };
 
+    // TODO: Optimization
     React.useEffect(() => {
+        // Keep active menu
         lists.map((list) => {
             list.apps.map((app) => {
                 app.expand = false;
                 app.active = false;
                 if (app.child && app.child.length > 0) {
                     app.child.map((child) => {
-                        if (child.url === location.pathname) {
+                        console.log()
+                        if (location.pathname.includes(child.url)) {
                             app.expand = true;
                             app.active = true;
                         }
@@ -53,43 +58,76 @@ function SideBarListItem() {
     }, [location]);
 
     return (
-        <>
-            <List className={"sideBar"}>
-                <Box sx={{height: '64px'}}>
-                    <img src={logo} className={'img-fit'} alt={''}/>
-                </Box>
-                <Divider/>
-                {
-                    lists.map((sectionItem) => (
-                        <div key={sectionItem.id} id={sectionItem.id} className={"sideBarSection"}>
-                            <Divider className={'divider'} textAlign="left">
-                                <ListItemText className={"sideBarSectionItem"}
-                                              primary={t(sectionItem.i18nKey)}/>
-                            </Divider>
+        <List className={"sideBar"}>
+            <Box sx={{height: '64px'}}>
+                <img src={logo} className={'img-fit'} alt={''}/>
+            </Box>
+            <Divider/>
+            {
+                lists.map((sectionItem) => (
+                    <div key={sectionItem.id} id={sectionItem.id} className={"sideBarSection"}>
+                        <Divider className={'divider'} textAlign="left">
+                            <ListItemText className={"sideBarSectionItem"}
+                                          primary={t(sectionItem.i18nKey)}/>
+                        </Divider>
 
-                            {
-                                sectionItem.apps.map((value, index) =>
-                                    value.child && value.child.length > 0 ? (
-                                        <SideBarItemCollapse key={index}
-                                                             sideBarItem={value}
-                                                             sectionId={sectionItem.id}
-                                                             index={index}
-                                                             handleExpandItem={handleExpand}
-                                        />
-                                    ) : (
-                                        <div key={index}>
-                                            <SideBarItem  sideBarItem={value}/>
-                                        </div>
-                                    )
+                        {
+                            // TODO: Optimization
+                            sectionItem.apps.map((value, index) =>
+                                value.child && value.child.length > 0 ? (
+                                    <SideBarItemCollapse key={index}
+                                                         sideBarItem={value}
+                                                         sectionId={sectionItem.id}
+                                                         index={index}
+                                                         handleExpandItem={handleExpand}
+                                    />
+                                ) : (
+                                    <div key={index}>
+                                        <SideBarItem sideBarItem={value}/>
+                                    </div>
                                 )
-                            }
-                            <Divider/>
-                        </div>
-                    ))
-                }
-            </List>
-        </>
+                            )
+                        }
+                        <Divider/>
+                    </div>
+                ))
+            }
+        </List>
     );
 }
+
+// function ListItem({listItem}: any) {
+//     return (
+//         <div>
+//             <span>
+//                 {Array.isArray(listItem) && <Lista list={listItem}/>}
+//             </span>
+//         </div>
+//     );
+// }
+//
+// function ListItemCollape({listItem}: any) {
+//     return (
+//         <div>
+//             {Array.isArray(listItem) && <Lista list={listItem}/>}
+//         </div>
+//     );
+// }
+//
+// function Lista({list}: any) {
+//     // console.log(list)
+//     return (
+//         <ul>
+//             {list.map((listItem: any, i: number) => (
+//                 <div key={i}>
+//                     <li>{listItem.i18nKey}</li>
+//                     {listItem.child && listItem.child.length > 0 ? <ListItemCollape listItem={listItem.child}/> :
+//                         <ListItem key={i} listItem={listItem.apps}/>}
+//
+//                 </div>
+//             ))}
+//         </ul>
+//     );
+// }
 
 export default SideBarListItem;

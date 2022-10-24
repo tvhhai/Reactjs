@@ -7,7 +7,10 @@ import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import store from './app/store'
 import {Provider} from 'react-redux'
-
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import 'ag-grid-community/styles/ag-theme-material.css';
+import 'ag-grid-community/styles/ag-theme-balham.css';
 import './index.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -18,11 +21,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <Provider store={store}>
-        <React.StrictMode>
-            <I18nextProvider i18n={i18n}>
-                <App/>
-            </I18nextProvider>
-        </React.StrictMode>
+        {/*<React.StrictMode>*/}
+        <I18nextProvider i18n={i18n}>
+            <App/>
+        </I18nextProvider>
+        {/*</React.StrictMode>*/}
     </Provider>
 );
 

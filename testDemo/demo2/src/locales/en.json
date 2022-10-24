@@ -1,12 +1,20 @@
 {
   "common": {
     "title": "",
-    "intro": ""
+    "intro": "",
+    "agGridNoData": "No items to show",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "setting": "Setting",
+    "refresh": "Refresh",
+    "fullScreen":"Full Screen"
   },
   "home": "Home",
   "test": "Test",
   "about": "About",
   "exercises": "Exercises",
   "todo": "Todo",
-  "weather": "Weather"
+  "weather": "Weather",
+  "phoneManager": "Phone Manager"
 }

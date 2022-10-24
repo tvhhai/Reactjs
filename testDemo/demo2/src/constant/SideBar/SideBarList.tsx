@@ -9,29 +9,29 @@ export const SideBarList = {
         id: 'home',
         i18nKey: 'home',
         apps: [{
-            'i18nKey': 'home',
-            'url': '/home',
-            'icon': <HomeOutlinedIcon/>,
-            'child': [],
-            'expand': false,
-            'active': false
+            i18nKey: 'home',
+            url: '/home',
+            icon: <HomeOutlinedIcon/>,
+            child: [],
+            expand: false,
+            active: false
         }, {
-            'i18nKey': 'about',
-            'url': '/about',
-            'icon': <InboxIcon/>,
-            'child': [],
-            'expand': false,
-            'active': false,
+            i18nKey: 'about',
+            url: '/about',
+            icon: <InboxIcon/>,
+            child: [],
+            expand: false,
+            active: false,
         }, {
-            'i18nKey': 'Collapse',
-            'url': '',
-            'icon': <InboxIcon/>,
-            'child': [{
+            i18nKey: 'Collapse',
+            url: '',
+            icon: <InboxIcon/>,
+            child: [{
                 'i18nKey': 'Collapse',
                 'url': '/collapse'
             }],
-            'expand': false,
-            'active': false
+            expand: false,
+            active: false
         }],
     },
 
@@ -55,6 +55,10 @@ export const SideBarList = {
                 {
                     i18nKey: 'Counter',
                     url: '/counter'
+                },
+                {
+                    i18nKey: 'Phone',
+                    url: '/phone'
                 }
 
             ],
