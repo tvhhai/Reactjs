@@ -10,7 +10,8 @@ import Register from "../feature/Register";
 import Weather from "../feature/Weather/Weather";
 import Counter from "../feature/Counter";
 import Phone from "../feature/Phone/Phone";
-import Add from "../feature/Phone/Add";
+import PhoneAdd from "../feature/Phone/PhoneAdd";
+import PhoneEdit from "../feature/Phone/PhoneEdit";
 
 
 function RouterConfig() {
@@ -29,7 +30,8 @@ function RouterConfig() {
                             <Route path="weather" element={<Weather />} />
                             <Route path="counter" element={<Counter />} />
                             <Route path="phone" element={<Phone />} />
-                            <Route path="phone/add" element={<Add />} />
+                            <Route path="phone/add" element={<PhoneAdd />} />
+                            <Route path="phone/edit/:id" element={<PhoneEdit />} />
                             <Route path="*" element={<Navigate to="/home" />}
                             />
                         </Route>

@@ -1,5 +1,5 @@
-import httpService from "./HttpService";
-import ApiConfig from "./ApiConfig";
+import httpService from "./httpService";
+import ApiConfig from "./apiConfig";
 
 export const fetchCurrentWeather = async () => {
     // return await httpService.get(ApiConfig.weather);

@@ -6,7 +6,7 @@ import {
     List,
     ListItemText,
 } from "@mui/material";
-import {SideBarList} from "../../constant/SideBar/SideBarList";
+import {SideBarConfigList} from "./SideBarConfigList";
 import {useTranslation} from "react-i18next";
 import SideBarItem from "./SideBarItem";
 import SideBarItemCollapse from "./SideBarItemCollapse";
@@ -18,8 +18,8 @@ function SideBarListItem({list}: any) {
     const {t} = useTranslation();
 
     const [lists, setList] = React.useState([
-        SideBarList.home,
-        SideBarList.exercises,
+        SideBarConfigList.home,
+        SideBarConfigList.exercises,
     ]);
 
     const handleExpand = (expands: boolean, i: number, id: string) => {

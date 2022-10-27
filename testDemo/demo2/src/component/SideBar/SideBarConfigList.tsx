@@ -4,7 +4,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 
-export const SideBarList = {
+export const SideBarConfigList = {
     home: {
         id: 'home',
         i18nKey: 'home',
@@ -49,18 +49,17 @@ export const SideBarList = {
                     url: '/todo'
                 },
                 {
+                    i18nKey: 'phone.phone',
+                    url: '/phone'
+                },
+                {
                     i18nKey: 'weather',
                     url: '/weather'
                 },
                 {
                     i18nKey: 'Counter',
                     url: '/counter'
-                },
-                {
-                    i18nKey: 'Phone',
-                    url: '/phone'
                 }
-
             ],
             expand: false,
             active: false

@@ -4,7 +4,7 @@ import TodoInput from "./TodoInput";
 import TodoItem from "./TodoItem";
 import TodoFilter from "./TodoFilter";
 import TodoCompleteAll from "./TodoCompleteAll";
-import {ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from "../../constant/Todo/Todo";
+import {ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS } from "../../constant/todo";
 import {ITodo} from "../../model/ITodo"
 
 const TodoList = () => {

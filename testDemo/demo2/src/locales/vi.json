@@ -8,7 +8,17 @@
     "delete": "Xóa",
     "setting": "Cài đặt",
     "refresh": "Làm mới",
-    "fullScreen":"Toàn màn hình"
+    "fullScreen": "Toàn màn hình",
+    "btn": {
+      "add": "Thêm",
+      "cancel": "Hủy",
+      "edit": "Sửa",
+      "save": "Lưu"
+    },
+    "validate": {
+      "requite": "Trường này không được trống",
+      "number": "Chỉ phải là chữ số"
+    }
   },
   "home": "Trang chủ",
   "test": "Test",
@@ -16,5 +26,15 @@
   "exercises": "Bài tập",
   "todo": "Việc cần làm",
   "weather": "Thời tiết",
-  "phoneManager": "Quản lí điện thoại"
+  "phoneManager": "Quản lí điện thoại",
+  "phone": {
+    "phone": "Điện thoại",
+    "add": "Thêm Điện Thoại",
+    "edit": "Chỉnh Sửa Điện Thoại",
+    "column": {
+      "name": "Tên",
+      "price": "Giá tiền",
+      "image": "Hình ảnh"
+    }
+  }
 }

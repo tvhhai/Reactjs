@@ -22,7 +22,6 @@ export const NotificationSlice = createSlice({
     initialState: notificationInitialState,
     reducers: {
         showNotification: (_state, action: PayloadAction<NotificationState>) => {
-            console.log(_state, action)
             return{
             ...notificationInitialState,
             ...action.payload,

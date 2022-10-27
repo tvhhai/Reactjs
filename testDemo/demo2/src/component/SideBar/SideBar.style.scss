@@ -86,9 +86,10 @@
   overflow: auto;
 
   .mainWrapper {
+    position: relative;
     color: $primaryColorWrapper;
     background: $primaryBgMainWrapper;
-    padding: 24px;
+    //padding: 24px;
     border-radius: 4px;
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 10%);
     height: calc(100vh - 112px);

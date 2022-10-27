@@ -2,7 +2,7 @@ import React from 'react';
 import {Checkbox, TextField} from "@mui/material";
 import CreateIcon from '@mui/icons-material/Create';
 import CloseIcon from '@mui/icons-material/Close';
-import {ENTER_KEY, ESCAPE_KEY} from "../../constant/Todo/Todo";
+import {ENTER_KEY, ESCAPE_KEY} from "../../constant/todo";
 import {ITodo} from "../../model/ITodo";
 
 interface Props {

@@ -8,7 +8,19 @@
     "delete": "Delete",
     "setting": "Setting",
     "refresh": "Refresh",
-    "fullScreen":"Full Screen"
+    "fullScreen": "Full Screen",
+    "btn": {
+      "add": "Add",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "save": "Save"
+    },
+    "validate": {
+      "requite": "This field is requite",
+      "number": "Must be only digits",
+      "maxNumberLength": "Max {{ length }} numbers"
+    }
+
   },
   "home": "Home",
   "test": "Test",
@@ -16,5 +28,15 @@
   "exercises": "Exercises",
   "todo": "Todo",
   "weather": "Weather",
-  "phoneManager": "Phone Manager"
+  "phoneManager": "Phone Manager",
+  "phone": {
+    "phone": "Phone",
+    "add": "Add Phone",
+    "edit": "Edit Phone",
+    "column": {
+      "name": "Name",
+      "price": "Price",
+      "image": "Image"
+    }
+  }
 }

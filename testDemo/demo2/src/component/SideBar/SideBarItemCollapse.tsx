@@ -1,6 +1,6 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {Collapse, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
-import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import {ChevronRight, ExpandMore} from "@mui/icons-material";
 // import {useStyles} from "./SideBarStyle.style";
 import {useTranslation} from "react-i18next";
 import SideBarItem from "./SideBarItem";
@@ -43,7 +43,7 @@ const SideBarItemCollapse = ({index, sideBarItem, sectionId, handleExpandItem}: 
                 {expand ? (
                     <ExpandMore className={"sideBarIcon"}/>
                 ) : (
-                    <ExpandLess className={"sideBarIcon"}/>
+                    <ChevronRight className={"sideBarIcon"}/>
                 )}
             </ListItemButton>
 

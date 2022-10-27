@@ -1,5 +1,5 @@
 import React from 'react';
-import {TODO_BTN_FILTER} from "../../constant/Todo/Todo";
+import {TODO_BTN_FILTER} from "../../constant/todo";
 import {Button} from "@mui/material";
 import {ITodoBtn} from "../../model/ITodo";
 

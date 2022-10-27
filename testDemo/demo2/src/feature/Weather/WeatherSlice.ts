@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import {fetchCurrentWeather} from "../../service/WeatherService";
+import {fetchCurrentWeather} from "../../service/weatherService";
 
 const weatherSlice = createSlice({
     name: 'weather',
@@ -14,9 +14,7 @@ const weatherSlice = createSlice({
         error: ''
     },
     reducers: {
-        get(state, action) {
-            return state;
-        },
+
     },
     extraReducers: (builder) => {
         builder.addCase(getWeather.pending, (state, action) => {
@@ -51,5 +49,5 @@ export const getWeather = createAsyncThunk(
 
 
 export const getState = (state: any) => state.weather
-export const {get} = weatherSlice.actions
+export const {} = weatherSlice.actions
 export default weatherSlice.reducer

@@ -1,4 +1,3 @@
-import React from 'react';
 
 const TODO_BTN_FILTER = [
     { type: "all", label: "All", isActive: true },
