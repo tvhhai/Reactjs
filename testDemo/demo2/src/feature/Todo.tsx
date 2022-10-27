@@ -1,10 +1,14 @@
 import React from 'react';
 import '../component/Todo/Todo.scss'
 import TodoList from "../component/Todo/TodoList";
+import CardLayout from "../component/common/CardLayout/CardLayout";
+import i18n from "i18next";
 
 const Todo = () => {
     return (
-        <TodoList/>
+        <CardLayout titleHeader={i18n.t('todo.title')}>
+            <TodoList/>
+        </CardLayout>
     );
 };
 

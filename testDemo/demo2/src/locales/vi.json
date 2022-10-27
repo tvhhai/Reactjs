@@ -17,18 +17,21 @@
     },
     "validate": {
       "requite": "Trường này không được trống",
-      "number": "Chỉ phải là chữ số"
+      "number": "Chỉ phải là chữ số",
+      "maxNumberLength": "Tối đa {{ length }} chũ số"
     }
   },
-  "home": "Trang chủ",
-  "test": "Test",
-  "about": "Giới thiệu",
-  "exercises": "Bài tập",
-  "todo": "Việc cần làm",
-  "weather": "Thời tiết",
-  "phoneManager": "Quản lí điện thoại",
-  "phone": {
+  "sidebar": {
+    "home": "Trang chủ",
+    "test": "Test",
+    "about": "Giới thiệu",
+    "exercises": "Bài tập",
+    "weather": "Thời tiết",
     "phone": "Điện thoại",
+    "todo": "Việc cần làm"
+  },
+  "phone": {
+    "title": "Quản lí điện thoại",
     "add": "Thêm Điện Thoại",
     "edit": "Chỉnh Sửa Điện Thoại",
     "column": {
@@ -36,5 +39,8 @@
       "price": "Giá tiền",
       "image": "Hình ảnh"
     }
+  },
+  "todo": {
+    "title": "Việc cần làm"
   }
 }

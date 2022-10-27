@@ -73,10 +73,9 @@ const AppAgGrid = ({
 
     // TODO: Handle settingColumn
     const settingColumn = () => {
-        dispatch(showNotification({message: "PhoneAdd phone successfully!", type: "success"}));
+        // dispatch(showNotification({message: "PhoneAdd phone successfully!", type: "success"}));
     };
 
-    // TODO: Handle tableFullScreen
     const tableFullScreen = () => {
         setFulScreen(!fullScreen);
     };

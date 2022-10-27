@@ -9,14 +9,14 @@ export const SideBarConfigList = {
         id: 'home',
         i18nKey: 'home',
         apps: [{
-            i18nKey: 'home',
+            i18nKey: 'sidebar.home',
             url: '/home',
             icon: <HomeOutlinedIcon/>,
             child: [],
             expand: false,
             active: false
         }, {
-            i18nKey: 'about',
+            i18nKey: 'sidebar.about',
             url: '/about',
             icon: <InboxIcon/>,
             child: [],
@@ -38,22 +38,22 @@ export const SideBarConfigList = {
 
     exercises: {
         id: 'exercises',
-        i18nKey: 'exercises',
+        i18nKey: 'sidebar.exercises',
         apps: [{
-            i18nKey: 'exercises',
+            i18nKey: 'sidebar.exercises',
             url: '',
             icon: <MenuBookIcon/>,
             child: [
                 {
-                    i18nKey: 'todo',
+                    i18nKey: 'sidebar.todo',
                     url: '/todo'
                 },
                 {
-                    i18nKey: 'phone.phone',
+                    i18nKey: 'sidebar.phone',
                     url: '/phone'
                 },
                 {
-                    i18nKey: 'weather',
+                    i18nKey: 'sidebar.weather',
                     url: '/weather'
                 },
                 {

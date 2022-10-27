@@ -22,6 +22,7 @@ function SideBarListItem({list}: any) {
         SideBarConfigList.exercises,
     ]);
 
+    //TODO: Optimization
     const handleExpand = (expands: boolean, i: number, id: string) => {
         // Close Collapse when clicking on another Collapse
         lists.map((list) => {
@@ -36,7 +37,7 @@ function SideBarListItem({list}: any) {
         setList([...lists]);
     };
 
-    // TODO: Optimization
+    //TODO: Optimization
     React.useEffect(() => {
         // Keep active menu
         lists.map((list) => {
@@ -72,7 +73,7 @@ function SideBarListItem({list}: any) {
                         </Divider>
 
                         {
-                            // TODO: Optimization
+                            //TODO: Optimization
                             sectionItem.apps.map((value, index) =>
                                 value.child && value.child.length > 0 ? (
                                     <SideBarItemCollapse key={index}
