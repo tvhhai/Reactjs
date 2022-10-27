@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, TextField} from "@mui/material";
+import {Grid, TextField} from "@mui/material";
 import {IPhone} from "../../model/IPhone";
 import {useTranslation} from "react-i18next";
 import AppInputLabel from "../../component/common/InputLabel/AppInputLabel";
@@ -74,7 +74,7 @@ const PhoneFormAction = ({value, setValue, checkIsValidForm,}: PhoneValueProps) 
                     error={!!errors.price}
                 />
             </Grid>
-            <Grid item sm={12}>
+            <Grid item sm={12} md={6}>
                 <AppInputLabel i18nTitleKey={"phone.column.image"} required/>
                 <TextField
                     {...register("image", {
@@ -89,6 +89,10 @@ const PhoneFormAction = ({value, setValue, checkIsValidForm,}: PhoneValueProps) 
                     error={!!errors.image}
                 />
             </Grid>
+
+            {value.image && <Grid item sm={12} md={6} className='preview-img'>
+                <img src={value.image} alt=""/>
+            </Grid>}
         </Grid>
     );
 };

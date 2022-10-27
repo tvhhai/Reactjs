@@ -11,6 +11,8 @@ import {showNotification} from "../../component/common/Notification/Notification
 import _ from "lodash";
 import "./style.scss";
 import {AG_GRID_CHECKBOX_SELECTION} from "../../constant/commonConstant";
+import ImageCellRender from "./ImageCellRender";
+
 
 const Phone = () => {
         const {t} = useTranslation();
@@ -24,7 +26,7 @@ const Phone = () => {
             AG_GRID_CHECKBOX_SELECTION,
             {field: "name", headerName: t('phone.column.name')},
             {field: "price", headerName: t('phone.column.price')},
-            {field: "image", headerName: t('phone.column.image')},
+            {field: "image", headerName: t('phone.column.image'), cellRenderer: ImageCellRender},
         ]
 
         const [columnDefs, setColumnDefs] = React.useState(initColumnHeader);
@@ -130,7 +132,7 @@ const Phone = () => {
                     //  -----------  custom -----------------
                     refresh={onGridReady}
                     searchAll={true}
-                    title={t("phoneManager")}
+                    title={t("phone.title")}
                     toolbarLeftAction={[action.add, action.edit, action.delete]}
                     loading={isLoading}
                 />
