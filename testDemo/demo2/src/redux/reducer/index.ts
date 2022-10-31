@@ -6,6 +6,7 @@ import phone from "../../feature/Phone/PhoneSlice";
 import {notification} from "../../component/common/Notification/NotificationSlice";
 
 import {createSlice} from "@reduxjs/toolkit";
+import appAgGridSlice from "../../component/common/AppAgGrid/AppAgGridSlice";
 
 
 const globalSlice = createSlice({
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     weather,
     phone,
     notification,
+    appAgGridSlice,
     globalSlice: globalSlice.reducer
 });
 export const getLoading = (state: any) => state.globalSlice.isLoading

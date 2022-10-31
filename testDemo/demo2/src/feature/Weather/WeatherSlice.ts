@@ -22,11 +22,11 @@ const weatherSlice = createSlice({
         }).addCase(getWeather.fulfilled, (state, action) => {
             state.isLoading = false;
             state.weatherData = action.payload;
-            console.log(state, action, action.payload)
+            // console.log(state, action, action.payload)
         }).addCase(getWeather.rejected, (state, action) => {
             state.isLoading = false;
             // state.error = action.error.message;
-            console.log(state, action, action.payload)
+            // console.log(state, action, action.payload)
         })
         //     .addDefaultCase((state, action) => {
         //     console.log(state, action, action.payload)

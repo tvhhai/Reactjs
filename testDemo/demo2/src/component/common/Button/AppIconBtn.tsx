@@ -9,11 +9,11 @@ interface Props {
     className?: object | string,
     color?: "inherit" | "primary" | "secondary" | "success" | "error" | "info" | "warning" | undefined,
     disabled?: boolean
-    onclick?: any,
+    onClick?: any,
     tooltip?: any
 }
 
-const AppIconBtn = ({children, variant, className, color, disabled, onclick, tooltip}: Props) => {
+const AppIconBtn = ({children, variant, className, color, disabled, onClick, tooltip}: Props) => {
     const classes = useStyles();
     const {t} = useTranslation();
     return (
@@ -23,7 +23,7 @@ const AppIconBtn = ({children, variant, className, color, disabled, onclick, too
                     size={"small"}
                     color={color}
                     disabled={disabled}
-                    onClick={onclick}>
+                    onClick={onClick}>
                 {children}
             </Button>
         </Tooltip>

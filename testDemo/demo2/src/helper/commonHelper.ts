@@ -47,3 +47,8 @@ export const compareObj = (obj1: object, obj2: object) => {
         return false;
     }
 };
+
+// Is array and not empty
+export const arrNotEmpty = (arr: object[]) => {
+    return Array.isArray(arr) && !_.isEmpty(arr)
+}

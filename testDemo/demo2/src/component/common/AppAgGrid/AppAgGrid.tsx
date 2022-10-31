@@ -11,9 +11,12 @@ import AppIconBtn from "../Button/AppIconBtn";
 import {InputBase, Paper} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import _ from "lodash";
-import {showNotification} from "../Notification/NotificationSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
+import AppDialogTransfer from "../Dialog/AppDialogTransfer";
+import {AG_GRID_CHECKBOX_SELECTION} from "../../../constant/commonConstant";
+import {getStateAg, saveColumns, saveHideColumns} from "./AppAgGridSlice";
+import {arrNotEmpty} from "../../../helper/commonHelper";
 
 interface AgGridProps {
     gridRef: any;
@@ -21,7 +24,7 @@ interface AgGridProps {
     columnDefs: object[];
     defaultColDef: object;
     paginationPageSize: number;
-    rowSelection: "single" | "multiple" | undefined;
+    rowSelection?: "single" | "multiple" | undefined;
     onSelectionChanged: any;
     onGridReady: any;
     refresh?: any;
@@ -29,6 +32,7 @@ interface AgGridProps {
     title: string;
     toolbarLeftAction?: object[];
     classNameApp?: string;
+    selectMultiWithCheckbox?: boolean;
     loading: boolean;
 }
 
@@ -46,14 +50,16 @@ const AppAgGrid = ({
                        title,
                        toolbarLeftAction,
                        classNameApp,
+                       selectMultiWithCheckbox,
                        loading,
                    }: AgGridProps) => {
 
     const dispatch = useDispatch<any>();
     const [fullScreen, setFulScreen] = React.useState(false);
-    // console.log(columnDefs)
+    const [columnDefsWithCheckbox, setColumnDefs] = React.useState(columnDefs);
+    const [openDiaLog, setOpen] = React.useState(false);
 
-    //TODO: Handle search all ag grid.
+    // TODO: Handle search all ag grid.
     const handleSearch = _.debounce((e: React.ChangeEvent<HTMLInputElement>) => {
         gridRef.current.api.setQuickFilter(e.target.value);
         // const rowDataSearch = gridRef.current.api.getRenderedNodes()
@@ -71,22 +77,39 @@ const AppAgGrid = ({
         gridRef.current.api.paginationSetPageSize(Number(value));
     }, []);
 
-    // TODO: Handle settingColumn
-    const settingColumn = () => {
-        // dispatch(showNotification({message: "PhoneAdd phone successfully!", type: "success"}));
-    };
 
     const tableFullScreen = () => {
         setFulScreen(!fullScreen);
     };
-    // const localeText = React.useMemo(() => {
-    //     return AG_GRID_LOCALE_ZZZ;
-    // }, []);
+
+    const openDialogSetting = () => {
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const onBtnApply = (val: any) => {
+        const {columns, hideColumns} = val;
+        dispatch(saveColumns(columns));
+        dispatch(saveHideColumns(hideColumns));
+        const columnDefs = [AG_GRID_CHECKBOX_SELECTION, ...columns];
+        arrNotEmpty(columns) && gridRef.current.api.setColumnDefs(columnDefs);
+    }
+
+    React.useEffect(() => {
+        if (selectMultiWithCheckbox) {
+            setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...columnDefs])
+        } else {
+            setColumnDefs(columnDefs)
+        }
+        dispatch(saveColumns(columnDefs))
+    }, [columnDefs])
 
     return (
         <div
-            className={`app-ag-grid  ${loading ? "app-loading" : ""} ${fullScreen ? "full-screen-backdrop full-screen " : ""
-            }`}
+            className={`app-ag-grid  ${loading ? "app-loading" : ""} ${fullScreen ? "full-screen-backdrop full-screen " : ""}`}
         >
             <CardLayout titleHeader={title}>
                 <>
@@ -100,7 +123,7 @@ const AppAgGrid = ({
                                     className="me-2"
                                     disabled={val.disable}
                                     color={val.colorIcon}
-                                    onclick={val.onClick}
+                                    onClick={val.onClick}
                                 >
                                     {val.icon}
                                 </AppIconBtn>
@@ -132,7 +155,7 @@ const AppAgGrid = ({
                                 variant="contained"
                                 className="ms-2"
                                 tooltip={"common.fullScreen"}
-                                onclick={tableFullScreen}
+                                onClick={tableFullScreen}
                             >
                                 {fullScreen ? <CloseFullscreenIcon/> : <OpenInFullIcon/>}
                             </AppIconBtn>
@@ -141,7 +164,7 @@ const AppAgGrid = ({
                                 variant="contained"
                                 className="ms-2"
                                 tooltip={"common.setting"}
-                                onclick={settingColumn}
+                                onClick={openDialogSetting}
                             >
                                 <SettingsIcon/>
                             </AppIconBtn>
@@ -150,7 +173,7 @@ const AppAgGrid = ({
                                 <AppIconBtn
                                     variant="contained"
                                     className="ms-2"
-                                    onclick={refresh}
+                                    onClick={refresh}
                                     tooltip={"common.refresh"}
                                 >
                                     <RefreshIcon/>
@@ -160,6 +183,7 @@ const AppAgGrid = ({
                             )}
                         </div>
                     </div>
+
                     <div
                         className={`app-ag-grid-body ag-theme-alpine ${classNameApp}`}
                         style={{height: 550}}
@@ -167,12 +191,18 @@ const AppAgGrid = ({
                         <AgGridReact
                             ref={gridRef}
                             rowData={rowData}
-                            columnDefs={columnDefs}
-                            rowSelection={rowSelection}
+                            columnDefs={selectMultiWithCheckbox ? columnDefsWithCheckbox : columnDefs}
+                            rowSelection={selectMultiWithCheckbox ? 'multiple' : undefined}
                             defaultColDef={defaultColDef}
                             paginationPageSize={paginationPageSize}
                             onSelectionChanged={onSelectionChanged}
                             // suppressRowClickSelection={true}
+                            // suppressCellFocus={true}
+                            suppressCsvExport={true}
+                            suppressExcelExport={true}
+                            // rowGroupPanelShow={''}
+                            // pivotMode={true}
+                            suppressFocusAfterRefresh={true}
                             suppressMenuHide={true}
                             rowMultiSelectWithClick={true}
                             pagination={true}
@@ -203,6 +233,14 @@ const AppAgGrid = ({
                     </div>
                 </>
             </CardLayout>
+            <AppDialogTransfer
+                id="ringtone-menu"
+                keepMounted
+                open={openDiaLog}
+                onClose={handleClose}
+                apply={onBtnApply}
+                columns={columnDefs}
+            />
         </div>
     );
 };

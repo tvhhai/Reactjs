@@ -1,6 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router";
-import {addPhone} from "./PhoneSlice";
+import {addPhone, resetState} from "./PhoneSlice";
 import {useDispatch} from "react-redux";
 import {showNotification} from "../../component/common/Notification/NotificationSlice";
 import {IPhone} from "../../model/IPhone";
@@ -26,7 +26,8 @@ const PhoneAdd = () => {
         }
 
         const backPage = () => {
-            navigate(-1)
+            // navigate(-1)
+            dispatch(resetState())
         }
 
         const handleDisable = () => {
@@ -42,7 +43,7 @@ const PhoneAdd = () => {
                 i18nKey: "common.btn.cancel",
                 onClick: backPage,
                 variant: "contained",
-                color: "error",
+                color: "inherit",
             },
             {
                 id: "add",

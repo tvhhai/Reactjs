@@ -47,7 +47,7 @@ const SideBarItemCollapse = ({index, sideBarItem, sectionId, handleExpandItem}: 
                 )}
             </ListItemButton>
 
-            <Collapse in={expand} timeout="auto" unmountOnExit className={'abc'}>
+            <Collapse in={expand} timeout="auto" unmountOnExit>
                 {sideBarItem.child.map((childItem: any, i: number) => (
                     <SideBarItem showIcon={false} sx={{pl: 6}} key={i} sideBarItem={childItem}/>
                 ))}

@@ -2,7 +2,18 @@ import {configureStore} from '@reduxjs/toolkit'
 import rootReducer from "../redux/reducer";
 
 const store = configureStore({
-    middleware: undefined,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        // serializableCheck: false,
+
+        serializableCheck: {
+            // Ignore these action types
+            ignoredActions: ['appAgGrid/saveColumns'],
+            // Ignore these field paths in all actions
+            ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
+            // Ignore these paths in the state
+            ignoredPaths: ['appAgGridSlice.tableConfig'],
+        },
+    }),
     preloadedState: undefined,
     reducer: rootReducer
 })

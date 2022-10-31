@@ -34,7 +34,7 @@ export const Notification = (): JSX.Element => {
                             </IconButton>
                         </React.Fragment>
                     ),
-                }) : (<span className='d-none'>abc</span>)
+                }) : (<span className='d-none'></span>)
             }
         </span>
 

@@ -1,0 +1,40 @@
+.transfer-list-wrapper {
+  height: 100%;
+  width: auto !important;
+  margin: 0 !important;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+
+  .transfer-list {
+    width: 100%;
+    padding: 0;
+  }
+
+  .right-list {
+    height: 100%;
+  }
+
+  .left-list {
+    height: 100%;
+    border-right: 1px solid #ccc;
+  }
+
+  .action-btn {
+    padding: 4px;
+    border-bottom: 1px solid #ccc;
+  }
+  .left-action-btn {
+    justify-content: end;
+  }
+  .right-action-btn {
+
+  }
+
+  .cursor-no-drop {
+    cursor: not-allowed !important;
+    pointer-events: all !important;
+  }
+
+
+}
+

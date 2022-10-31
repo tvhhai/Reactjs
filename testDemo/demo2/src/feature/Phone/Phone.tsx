@@ -6,24 +6,28 @@ import AppAgGrid from "../../component/common/AppAgGrid/AppAgGrid";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {getPhone, getListPhone, deletePhone, getPhoneById, setActionState} from "./PhoneSlice";
+import {getPhone, getListPhone, deletePhone, getPhoneById, setActionState, saveId} from "./PhoneSlice";
 import {showNotification} from "../../component/common/Notification/NotificationSlice";
 import _ from "lodash";
 import "./style.scss";
 import {AG_GRID_CHECKBOX_SELECTION} from "../../constant/commonConstant";
 import ImageCellRender from "./ImageCellRender";
+import {useParams} from "react-router-dom";
+import PhoneAdd from "./PhoneAdd";
+import PhoneEdit from "./PhoneEdit";
 
 
 const Phone = () => {
         const {t} = useTranslation();
         const navigate = useNavigate();
-        const {listPhone, isLoading} = useSelector(getPhone);
+        const {listPhone, isLoading, actionState, ids} = useSelector(getPhone);
         const dispatch = useDispatch<any>();
         const gridRef = React.useRef<any>();
         const [selectedRows, setSelectedRows] = React.useState([]);
-
+        const [id, setId] = React.useState(ids);
+        // const {id}: any = useParams();
         const initColumnHeader = [
-            AG_GRID_CHECKBOX_SELECTION,
+            // AG_GRID_CHECKBOX_SELECTION,
             {field: "name", headerName: t('phone.column.name')},
             {field: "price", headerName: t('phone.column.price')},
             {field: "image", headerName: t('phone.column.image'), cellRenderer: ImageCellRender},
@@ -33,7 +37,7 @@ const Phone = () => {
 
         // Trick switch language
         React.useEffect(() => {
-            setColumnDefs(initColumnHeader)
+            setColumnDefs(initColumnHeader);
         }, [t('phone.column.name')]);
 
         const defaultColDef = {
@@ -58,9 +62,17 @@ const Phone = () => {
             gridRef.current.api.paginationSetPageSize(Number(value));
         }, []);
 
+        // React.useEffect(() => {
+        //     if (!_.isEmpty(actionState)) {
+        //
+        //         actionState.isCreate && navigate("/phone/add") ;
+        //         actionState.isEdit && navigate(`/phone/edit/${id}`);
+        //     }
+        // }, [actionState])
+
         const handleAdd = () => {
             dispatch(setActionState({isCreate: true, isEdit: false}));
-            navigate("/phone/add");
+            // navigate("/phone/add");
         };
 
         const handleDisable = (): boolean => {
@@ -72,14 +84,22 @@ const Phone = () => {
         };
 
         const handleEdit = () => {
-            let id = _.get(selectedRows[0], "id");
+            const id = _.get(selectedRows[0], "id");
+            // setId(id)
             dispatch(getPhoneById(id));
+            dispatch(saveId(id));
             dispatch(setActionState({isCreate: false, isEdit: true}));
-            navigate(`/phone/edit/${id}`);
+            // navigate(`/phone/edit/${id}`);
         };
 
+        React.useEffect(() => {
+            if (ids) {
+                setId(ids)
+            }
+        }, [ids]);
+
         const handleDelete = async () => {
-            let id = _.get(selectedRows[0], "id");
+            const id = _.get(selectedRows[0], "id");
             try {
                 await dispatch(deletePhone(id)).unwrap();
                 dispatch(showNotification({message: "Delete phone successfully!", type: "success"}))
@@ -120,22 +140,29 @@ const Phone = () => {
 
         return (
             <div>
-                <AppAgGrid
+
+                {actionState.isCreate && <PhoneAdd/>}
+                {actionState.isEdit && <PhoneEdit id={id}/>}
+                {_.isEmpty(actionState) && <AppAgGrid
                     rowData={listPhone}
                     gridRef={gridRef}
                     onGridReady={onGridReady}
                     columnDefs={columnDefs}
                     defaultColDef={defaultColDef}
-                    rowSelection={"multiple"}
+                    // rowSelection={"multiple"}
+
                     onSelectionChanged={onSelectionChanged}
                     paginationPageSize={5}
                     //  -----------  custom -----------------
+                    selectMultiWithCheckbox={true}
                     refresh={onGridReady}
                     searchAll={true}
                     title={t("phone.title")}
                     toolbarLeftAction={[action.add, action.edit, action.delete]}
                     loading={isLoading}
                 />
+                }
+
             </div>
         );
     }
