@@ -6,15 +6,9 @@ const Weather = () => {
     const weatherState = useSelector(getState);
     const dispatch = useDispatch<any>();
 
-
     React.useEffect(() => {
         dispatch(getWeather());
     }, []);
-
-
-
-
-
 
     return (
         <div>

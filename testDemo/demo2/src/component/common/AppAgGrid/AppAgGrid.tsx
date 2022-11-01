@@ -15,7 +15,7 @@ import {
     Pagination,
     Paper,
     Select,
-    Stack
+    Stack, TextField
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import _ from "lodash";
@@ -27,6 +27,7 @@ import {saveColumns, saveHideColumns} from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../AppLoader/AppLoader";
 import {Trans} from "react-i18next";
+import i18n from "i18next";
 
 
 interface AgGridProps {
@@ -133,16 +134,7 @@ const AppAgGrid = ({
         let toIndex = Math.min(fromIndex + pageSize - 1, rowCount);
         setFromIndex(fromIndex);
         setToIndex(toIndex);
-
-        if (pageSize >= 10) {
-            setDomLayout('normal');
-            gridRef.current.api?.setDomLayout('normal');
-        } else {
-            setDomLayout('autoHeight');
-            gridRef.current.api?.setDomLayout('autoHeight');
-        }
     }, [rowCount, pageSize, totalPage, fromIndex, toIndex, currentPage]);
-
 
     React.useEffect(() => {
         if (_.get(gridRef, 'current.api.setDomLayout')) {
@@ -155,7 +147,6 @@ const AppAgGrid = ({
             }
         }
     }, [pageSize]);
-
 
     React.useEffect(() => {
         if (selectMultiWithCheckbox) {
@@ -196,16 +187,9 @@ const AppAgGrid = ({
                                     component="form"
                                     sx={{display: "flex", alignItems: "center", width: 400}}
                                 >
-                                    <InputBase
-                                        sx={{ml: 1, flex: 1}}
-                                        type={"search"}
-                                        placeholder="Search all"
-                                        inputProps={{"aria-label": "Search all"}}
-                                        onChange={handleSearch}
+                                    <TextField size="small" id="outlined-basic" type='search' variant="outlined"
+                                               placeholder={i18n.t('common.searchAll')} onChange={handleSearch} fullWidth
                                     />
-                                    <AppIconBtn>
-                                        <SearchIcon/>
-                                    </AppIconBtn>
                                 </Paper>
                             ) : (
                                 <></>

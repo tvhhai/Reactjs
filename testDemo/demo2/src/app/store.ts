@@ -3,8 +3,6 @@ import rootReducer from "../redux/reducer";
 
 const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-        // serializableCheck: false,
-
         serializableCheck: {
             // Ignore these action types
             ignoredActions: ['appAgGrid/saveColumns', 'appAgGrid/saveHideColumns'],

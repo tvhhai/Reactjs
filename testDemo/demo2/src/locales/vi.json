@@ -12,6 +12,7 @@
     "selectColShow": "Chọn các cột để hiển thị",
     "pageInform1": "Hiển thị <1>{{fromIndex}}</1> - <1>{{toIndex}}</1> trong số <1>{{rowCount}}</1> bản ghi",
     "pageInform2": "Trang <1>{{currentPage}}</1> / <1>{{totalPage}}</1>",
+    "searchAll": "Tìm kiếm tất cả...",
     "btn": {
       "add": "Thêm",
       "cancel": "Hủy",

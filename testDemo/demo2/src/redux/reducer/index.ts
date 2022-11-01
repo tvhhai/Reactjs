@@ -1,7 +1,7 @@
 import {combineReducers} from "redux";
 
 import counter from "./counter";
-import weather from "../../feature/Weather/WeatherSlice";
+// import weather from "../../feature/Weather/WeatherSlice";
 import phone from "../../feature/Phone/PhoneSlice";
 import {notification} from "../../component/common/Notification/NotificationSlice";
 
@@ -26,7 +26,7 @@ const globalSlice = createSlice({
 
 const rootReducer = combineReducers({
     counter,
-    weather,
+    // weather,
     phone,
     notification,
     appAgGridSlice,
