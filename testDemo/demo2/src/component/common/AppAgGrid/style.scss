@@ -3,6 +3,7 @@
 .app-ag-grid {
   position: relative;
   transition: .1s linear;
+  height: 100%;
 
   .app-ag-grid-header {
     background: $white;
@@ -43,7 +44,7 @@
   background: rgba(0, 0, 0, 0.7);
   position: fixed;
   padding: 24px;
-  z-index: 99999;
+  z-index: 10;
 
   &.full-screen {
     top: 0;

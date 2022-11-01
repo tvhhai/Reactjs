@@ -10,6 +10,7 @@ import CardLayout from "../../component/common/CardLayout/CardLayout";
 import PhoneFormAction from "./PhoneFormAction";
 import _ from "lodash";
 import {compareObj} from "../../helper/commonHelper";
+import AppLoader from "../../component/common/AppLoader/AppLoader";
 
 interface props {
     id?: number
@@ -82,7 +83,8 @@ const PhoneEdit = ({id}: props) => {
     ]
 
     return (
-        <CardLayout titleHeader={t('phone.edit')} btnFooter={btnAction} className={isLoading ? 'app-loading' : ''}>
+        <CardLayout titleHeader={t('phone.edit')} btnFooter={btnAction}>
+            {isLoading ? <AppLoader/> : <></>}
             {!_.isEmpty(value) && <PhoneFormAction value={value} setValue={setValue} checkIsValidForm={checkIsValid}/>}
         </CardLayout>
     );

@@ -19,15 +19,14 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import _ from "lodash";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
 import {AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/commonConstant";
-import {getStateAg, saveColumns, saveHideColumns} from "./AppAgGridSlice";
+import {saveColumns, saveHideColumns} from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../AppLoader/AppLoader";
-import i18n from "i18next";
-import {Trans, useTranslation} from "react-i18next";
+import {Trans} from "react-i18next";
 
 
 interface AgGridProps {
@@ -67,20 +66,18 @@ const AppAgGrid = ({
                    }: AgGridProps) => {
 
     const dispatch = useDispatch<any>();
-    const {t} = useTranslation();
     const [fullScreen, setFulScreen] = React.useState(false);
     const [columnDefsWithCheckbox, setColumnDefs] = React.useState(columnDefs);
     const [openDiaLog, setOpen] = React.useState(false);
-    const [pageSize, setPageSize] = React.useState(paginationPageSize ? paginationPageSize : 5);
+    const [pageSize, setPageSize] = React.useState(paginationPageSize ? paginationPageSize : PAGINATION_PAGE_SIZE_OPTIONS[0]);
     const [currentPage, setCurrentPage] = React.useState<number>(1);
     const [rowCount, setRowCount] = React.useState<number>(0);
     const [totalPage, setTotalPage] = React.useState<number>(0);
     const [fromIndex, setFromIndex] = React.useState<number>(currentPage);
     const [toIndex, setToIndex] = React.useState<number>(pageSize);
+    const [domLayout, setDomLayout] = React.useState<"autoHeight" | "normal" | "print" | undefined>('autoHeight');
 
 
-    const {name}: any = 'person';
-    const count = 9;
     // TODO: Handle search all ag grid.
     const handleSearch = _.debounce((e: React.ChangeEvent<HTMLInputElement>) => {
         gridRef.current.api.setQuickFilter(e.target.value);
@@ -134,9 +131,31 @@ const AppAgGrid = ({
     React.useEffect(() => {
         let fromIndex = currentPage > 1 ? (currentPage - 1) * pageSize + 1 : 1;
         let toIndex = Math.min(fromIndex + pageSize - 1, rowCount);
-        setFromIndex(fromIndex)
-        setToIndex(toIndex)
+        setFromIndex(fromIndex);
+        setToIndex(toIndex);
+
+        if (pageSize >= 10) {
+            setDomLayout('normal');
+            gridRef.current.api?.setDomLayout('normal');
+        } else {
+            setDomLayout('autoHeight');
+            gridRef.current.api?.setDomLayout('autoHeight');
+        }
     }, [rowCount, pageSize, totalPage, fromIndex, toIndex, currentPage]);
+
+
+    React.useEffect(() => {
+        if (_.get(gridRef, 'current.api.setDomLayout')) {
+            if (pageSize >= 10) {
+                gridRef.current.api.setDomLayout('normal');
+                (document.querySelector(".app-ag-grid-body") as HTMLElement).style.height = '471px';
+            } else {
+                gridRef.current.api.setDomLayout('autoHeight');
+                (document.querySelector(".app-ag-grid-body") as HTMLElement).style.height = '';
+            }
+        }
+    }, [pageSize]);
+
 
     React.useEffect(() => {
         if (selectMultiWithCheckbox) {
@@ -145,11 +164,11 @@ const AppAgGrid = ({
             setColumnDefs(columnDefs)
         }
         dispatch(saveColumns(columnDefs))
-    }, [columnDefs])
+    }, [columnDefs]);
 
     return (
         <div
-            className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen " : ""}`}
+            className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen" : ""}`}
         >
             {loading ? <AppLoader/> : <></>}
             <CardLayout titleHeader={title}>
@@ -225,14 +244,13 @@ const AppAgGrid = ({
                         </div>
                     </div>
 
-                    <div
-                        className={`app-ag-grid-body ag-theme-alpine ${classNameApp}`}
-                        style={{height: 550}}
+                    <div className={`app-ag-grid-body ag-theme-alpine ${classNameApp}`}
                     >
                         <AgGridReact
-                            // default
+                            // -------------default-----------------
                             suppressCellFocus={true}
                             suppressPaginationPanel={true}
+                            domLayout={'autoHeight'} // autoHeight/normal
                             // suppressCsvExport={true}
                             // suppressExcelExport={true}
                             // suppressFocusAfterRefresh={true}
@@ -241,7 +259,8 @@ const AppAgGrid = ({
                             animateRows={true}
                             pagination={true}
                             overlayNoRowsTemplate={`<span>hahaah</span>`}
-                            // end default
+
+                            // -------------end default-----------------
                             paginationPageSize={paginationPageSize ? paginationPageSize : pageSize}
                             ref={gridRef}
                             rowData={rowData}
@@ -268,6 +287,7 @@ const AppAgGrid = ({
                             // noRowsOverlayComponent={noRowsOverlayComponent}
                             // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                         />
+
                         <div className="app-ag-grid-paging">
                             <div className="app-flex-center pull-left">
                                 <FormControl size="small">
@@ -320,7 +340,7 @@ const AppAgGrid = ({
                                         Page <strong>{{currentPage}}</strong> of <strong>{{totalPage}}</strong>
                                     </Trans>
 
-                        </span>
+                                </span>
                                 <Stack spacing={2}>
                                     <Pagination count={totalPage}
                                                 page={currentPage}

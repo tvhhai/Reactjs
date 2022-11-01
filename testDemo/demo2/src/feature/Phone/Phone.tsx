@@ -146,8 +146,7 @@ const Phone = () => {
         };
 
         return (
-            <div>
-
+            <div className='phone-wrapper'>
                 {actionState.isCreate && <PhoneAdd/>}
                 {actionState.isEdit && <PhoneEdit id={id}/>}
                 {_.isEmpty(actionState) && <AppAgGrid
