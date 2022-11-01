@@ -7,7 +7,7 @@ const store = configureStore({
 
         serializableCheck: {
             // Ignore these action types
-            ignoredActions: ['appAgGrid/saveColumns'],
+            ignoredActions: ['appAgGrid/saveColumns', 'appAgGrid/saveHideColumns'],
             // Ignore these field paths in all actions
             ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
             // Ignore these paths in the state

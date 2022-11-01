@@ -29,5 +29,15 @@ i18n
         }
     });
 
+// https://github.com/i18next/react-i18next/issues/1483
+declare module "react-i18next" {
+    interface CustomTypeOptions {
+        allowObjectInHTMLChildren: true, // This property should be true
+        defaultNS: "ns1";
+        resources: {
+
+        };
+    }
+}
 
 export default i18n;

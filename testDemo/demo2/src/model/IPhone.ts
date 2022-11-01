@@ -6,7 +6,7 @@ export interface IPhone {
 
 export interface PhoneState {
     isLoading: boolean,
-    ids: any,
+    phoneId: any,
     listPhone: object[],
     getPhoneDetail: object,
     actionState: object,

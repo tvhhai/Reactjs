@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import {ListItem, ButtonGroup, ListItemButton, ListItemIcon, ListItemText, Checkbox} from '@mui/material';
@@ -7,10 +7,15 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 import {getStateAg} from "../AppAgGrid/AppAgGridSlice";
 import AppIconBtn from "../Button/AppIconBtn";
-import './style.scss'
+import './style.scss';
 import {useSelector} from "react-redux";
+import {arrNotEmpty} from "../../../helper/commonHelper";
 
 function not(a: any[], b: any[]) {
     return a.filter((value) => b.indexOf(value) === -1);
@@ -33,6 +38,7 @@ export default function TransferList(props: TransferListProps) {
     const [checked, setChecked] = React.useState<number[]>([]);
     const [left, setLeft] = React.useState<object[]>(hideColumns);
     const [right, setRight] = React.useState<object[]>(columns);
+    // const [selectedListIndex, setSelectedListIndex] = React.useState<number[]>([]);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -57,32 +63,109 @@ export default function TransferList(props: TransferListProps) {
     const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
-        setChecked(not(checked, leftChecked));
+        // setChecked(not(checked, leftChecked));
     };
 
     const handleCheckedLeft = () => {
         setLeft(left.concat(rightChecked));
         setRight(not(right, rightChecked));
-        setChecked(not(checked, rightChecked));
+        // setChecked(not(checked, rightChecked));
     };
 
     const handleAllLeft = () => {
-        // @ts-ignore
         setLeft(left.concat(right));
         setRight([]);
     };
 
+    const getSelectedIndex = () => {
+        let listIndex: number[] = [];
+        right.map((v: any, i: number) => {
+            checked.map((k: any) => {
+                if (v.field === k.field) {
+                    listIndex.push(i)
+                }
+            })
+        });
+        return listIndex;
+    };
+
+    // TODO: ?
+    let selectedListIndex: number[] = getSelectedIndex();
+
+    const handleMoveTop = () => {
+        if (arrNotEmpty(selectedListIndex)) {
+            selectedListIndex.sort(function (a, b) {
+                return a - b;
+            });
+            let moveToIndex = selectedListIndex[0] - 1;
+            moveToIndex = (moveToIndex < 0 ? right.length : moveToIndex);
+            moveItemsTo(moveToIndex);
+        }
+
+    }
+
+    const handleMoveBottom = () => {
+        if (arrNotEmpty(selectedListIndex)) {
+            selectedListIndex.sort((a, b) => {
+                return a - b;
+            });
+            let moveToIndex = selectedListIndex[selectedListIndex.length - 1] + 2;
+            moveToIndex = (moveToIndex > right.length ? 0 : moveToIndex);
+            moveItemsTo(moveToIndex);
+        }
+    }
+
+    const moveItemsTo = (index: number) => {
+        if (arrNotEmpty(selectedListIndex)) {
+            let front: object[] = [],
+                behind: object[] = [],
+                extractedRows: object[] = [],
+                selectedRows: number[] = [];
+
+            selectedListIndex.sort(function (a, b) {
+                return a - b;
+            });
+
+            front = right.slice(0, index);
+            behind = right.slice(index, right.length);
+
+            selectedListIndex.forEach((v, i) => {
+                extractedRows.push(right[selectedListIndex[i]]);
+            })
+
+            selectedListIndex.reverse();
+
+            selectedListIndex.forEach((v, i) => {
+                let row = selectedListIndex[i];
+                if (row < index) {
+                    front.splice(row, 1);
+                } else {
+                    behind.splice(row - index, 1);
+                }
+            })
+
+            setRight(front.concat(extractedRows.concat(behind)))
+
+            selectedListIndex.forEach((v, i) => {
+                selectedRows.push(front.length + i);
+            })
+            selectedListIndex = selectedRows;
+            // setSelectedListIndex(selectedRows);
+        }
+    }
+
     React.useEffect(() => {
-        setShowCol(right)
+        setShowCol(right);
         setHideCol(left);
     }, [right, left]);
 
     React.useEffect(() => {
         setLeft(hideColumns)
         setRight(columns);
+        setChecked([])
     }, [cancel, hideColumns, columns]);
 
-    const customList = (items: readonly any[], sideRight: boolean) => (
+    const listTransfer = (items: readonly any[], rightSide: boolean) => (
         <List component="nav" dense role="list" className="transfer-list">
             {items.map((value: any, i) => {
                 const labelId = `transfer-list-item-${value}-label`;
@@ -91,15 +174,14 @@ export default function TransferList(props: TransferListProps) {
                         <ListItem
                             disableGutters
                             divider
-                            onClick={items.length === 1 && sideRight ? () => {
+                            onClick={items.length === 1 && rightSide ? () => {
                             } : handleToggle(value)}
                         >
                             <ListItemButton disableGutters
-                                            className={sideRight && items.length === 1 ? 'cursor-no-drop' : ''}>
+                                            className={rightSide && items.length === 1 ? 'cursor-no-drop' : ''}>
                                 <ListItemIcon sx={{minWidth: 42}}>
                                     <Checkbox
-
-                                        disabled={items.length === 1}
+                                        disabled={rightSide && items.length === 1}
                                         checked={checked.indexOf(value) !== -1}
                                         tabIndex={-1}
                                         disableRipple
@@ -142,7 +224,7 @@ export default function TransferList(props: TransferListProps) {
                             </AppIconBtn>
                         </ButtonGroup>
                     </div>
-                    {customList(left, false)}
+                    {listTransfer(left, false)}
                 </div>
             </Grid>
 
@@ -150,6 +232,22 @@ export default function TransferList(props: TransferListProps) {
                 <div className='right-list'>
                     <div className="right-action-btn action-btn">
                         <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                            <AppIconBtn
+                                variant="contained"
+                                onClick={handleMoveTop}
+                                disabled={rightChecked.length === 0 || rightChecked.length === right.length}
+                                aria-label="move selected left"
+                            >
+                                <KeyboardArrowUpIcon/>
+                            </AppIconBtn>
+                            <AppIconBtn
+                                variant="contained"
+                                onClick={handleMoveBottom}
+                                disabled={rightChecked.length === 0 || rightChecked.length === right.length}
+                                aria-label="move all left"
+                            >
+                                <KeyboardArrowDownIcon/>
+                            </AppIconBtn>
                             <AppIconBtn
                                 variant="contained"
                                 onClick={handleCheckedLeft}
@@ -168,7 +266,7 @@ export default function TransferList(props: TransferListProps) {
                             </AppIconBtn>
                         </ButtonGroup>
                     </div>
-                    {customList(right, true)}
+                    {listTransfer(right, true)}
                 </div>
             </Grid>
         </Grid>

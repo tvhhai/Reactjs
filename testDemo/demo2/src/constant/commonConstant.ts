@@ -1,5 +1,4 @@
-
-const AG_GRID_CHECKBOX_SELECTION =
+export const AG_GRID_CHECKBOX_SELECTION =
     {
         field: "",
         width: 54,
@@ -8,6 +7,8 @@ const AG_GRID_CHECKBOX_SELECTION =
         sortable: false,
         filter: false,
         pinned: "left",
+        resizable: false,
     }
 
-export { AG_GRID_CHECKBOX_SELECTION };
+export const PAGINATION_PAGE_SIZE_OPTIONS = [5, 10, 50, 100, 250, 500, 1000];
+

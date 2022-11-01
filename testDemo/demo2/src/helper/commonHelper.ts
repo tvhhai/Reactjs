@@ -49,6 +49,11 @@ export const compareObj = (obj1: object, obj2: object) => {
 };
 
 // Is array and not empty
-export const arrNotEmpty = (arr: object[]) => {
+export const arrNotEmpty = (arr: any[]) => {
     return Array.isArray(arr) && !_.isEmpty(arr)
 }
+
+export const getFunction = function (values: any, exp: any, defaultVal?: any) {
+    var val = _.get(values, exp);
+    return _.isFunction(val) ? val : defaultVal || _.noop();
+};

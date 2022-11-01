@@ -8,23 +8,35 @@ import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AppIconBtn from "../Button/AppIconBtn";
-import {InputBase, Paper} from "@mui/material";
+import {
+    FormControl,
+    InputBase,
+    MenuItem,
+    Pagination,
+    Paper,
+    Select,
+    Stack
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import _ from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
-import {AG_GRID_CHECKBOX_SELECTION} from "../../../constant/commonConstant";
+import {AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/commonConstant";
 import {getStateAg, saveColumns, saveHideColumns} from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
+import AppLoader from "../AppLoader/AppLoader";
+import i18n from "i18next";
+import {Trans, useTranslation} from "react-i18next";
+
 
 interface AgGridProps {
     gridRef: any;
     rowData: object[];
     columnDefs: object[];
     defaultColDef: object;
-    paginationPageSize: number;
-    rowSelection?: "single" | "multiple" | undefined;
+    paginationPageSize?: number | undefined;
+    // rowSelection?: "single" | "multiple" | undefined;
     onSelectionChanged: any;
     onGridReady: any;
     refresh?: any;
@@ -42,7 +54,7 @@ const AppAgGrid = ({
                        columnDefs,
                        defaultColDef,
                        paginationPageSize,
-                       rowSelection,
+                       // rowSelection,
                        onSelectionChanged,
                        onGridReady,
                        refresh,
@@ -55,10 +67,20 @@ const AppAgGrid = ({
                    }: AgGridProps) => {
 
     const dispatch = useDispatch<any>();
+    const {t} = useTranslation();
     const [fullScreen, setFulScreen] = React.useState(false);
     const [columnDefsWithCheckbox, setColumnDefs] = React.useState(columnDefs);
     const [openDiaLog, setOpen] = React.useState(false);
+    const [pageSize, setPageSize] = React.useState(paginationPageSize ? paginationPageSize : 5);
+    const [currentPage, setCurrentPage] = React.useState<number>(1);
+    const [rowCount, setRowCount] = React.useState<number>(0);
+    const [totalPage, setTotalPage] = React.useState<number>(0);
+    const [fromIndex, setFromIndex] = React.useState<number>(currentPage);
+    const [toIndex, setToIndex] = React.useState<number>(pageSize);
 
+
+    const {name}: any = 'person';
+    const count = 9;
     // TODO: Handle search all ag grid.
     const handleSearch = _.debounce((e: React.ChangeEvent<HTMLInputElement>) => {
         gridRef.current.api.setQuickFilter(e.target.value);
@@ -70,13 +92,6 @@ const AppAgGrid = ({
         //
         // }
     }, 500);
-
-    const onPageSizeChanged = React.useCallback(() => {
-        let value = (document.getElementById("page-size") as HTMLInputElement)
-            .value;
-        gridRef.current.api.paginationSetPageSize(Number(value));
-    }, []);
-
 
     const tableFullScreen = () => {
         setFulScreen(!fullScreen);
@@ -98,6 +113,31 @@ const AppAgGrid = ({
         arrNotEmpty(columns) && gridRef.current.api.setColumnDefs(columnDefs);
     }
 
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setCurrentPage(value);
+        gridRef.current.api.paginationGoToPage(value - 1); // as the first page is zero
+    };
+
+    const onPageSizeChanged = React.useCallback((event: any) => {
+        setPageSize(event.target.value);
+        gridRef.current.api.paginationSetPageSize(Number(event.target.value));
+    }, []);
+
+    const onPaginationChanged = React.useCallback(() => {
+        if (_.get(gridRef, 'current.api')) {
+            setTotalPage(gridRef.current.api.paginationGetTotalPages());
+            setRowCount(gridRef.current.api.paginationGetRowCount());
+            setCurrentPage(gridRef.current.api.paginationGetCurrentPage() + 1); // as the first page is zero
+        }
+    }, []);
+
+    React.useEffect(() => {
+        let fromIndex = currentPage > 1 ? (currentPage - 1) * pageSize + 1 : 1;
+        let toIndex = Math.min(fromIndex + pageSize - 1, rowCount);
+        setFromIndex(fromIndex)
+        setToIndex(toIndex)
+    }, [rowCount, pageSize, totalPage, fromIndex, toIndex, currentPage]);
+
     React.useEffect(() => {
         if (selectMultiWithCheckbox) {
             setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...columnDefs])
@@ -109,8 +149,9 @@ const AppAgGrid = ({
 
     return (
         <div
-            className={`app-ag-grid  ${loading ? "app-loading" : ""} ${fullScreen ? "full-screen-backdrop full-screen " : ""}`}
+            className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen " : ""}`}
         >
+            {loading ? <AppLoader/> : <></>}
             <CardLayout titleHeader={title}>
                 <>
                     <div className="app-ag-grid-toolbar d-flex justify-content-between align-items-center">
@@ -189,27 +230,34 @@ const AppAgGrid = ({
                         style={{height: 550}}
                     >
                         <AgGridReact
+                            // default
+                            suppressCellFocus={true}
+                            suppressPaginationPanel={true}
+                            // suppressCsvExport={true}
+                            // suppressExcelExport={true}
+                            // suppressFocusAfterRefresh={true}
+                            suppressMenuHide={true}
+                            rowMultiSelectWithClick={true}
+                            animateRows={true}
+                            pagination={true}
+                            overlayNoRowsTemplate={`<span>hahaah</span>`}
+                            // end default
+                            paginationPageSize={paginationPageSize ? paginationPageSize : pageSize}
                             ref={gridRef}
                             rowData={rowData}
                             columnDefs={selectMultiWithCheckbox ? columnDefsWithCheckbox : columnDefs}
                             rowSelection={selectMultiWithCheckbox ? 'multiple' : undefined}
                             defaultColDef={defaultColDef}
-                            paginationPageSize={paginationPageSize}
                             onSelectionChanged={onSelectionChanged}
+                            onPaginationChanged={onPaginationChanged}
+
                             // suppressRowClickSelection={true}
-                            // suppressCellFocus={true}
-                            suppressCsvExport={true}
-                            suppressExcelExport={true}
                             // rowGroupPanelShow={''}
                             // pivotMode={true}
-                            suppressFocusAfterRefresh={true}
-                            suppressMenuHide={true}
-                            rowMultiSelectWithClick={true}
-                            pagination={true}
-                            animateRows={true}
                             onGridReady={onGridReady}
-                            // localeText={localeText}
+
                             // TODO: research
+                            // localeText={localeText}
                             // paginationAutoPageSize={true}
                             // suppressPaginationPanel={true}
                             // cacheQuickFilter={true}
@@ -219,17 +267,73 @@ const AppAgGrid = ({
                             // overlayNoRowsTemplate={noRowsOverlayComponent}
                             // noRowsOverlayComponent={noRowsOverlayComponent}
                             // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
-                        ></AgGridReact>
+                        />
+                        <div className="app-ag-grid-paging">
+                            <div className="app-flex-center pull-left">
+                                <FormControl size="small">
+                                    <Select
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={pageSize}
+                                        onChange={onPageSizeChanged}
+                                    >
+                                        {
+                                            PAGINATION_PAGE_SIZE_OPTIONS.map((v, i) => (
+                                                <MenuItem key={i} value={v}>{v}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                                <span className='page-inform'>
+                                    {/*<>*/}
+                                    {/*    {i18n.t('common.pageInform1', {*/}
+                                    {/*        from: fromIndex,*/}
+                                    {/*        to: toIndex,*/}
+                                    {/*        total: rowCount*/}
+                                    {/*    })}*/}
+                                    {/*</>*/}
 
-                        <div className="example-header">
-                            Page Size:
-                            <select onChange={onPageSizeChanged} id="page-size">
-                                <option defaultValue="5">5</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="100">100</option>
-                            </select>
+                                    <Trans
+                                        i18nKey="common.pageInform1"
+                                        // values={{currentPage, totalPage}}
+                                        // components={{1: <strong/>, 3: <strong/>}}
+                                    >
+                                        Showing <strong>{{fromIndex}}</strong> - <strong>{{toIndex}}</strong> of <strong>{{rowCount}}</strong> records
+                                    </Trans>
+                                </span>
+                            </div>
+
+                            <div className='app-ag-grid-pager-nav pull-right'>
+                                <span className='page-inform'>
+                                    {/*<>*/}
+                                    {/*    {i18n.t('common.pageInform2', {*/}
+                                    {/*        page: currentPage,*/}
+                                    {/*        totalPage: totalPage*/}
+                                    {/*    })}*/}
+                                    {/*</>*/}
+
+                                    <Trans
+                                        i18nKey="common.pageInform2"
+                                        // values={{currentPage, totalPage}}
+                                        // components={{1: <strong/>, 3: <strong/>}}
+                                    >
+                                        Page <strong>{{currentPage}}</strong> of <strong>{{totalPage}}</strong>
+                                    </Trans>
+
+                        </span>
+                                <Stack spacing={2}>
+                                    <Pagination count={totalPage}
+                                                page={currentPage}
+                                                siblingCount={0} boundaryCount={0}
+                                                variant="outlined"
+                                                color="primary"
+                                                shape="rounded"
+                                                showFirstButton showLastButton
+                                                onChange={handleChange}/>
+                                </Stack>
+                            </div>
                         </div>
+
                     </div>
                 </>
             </CardLayout>
@@ -242,7 +346,8 @@ const AppAgGrid = ({
                 columns={columnDefs}
             />
         </div>
-    );
+    )
+        ;
 };
 
 export default AppAgGrid;

@@ -18,23 +18,24 @@ const PhoneAdd = () => {
         const handleClick = async () => {
             try {
                 await dispatch(addPhone(value)).unwrap();
-                dispatch(showNotification({message: "PhoneAdd phone successfully!", type: "success"}))
+                dispatch(showNotification({message: "PhoneAdd phone successfully!", type: "success"}));
             } catch (err) {
-                dispatch(showNotification({message: `PhoneAdd phone failed, ${err}`, type: "error"}))
+                dispatch(showNotification({message: `PhoneAdd phone failed, ${err}`, type: "error"}));
             }
             backPage();
         }
 
         const backPage = () => {
             // navigate(-1)
-            dispatch(resetState())
+            dispatch(resetState());
         }
 
         const handleDisable = () => {
-            return !isValid
+            return !isValid;
         }
+
         const checkIsValid = (isValid: boolean) => {
-            setIsValid(isValid)
+            setIsValid(isValid);
         }
 
         const btnAction = [

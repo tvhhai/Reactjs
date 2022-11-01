@@ -10,7 +10,7 @@ import {IPhone, PhoneState} from "../../model/IPhone";
 
 const initialState: PhoneState = {
     isLoading: true,
-    ids: null,
+    phoneId: null,
     listPhone: [],
     actionState: {},
     getPhoneDetail: {},
@@ -21,17 +21,16 @@ const phone = createSlice({
     name: 'phone',
     initialState,
     reducers: {
-        setActionState(state, action) {
+        setActionState: (state, action) => {
             state.actionState = action.payload
         },
-        saveId: (state, action) => {
-            console.log(action.payload)
-            state.ids = action.payload
+        setPhoneId: (state, action) => {
+            state.phoneId = action.payload
         },
         resetState: () => initialState
     },
     extraReducers: (builder) => {
-        builder.addCase(getListPhone.pending, (state, action) => {
+        builder.addCase(getListPhone.pending, (state) => {
             state.isLoading = true;
             state.listPhone = [];
         }).addCase(getListPhone.fulfilled, (state, action) => {
@@ -39,7 +38,7 @@ const phone = createSlice({
             state.listPhone = action.payload;
         }).addCase(getListPhone.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('rejected',action.payload)
+            console.log('rejected', action.payload)
             // state.error = action.error.message;
         }).addCase(addPhone.pending, (state, action) => {
             state.isLoading = true;
@@ -50,7 +49,7 @@ const phone = createSlice({
             state.listPhone = [...state.listPhone, action.payload];
         }).addCase(addPhone.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('rejected',action.payload)
+            console.log('rejected', action.payload)
             // state.error = action.error.message;
         }).addCase(deletePhone.pending, (state, action) => {
             state.isLoading = true;
@@ -60,7 +59,7 @@ const phone = createSlice({
         }).addCase(deletePhone.rejected, (state, action) => {
             state.isLoading = false;
             // state.error = action.error.message;
-            console.log('rejected',action.payload)
+            console.log('rejected', action.payload)
         }).addCase(getPhoneById.pending, (state, action) => {
             state.isLoading = true;
             state.listPhone = [];
@@ -70,7 +69,7 @@ const phone = createSlice({
         }).addCase(getPhoneById.rejected, (state, action) => {
             state.isLoading = false;
             // state.error = action.error.message;
-            console.log('rejected',action.payload)
+            console.log('rejected', action.payload)
         }).addCase(editPhone.pending, (state, action) => {
             state.isLoading = true;
             state.listPhone = [];
@@ -78,7 +77,7 @@ const phone = createSlice({
             state.isLoading = false;
         }).addCase(editPhone.rejected, (state, action) => {
             state.isLoading = false;
-            console.log('rejected',action.payload)
+            console.log('rejected', action.payload)
             // state.error = action.error.message;
         })
         //     .addDefaultCase((state, action) => {
@@ -150,5 +149,5 @@ export const editPhone = createAsyncThunk(
 
 
 export const getPhone = (state: any) => state.phone
-export const {setActionState, resetState, saveId} = phone.actions
+export const {setActionState, resetState, setPhoneId} = phone.actions
 export default phone.reducer

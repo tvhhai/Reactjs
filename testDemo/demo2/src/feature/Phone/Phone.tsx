@@ -6,13 +6,18 @@ import AppAgGrid from "../../component/common/AppAgGrid/AppAgGrid";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {getPhone, getListPhone, deletePhone, getPhoneById, setActionState, saveId} from "./PhoneSlice";
+import {
+    getPhone,
+    getListPhone,
+    deletePhone,
+    getPhoneById,
+    setActionState,
+    setPhoneId,
+} from "./PhoneSlice";
 import {showNotification} from "../../component/common/Notification/NotificationSlice";
 import _ from "lodash";
 import "./style.scss";
-import {AG_GRID_CHECKBOX_SELECTION} from "../../constant/commonConstant";
 import ImageCellRender from "./ImageCellRender";
-import {useParams} from "react-router-dom";
 import PhoneAdd from "./PhoneAdd";
 import PhoneEdit from "./PhoneEdit";
 
@@ -20,25 +25,19 @@ import PhoneEdit from "./PhoneEdit";
 const Phone = () => {
         const {t} = useTranslation();
         const navigate = useNavigate();
-        const {listPhone, isLoading, actionState, ids} = useSelector(getPhone);
+        const {listPhone, isLoading, actionState, phoneId} = useSelector(getPhone);
         const dispatch = useDispatch<any>();
         const gridRef = React.useRef<any>();
-        const [selectedRows, setSelectedRows] = React.useState([]);
-        const [id, setId] = React.useState(ids);
+        const [selectedRows, setSelectedRows] = React.useState<object[]>([]);
+        const [id, setId] = React.useState(phoneId);
         // const {id}: any = useParams();
         const initColumnHeader = [
-            // AG_GRID_CHECKBOX_SELECTION,
             {field: "name", headerName: t('phone.column.name')},
             {field: "price", headerName: t('phone.column.price')},
             {field: "image", headerName: t('phone.column.image'), cellRenderer: ImageCellRender},
         ]
 
         const [columnDefs, setColumnDefs] = React.useState(initColumnHeader);
-
-        // Trick switch language
-        React.useEffect(() => {
-            setColumnDefs(initColumnHeader);
-        }, [t('phone.column.name')]);
 
         const defaultColDef = {
             flex: 1,
@@ -52,8 +51,9 @@ const Phone = () => {
             setSelectedRows(gridRef.current.api.getSelectedRows());
         }, []);
 
-        const onGridReady = React.useCallback((params: any) => {
-            dispatch(getListPhone())
+        const onGridReady = React.useCallback(() => {
+            dispatch(getListPhone());
+            onSelectionChanged()
         }, []);
 
         const onPageSizeChanged = React.useCallback(() => {
@@ -62,24 +62,20 @@ const Phone = () => {
             gridRef.current.api.paginationSetPageSize(Number(value));
         }, []);
 
-        // React.useEffect(() => {
-        //     if (!_.isEmpty(actionState)) {
-        //
-        //         actionState.isCreate && navigate("/phone/add") ;
-        //         actionState.isEdit && navigate(`/phone/edit/${id}`);
-        //     }
-        // }, [actionState])
-
         const handleAdd = () => {
             dispatch(setActionState({isCreate: true, isEdit: false}));
             // navigate("/phone/add");
         };
 
         const handleDisable = (): boolean => {
+            let selected;
+            if (_.get(gridRef, 'current.api.getSelectedRows')) {
+                selected = gridRef.current.api.getSelectedRows();
+            }
             return !(
-                selectedRows &&
-                selectedRows.length > 0 &&
-                selectedRows.length <= 1
+                selected &&
+                selected.length > 0 &&
+                selected.length <= 1
             );
         };
 
@@ -87,16 +83,10 @@ const Phone = () => {
             const id = _.get(selectedRows[0], "id");
             // setId(id)
             dispatch(getPhoneById(id));
-            dispatch(saveId(id));
+            dispatch(setPhoneId(id));
             dispatch(setActionState({isCreate: false, isEdit: true}));
             // navigate(`/phone/edit/${id}`);
         };
-
-        React.useEffect(() => {
-            if (ids) {
-                setId(ids)
-            }
-        }, [ids]);
 
         const handleDelete = async () => {
             const id = _.get(selectedRows[0], "id");
@@ -108,6 +98,23 @@ const Phone = () => {
                 dispatch(showNotification({message: `Delete phone failed, ${err}`, type: "error"}))
             }
         };
+
+        React.useEffect(() => {
+            if (phoneId) {
+                setId(phoneId);
+            }
+        }, [phoneId]);
+
+        React.useEffect(() => {
+            if (_.get(gridRef, 'current.api.getSelectedRows')) {
+                setSelectedRows(gridRef.current.api.getSelectedRows())
+            }
+        }, []);
+
+        // Trick switch language
+        React.useEffect(() => {
+            setColumnDefs(initColumnHeader);
+        }, [t('phone.column.name')]);
 
         const action = {
             add: {
@@ -150,9 +157,7 @@ const Phone = () => {
                     columnDefs={columnDefs}
                     defaultColDef={defaultColDef}
                     // rowSelection={"multiple"}
-
                     onSelectionChanged={onSelectionChanged}
-                    paginationPageSize={5}
                     //  -----------  custom -----------------
                     selectMultiWithCheckbox={true}
                     refresh={onGridReady}

@@ -1,4 +1,7 @@
 {
+  "nameTitle": "This is your name",
+  "userMessagesUnread_one": "Hello <1>{{name}}</1>, you have {{count}} unread message. <5>Go to message</5>.",
+  "userMessagesUnread_other": "Hello <1>{{name}}</1>, you have {{count}} unread messages.  <5>Go to messages</5>.",
   "common": {
     "title": "",
     "intro": "",
@@ -10,6 +13,8 @@
     "refresh": "Refresh",
     "fullScreen": "Full Screen",
     "selectColShow": "Select Columns to Show",
+    "pageInform1": "Showing <1>{{fromIndex}}</1> - <1>{{toIndex}}</1> of <1>{{rowCount}}</1> records",
+    "pageInform2": "Page <1>{{currentPage}}</1> of <3>{{totalPage}}</3>",
     "btn": {
       "add": "Add",
       "cancel": "Cancel",
