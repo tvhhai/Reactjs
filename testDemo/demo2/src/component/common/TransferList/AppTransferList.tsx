@@ -11,7 +11,7 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-import {getStateAg} from "../AppAgGrid/AppAgGridSlice";
+import {getStateAg} from "../AgGrid/AppAgGridSlice";
 import AppIconBtn from "../Button/AppIconBtn";
 import './style.scss';
 import {useSelector} from "react-redux";

@@ -1,6 +1,6 @@
 import axios from "axios";
-import {showNotification} from "../component/common/Notification/NotificationSlice";
 import store from '../app/store';
+import NotificationUtils from "../component/common/Notification/Notification";
 
 const {dispatch} = store;
 
@@ -22,7 +22,7 @@ instance.interceptors.request.use(request => {
     return request;
 }, error => {
     console.log(error);
-    dispatch(showNotification({message: `${error}`, type: "error"}));
+    NotificationUtils.error(` ${error}`);
     return Promise.reject(error);
 });
 
@@ -32,7 +32,7 @@ instance.interceptors.response.use(response => {
     return response;
 }, error => {
     console.log(error);
-    dispatch(showNotification({message: `${error}`, type: "error"}));
+    NotificationUtils.error(` ${error}`);
     return Promise.reject(error);
 });
 

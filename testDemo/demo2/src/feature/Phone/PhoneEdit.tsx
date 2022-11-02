@@ -1,26 +1,26 @@
 import React from 'react';
-import {useNavigate} from "react-router";
-import {useDispatch, useSelector} from "react-redux";
-import {getPhoneById, editPhone, getPhone, resetState} from "./PhoneSlice";
-import {showNotification} from "../../component/common/Notification/NotificationSlice";
-import {useParams} from 'react-router-dom';
-import {IPhone} from "../../model/IPhone";
-import {useTranslation} from "react-i18next";
+import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { getPhoneById, editPhone, getPhone, resetState } from "./PhoneSlice";
+import { useParams } from 'react-router-dom';
+import { IPhone } from "../../model/IPhone";
+import { useTranslation } from "react-i18next";
 import CardLayout from "../../component/common/CardLayout/CardLayout";
 import PhoneFormAction from "./PhoneFormAction";
 import _ from "lodash";
-import {compareObj} from "../../helper/commonHelper";
-import AppLoader from "../../component/common/AppLoader/AppLoader";
+import { compareObj } from "../../helper/commonHelper";
+import AppLoader from "../../component/common/Loader/AppLoader";
+import NotificationUtils from "../../component/common/Notification/Notification";
 
 interface props {
     id?: number
 }
 
-const PhoneEdit = ({id}: props) => {
-    const {t} = useTranslation();
+const PhoneEdit = ({ id }: props) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useDispatch<any>();
-    const {getPhoneDetail, isLoading} = useSelector(getPhone);
+    const { getPhoneDetail, isLoading } = useSelector(getPhone);
     const [value, setValue] = React.useState<IPhone>(getPhoneDetail);
     const [valueBk, setValueBk] = React.useState<IPhone>(_.cloneDeep(value));
     const [isValid, setIsValid] = React.useState<boolean>();
@@ -42,10 +42,10 @@ const PhoneEdit = ({id}: props) => {
 
     const handleClick = async () => {
         try {
-            await dispatch(editPhone({id, value}))
-            dispatch(showNotification({message: "PhoneEdit phone successfully!", type: "success"}))
+            await dispatch(editPhone({ id, value }))
+            NotificationUtils.success('PhoneEdit phone successfully!');
         } catch (err) {
-            dispatch(showNotification({message: `Edit phone failed, ${err}`, type: "error"}))
+            NotificationUtils.error(`Edit phone failed, ${err}`);
         }
         dispatch(resetState())
         backPage();
@@ -84,8 +84,8 @@ const PhoneEdit = ({id}: props) => {
 
     return (
         <CardLayout titleHeader={t('phone.edit')} btnFooter={btnAction}>
-            {isLoading ? <AppLoader/> : <></>}
-            {!_.isEmpty(value) && <PhoneFormAction value={value} setValue={setValue} checkIsValidForm={checkIsValid}/>}
+            <AppLoader isLoading={isLoading} />
+            {!_.isEmpty(value) && <PhoneFormAction value={value} setValue={setValue} checkIsValidForm={checkIsValid} />}
         </CardLayout>
     );
 };

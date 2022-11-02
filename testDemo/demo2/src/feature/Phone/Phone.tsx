@@ -2,7 +2,7 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router";
-import AppAgGrid from "../../component/common/AppAgGrid/AppAgGrid";
+import AppAgGrid from "../../component/common/AgGrid/AppAgGrid";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -14,12 +14,12 @@ import {
     setActionState,
     setPhoneId,
 } from "./PhoneSlice";
-import {showNotification} from "../../component/common/Notification/NotificationSlice";
 import _ from "lodash";
 import "./style.scss";
 import ImageCellRender from "./ImageCellRender";
 import PhoneAdd from "./PhoneAdd";
 import PhoneEdit from "./PhoneEdit";
+import NotificationUtils from '../../component/common/Notification/Notification';
 
 
 const Phone = () => {
@@ -53,13 +53,6 @@ const Phone = () => {
 
         const onGridReady = React.useCallback(() => {
             dispatch(getListPhone());
-            onSelectionChanged()
-        }, []);
-
-        const onPageSizeChanged = React.useCallback(() => {
-            var value = (document.getElementById("page-size") as HTMLInputElement)
-                .value;
-            gridRef.current.api.paginationSetPageSize(Number(value));
         }, []);
 
         const handleAdd = () => {
@@ -92,10 +85,10 @@ const Phone = () => {
             const id = _.get(selectedRows[0], "id");
             try {
                 await dispatch(deletePhone(id)).unwrap();
-                dispatch(showNotification({message: "Delete phone successfully!", type: "success"}))
+                NotificationUtils.success('Success');
                 dispatch(getListPhone());
             } catch (err) {
-                dispatch(showNotification({message: `Delete phone failed, ${err}`, type: "error"}))
+                NotificationUtils.error(err);
             }
         };
 

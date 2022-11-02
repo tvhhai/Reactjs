@@ -8,7 +8,7 @@ import {
 import TransferList from "../TransferList/AppTransferList";
 import i18n from "i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {getStateAg, setCancel} from "../AppAgGrid/AppAgGridSlice";
+import {getStateAg, setCancel} from "../AgGrid/AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 
 interface ConfirmationDialogRawProps {

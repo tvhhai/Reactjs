@@ -17,7 +17,9 @@
       "add": "Add",
       "cancel": "Cancel",
       "edit": "Edit",
-      "save": "Save"
+      "save": "Save",
+      "apply": "Apply",
+      "ok": "OK"
     },
     "validate": {
       "requite": "This field is requite",

@@ -21,7 +21,7 @@ const PhoneFormAction = ({value, setValue, checkIsValidForm,}: PhoneValueProps) 
         name: yup.string().required('common.validate.requite'),
         price: yup.string().matches(/^[0-9]+$/, "common.validate.number")
             .max(9, 'common.validate.maxNumberLength').required('common.validate.requite'),
-        image: yup.string().required(t('common.validate.requite')),
+        image: yup.string().required('common.validate.requite'),
     });
 
     const {

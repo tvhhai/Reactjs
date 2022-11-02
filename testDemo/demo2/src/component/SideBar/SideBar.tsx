@@ -86,7 +86,7 @@ export default function PersistentDrawerLeft() {
     return (
         <Box sx={{display: "flex"}}>
             <CssBaseline/>
-            <AppBar position="fixed" open={open} sx={{background: "white", color: "black", zIndex: 9}}>
+            <AppBar position="fixed" open={open} sx={{background: "white", color: "black", zIndex: 10}}>
                 <Toolbar className='justify-content-between'>
                     {
                         open ? (
@@ -117,7 +117,7 @@ export default function PersistentDrawerLeft() {
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
-                    zIndex: 9,
+                    zIndex: 0,
                     "& .MuiDrawer-paper": {
                         width: drawerWidth,
                         boxSizing: "border-box",

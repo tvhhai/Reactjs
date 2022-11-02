@@ -11,6 +11,17 @@
 
   .app-ag-grid-toolbar {
     margin-bottom: 24px;
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+    }
   }
 
   .app-ag-grid-body {
@@ -25,7 +36,9 @@
     padding: 0 8px;
 
     .pull-left {
-      padding: 8px 0 ;
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
     }
 
     .page-inform {
@@ -35,6 +48,7 @@
     .app-ag-grid-pager-nav {
       display: flex;
       align-items: center;
+      justify-content: end;
     }
   }
 
@@ -55,4 +69,8 @@
 }
 
 
-
+@media only screen and (max-width: 960px) {
+  .toolbar-right {
+    justify-content: start !important;
+  }
+}

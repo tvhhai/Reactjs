@@ -1,42 +1,58 @@
-import {
-    Snackbar,
-    Alert,
-    SnackbarCloseReason,
-    IconButton,
-    Button,
-} from "@mui/material";
 import React from "react";
-import {useSelector} from "react-redux";
-import {getAlert} from "./NotificationSlice";
-import {useSnackbar} from "notistack";
 import CloseIcon from "@mui/icons-material/Close";
+import {IconButton} from "@mui/material";
+import {useSnackbar, VariantType, WithSnackbarProps} from "notistack";
 
-export const Notification = (): JSX.Element => {
-    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+interface IProps {
+    setUseNotifyRef: (showSnackbar: WithSnackbarProps) => void;
+}
 
-    const notification = useSelector(getAlert);
+const InnerNotificationUtilsConfigurator: React.FC<IProps> = (props: IProps) => {
+    props.setUseNotifyRef(useSnackbar());
+    return null;
+};
 
+let useNotifyRef: WithSnackbarProps;
+
+const setUseNotifyRef = (useNotifyRefProp: WithSnackbarProps) => {
+    useNotifyRef = useNotifyRefProp;
+};
+
+export const NotificationUtilsConfigurator = () => {
     return (
-        <span className='d-none'>
-            {
-                notification.open && notification.message ? enqueueSnackbar(notification.message, {
-                    // variant could be success, error, warning, info, or default
-                    variant: notification.type,
-                    action: (key) => (
-                        <React.Fragment>
-                            <IconButton
-                                size="small"
-                                aria-label="close"
-                                color="inherit"
-                                onClick={() => closeSnackbar(key)}
-                            >
-                                <CloseIcon fontSize="small"/>
-                            </IconButton>
-                        </React.Fragment>
-                    ),
-                }) : (<span className='d-none'></span>)
-            }
-        </span>
-
+        <InnerNotificationUtilsConfigurator setUseNotifyRef={setUseNotifyRef}/>
     );
+};
+
+export default {
+    success(msg: string | any) {
+        this.toast(msg, "success");
+    },
+    warning(msg: string | any) {
+        this.toast(msg, "warning");
+    },
+    info(msg: string | any) {
+        this.toast(msg, "info");
+    },
+    error(msg: string | any) {
+        this.toast(msg, "error");
+    },
+    toast(msg: string, variant: VariantType = "default") {
+        useNotifyRef.enqueueSnackbar(msg, {
+            variant,
+            autoHideDuration: 3000,
+            action: (key) => (
+                <React.Fragment>
+                    <IconButton
+                        size="small"
+                        aria-label="close"
+                        color="inherit"
+                        onClick={() => useNotifyRef.closeSnackbar(key)}
+                    >
+                        <CloseIcon fontSize="small"/>
+                    </IconButton>
+                </React.Fragment>
+            ),
+        });
+    },
 };
