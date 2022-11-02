@@ -18,7 +18,7 @@ const PhoneFormAction = ({value, setValue, checkIsValidForm,}: PhoneValueProps) 
     const {t} = useTranslation();
 
     const validationSchema = yup.object().shape({
-        name: yup.string().trim().required('common.validate.requite'),
+        name: yup.string().required('common.validate.requite'),
         price: yup.string().matches(/^[0-9]+$/, "common.validate.number")
             .max(9, 'common.validate.maxNumberLength').required('common.validate.requite'),
         // price: yup.number()
@@ -47,7 +47,10 @@ const PhoneFormAction = ({value, setValue, checkIsValidForm,}: PhoneValueProps) 
                     {...register("name", {
                         // https://github.com/react-hook-form/react-hook-form/releases/tag/v7.16.0
                         // onChange should be in the register
-                        onChange: (e) => setValue({...value, name: e.target.value})(e.target.value.trim()),
+                        onChange: (e) => {
+                            const name = e.target.value && e.target.value.trimLeft();
+                            setValue({...value, name: name})
+                        },
                     })}
                     fullWidth
                     placeholder={"Enter Name"}
