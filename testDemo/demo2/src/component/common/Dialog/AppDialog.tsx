@@ -22,6 +22,9 @@ interface dialogProps {
     labelApply?: string,
     children?: React.ReactNode,
     textContent?: string,
+    open: boolean,
+    closeFunction?: Function,
+    applyFunction?: (param?: any) => void
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -30,7 +33,7 @@ const Transition = React.forwardRef(function Transition(
     },
     ref: React.Ref<unknown>,
 ) {
-    return <Slide direction="down" ref={ref} {...props} />;
+    return <Slide direction="down" ref={ref} {...props}  />;
 });
 
 const AppDialog = (props: dialogProps) => {
@@ -44,25 +47,23 @@ const AppDialog = (props: dialogProps) => {
         labelCancel = 'common.btn.cancel',
         labelApply = 'common.btn.apply',
         children,
-        textContent
-    }
-        = props
-    const [open, setOpen] = React.useState(false);
+        textContent,
+        open,
+        closeFunction,
+        applyFunction
+    } = props
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
 
     const handleClose = () => {
-        setOpen(false);
+        closeFunction?.()
+    };
+
+    const handleApply = () => {
+        applyFunction?.()
     };
 
     return (
         <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Slide in alert dialog
-            </Button>
-
             <Dialog
                 sx={{
                     "& .MuiDialog-container": {
@@ -105,7 +106,7 @@ const AppDialog = (props: dialogProps) => {
                             </Button>
                         }
                         {
-                            !suppressBtnApply && <Button variant='contained' onClick={handleClose}><>
+                            !suppressBtnApply && <Button variant='contained' onClick={handleApply}><>
                                 {i18n.t(labelApply)}
                             </>
                             </Button>

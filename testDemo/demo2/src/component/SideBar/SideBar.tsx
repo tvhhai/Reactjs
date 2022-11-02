@@ -1,7 +1,6 @@
 import React from 'react';
 import {Outlet} from "react-router-dom";
 import {styled, useTheme} from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from "@mui/material/AppBar";
@@ -15,6 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import "./SideBar.style.scss"
+import {Stack} from "@mui/material";
 
 
 const drawerWidth = 240;
@@ -84,7 +84,7 @@ export default function PersistentDrawerLeft() {
 
 
     return (
-        <Box sx={{display: "flex"}}>
+        <Stack direction="row">
             <CssBaseline/>
             <AppBar position="fixed" open={open} sx={{background: "white", color: "black", zIndex: 10}}>
                 <Toolbar className='justify-content-between'>
@@ -138,6 +138,6 @@ export default function PersistentDrawerLeft() {
                     <Outlet/>
                 </div>
             </Main>
-        </Box>
+        </Stack>
     );
 }

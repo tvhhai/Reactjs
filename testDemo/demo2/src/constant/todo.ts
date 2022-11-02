@@ -1,8 +1,8 @@
 
 const TODO_BTN_FILTER = [
-    { type: "all", label: "All", isActive: true },
-    { type: "active", label: "Active", isActive: false },
-    { type: "completed", label: "Completed", isActive: false },
+    { type: "all", label: "All" },
+    { type: "active", label: "Active" },
+    { type: "completed", label: "Completed" },
 ]
 
 

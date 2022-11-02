@@ -10,16 +10,11 @@ interface Props {
 
 const TodoInput = ({todoListProp, addTodo}: Props) => {
     const [todoValue, setTodoValue] = React.useState('');
-    const [todoList, setTodoList] = React.useState(todoListProp);
-
-    React.useEffect(() => {
-        setTodoList(todoListProp)
-    }, [todoListProp]);
 
     const handleAddTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.keyCode === ENTER_KEY && todoValue) {
             let value = todoValue && todoValue.trim();
-            addTodo?.({id: todoList.length + 1, title: value, completed: false})
+            addTodo?.({id: todoListProp.length + 1, title: value, completed: false})
             setTodoValue('');
         }
     }

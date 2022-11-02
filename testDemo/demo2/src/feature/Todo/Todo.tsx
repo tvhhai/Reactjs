@@ -1,7 +1,7 @@
 import React from 'react';
-import '../component/Todo/Todo.scss'
-import TodoList from "../component/Todo/TodoList";
-import CardLayout from "../component/common/CardLayout/CardLayout";
+import './Todo.scss'
+import TodoList from "./TodoList";
+import CardLayout from "../../component/common/CardLayout/CardLayout";
 import i18n from "i18next";
 
 const Todo = () => {

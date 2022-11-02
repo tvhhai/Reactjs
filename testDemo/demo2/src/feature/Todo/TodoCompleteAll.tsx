@@ -9,20 +9,14 @@ interface Props {
 }
 
 const TodoCompleteAll = ({isChecked, completeAllTodo}: Props) => {
-    const [checked, setChecked] = React.useState(isChecked);
-
-    React.useEffect(() => {
-        setChecked(isChecked)
-    }, [isChecked]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         completeAllTodo?.(event.target.checked)
-        setChecked(event.target.checked);
     };
 
     return (
         <div className="todoDone">
-            <Checkbox checked={checked}
+            <Checkbox checked={isChecked}
                       icon={<DoneOutlineIcon />}
                       checkedIcon={<DoneAllIcon />}
                       onChange={handleChange}

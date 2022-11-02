@@ -32,7 +32,7 @@ const TodoList = () => {
         }
     });
 
-    const addTodo = (todo: { id: number, title: string, completed: boolean }) => {
+    const addTodo = (todo: ITodo) => {
         setTodoList(prevState => [...prevState, todo]);
     }
 

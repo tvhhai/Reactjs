@@ -4,7 +4,7 @@ import SideBar from "../component/SideBar/SideBar";
 import Home from "../feature/Home";
 import Collapse from "../feature/Collapse";
 import About from "../feature/About";
-import Todo from "../feature/Todo";
+import Todo from "../feature/Todo/Todo";
 import Login from "../feature/Login";
 import Register from "../feature/Register";
 import Weather from "../feature/Weather/Weather";

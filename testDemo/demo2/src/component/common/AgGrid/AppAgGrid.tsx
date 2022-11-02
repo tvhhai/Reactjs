@@ -1,5 +1,5 @@
 import React from "react";
-import { AgGridReact } from "ag-grid-react";
+import {AgGridReact} from "ag-grid-react";
 
 import "ag-grid-community";
 import "./style.scss";
@@ -18,19 +18,18 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import _ from "lodash";
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
-import { AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS } from "../../../constant/commonConstant";
-import { saveColumns, saveHideColumns } from "./AppAgGridSlice";
-import { arrNotEmpty } from "../../../helper/commonHelper";
+import {AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/commonConstant";
+import {saveColumns, saveHideColumns} from "./AppAgGridSlice";
+import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
-import { Trans } from "react-i18next";
+import {Trans} from "react-i18next";
 import i18n from "i18next";
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 
 interface AgGridProps {
-    gridRef: any;
     rowData: object[];
     columnDefs: object[];
     defaultColDef: object;
@@ -48,23 +47,22 @@ interface AgGridProps {
 }
 
 const AppAgGrid = ({
-    gridRef,
-    rowData,
-    columnDefs,
-    defaultColDef,
-    paginationPageSize,
-    // rowSelection,
-    onSelectionChanged,
-    onGridReady,
-    refresh,
-    searchAll,
-    title,
-    toolbarLeftAction,
-    classNameApp,
-    selectMultiWithCheckbox,
-    loading,
-}: AgGridProps) => {
-
+                       rowData,
+                       columnDefs,
+                       defaultColDef,
+                       paginationPageSize,
+                       // rowSelection,
+                       onSelectionChanged,
+                       onGridReady,
+                       refresh,
+                       searchAll,
+                       title,
+                       toolbarLeftAction,
+                       classNameApp,
+                       selectMultiWithCheckbox,
+                       loading,
+                   }: AgGridProps) => {
+    const gridRef = React.useRef<any>();
     const dispatch = useDispatch<any>();
     const [fullScreen, setFulScreen] = React.useState(false);
     const [columnDefsWithCheckbox, setColumnDefs] = React.useState(columnDefs);
@@ -75,8 +73,6 @@ const AppAgGrid = ({
     const [totalPage, setTotalPage] = React.useState<number>(0);
     const [fromIndex, setFromIndex] = React.useState<number>(currentPage);
     const [toIndex, setToIndex] = React.useState<number>(pageSize);
-    const [domLayout, setDomLayout] = React.useState<"autoHeight" | "normal" | "print" | undefined>('autoHeight');
-
 
     // TODO: Handle search all ag grid.
     const handleSearch = _.debounce((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,7 +99,7 @@ const AppAgGrid = ({
     };
 
     const onBtnApply = (val: any) => {
-        const { columns, hideColumns } = val;
+        const {columns, hideColumns} = val;
         dispatch(saveColumns(columns));
         dispatch(saveHideColumns(hideColumns));
         const columnDefs = [AG_GRID_CHECKBOX_SELECTION, ...columns];
@@ -155,18 +151,12 @@ const AppAgGrid = ({
         }
         dispatch(saveColumns(columnDefs))
     }, [columnDefs]);
-    const Item = styled(Paper)(({ theme }) => ({
-        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-        ...theme.typography.body2,
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    }));
+
     return (
         <div
             className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen" : ""}`}
         >
-            <AppLoader isLoading={loading} />
+            <AppLoader isLoading={loading}/>
             <CardLayout titleHeader={title}>
                 <>
                     <div className="app-ag-grid-toolbar">
@@ -193,11 +183,11 @@ const AppAgGrid = ({
                                     {searchAll ? (
                                         <Paper
                                             component="form"
-                                            sx={{ display: "flex", alignItems: "center", }}
+                                            sx={{display: "flex", alignItems: "center",}}
                                         >
                                             <TextField size="small" id="outlined-basic" type='search' variant="outlined"
-                                                placeholder={i18n.t('common.searchAll')} onChange={handleSearch}
-                                                fullWidth
+                                                       placeholder={i18n.t('common.searchAll')} onChange={handleSearch}
+                                                       fullWidth
                                             />
                                         </Paper>
                                     ) : (
@@ -210,7 +200,7 @@ const AppAgGrid = ({
                                         tooltip={"common.fullScreen"}
                                         onClick={tableFullScreen}
                                     >
-                                        {fullScreen ? <CloseFullscreenIcon /> : <OpenInFullIcon />}
+                                        {fullScreen ? <CloseFullscreenIcon/> : <OpenInFullIcon/>}
                                     </AppIconBtn>
 
                                     <AppIconBtn
@@ -219,7 +209,7 @@ const AppAgGrid = ({
                                         tooltip={"common.setting"}
                                         onClick={openDialogSetting}
                                     >
-                                        <SettingsIcon />
+                                        <SettingsIcon/>
                                     </AppIconBtn>
 
                                     {refresh ? (
@@ -229,7 +219,7 @@ const AppAgGrid = ({
                                             onClick={refresh}
                                             tooltip={"common.refresh"}
                                         >
-                                            <RefreshIcon />
+                                            <RefreshIcon/>
                                         </AppIconBtn>
                                     ) : (
                                         <></>
@@ -270,17 +260,17 @@ const AppAgGrid = ({
                             // pivotMode={true}
                             onGridReady={onGridReady}
 
-                        // TODO: research
-                        // localeText={localeText}
-                        // paginationAutoPageSize={true}
-                        // suppressPaginationPanel={true}
-                        // cacheQuickFilter={true}
-                        // suppressLoadingOverlay={true}
-                        // suppressNoRowsOverlay={true}
-                        // overlayLoadingTemplate={'noRowsOverlayComponent'}
-                        // overlayNoRowsTemplate={noRowsOverlayComponent}
-                        // noRowsOverlayComponent={noRowsOverlayComponent}
-                        // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
+                            // TODO: research
+                            // localeText={localeText}
+                            // paginationAutoPageSize={true}
+                            // suppressPaginationPanel={true}
+                            // cacheQuickFilter={true}
+                            // suppressLoadingOverlay={true}
+                            // suppressNoRowsOverlay={true}
+                            // overlayLoadingTemplate={'noRowsOverlayComponent'}
+                            // overlayNoRowsTemplate={noRowsOverlayComponent}
+                            // noRowsOverlayComponent={noRowsOverlayComponent}
+                            // noRowsOverlayComponentParams={noRowsOverlayComponentParams}
                         />
 
                         <div className="app-ag-grid-paging">
@@ -305,7 +295,7 @@ const AppAgGrid = ({
                                             <Trans
                                                 i18nKey="common.pageInform1"
                                             >
-                                                Showing <strong>{{ fromIndex }}</strong> - <strong>{{ toIndex }}</strong> of <strong>{{ rowCount }}</strong> records
+                                                Showing <strong>{{fromIndex}}</strong> - <strong>{{toIndex}}</strong> of <strong>{{rowCount}}</strong> records
                                             </Trans>
                                         </span>
                                     </div>
@@ -317,19 +307,19 @@ const AppAgGrid = ({
                                             <Trans
                                                 i18nKey="common.pageInform2"
                                             >
-                                                Page <strong>{{ currentPage }}</strong> of <strong>{{ totalPage }}</strong>
+                                                Page <strong>{{currentPage}}</strong> of <strong>{{totalPage}}</strong>
                                             </Trans>
 
                                         </span>
                                         <Stack spacing={2}>
                                             <Pagination count={totalPage}
-                                                page={currentPage}
-                                                siblingCount={0} boundaryCount={0}
-                                                variant="outlined"
-                                                color="primary"
-                                                shape="rounded"
-                                                showFirstButton showLastButton
-                                                onChange={handleChange} />
+                                                        page={currentPage}
+                                                        siblingCount={0} boundaryCount={0}
+                                                        variant="outlined"
+                                                        color="primary"
+                                                        shape="rounded"
+                                                        showFirstButton showLastButton
+                                                        onChange={handleChange}/>
                                         </Stack>
                                     </div>
                                 </Grid>

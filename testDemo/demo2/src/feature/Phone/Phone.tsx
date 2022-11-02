@@ -1,7 +1,6 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router";
 import AppAgGrid from "../../component/common/AgGrid/AppAgGrid";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
@@ -20,17 +19,18 @@ import ImageCellRender from "./ImageCellRender";
 import PhoneAdd from "./PhoneAdd";
 import PhoneEdit from "./PhoneEdit";
 import NotificationUtils from '../../component/common/Notification/Notification';
+import AppDialog from "../../component/common/Dialog/AppDialog";
 
 
 const Phone = () => {
         const {t} = useTranslation();
-        const navigate = useNavigate();
         const {listPhone, isLoading, actionState, phoneId} = useSelector(getPhone);
         const dispatch = useDispatch<any>();
-        const gridRef = React.useRef<any>();
         const [selectedRows, setSelectedRows] = React.useState<object[]>([]);
         const [id, setId] = React.useState(phoneId);
-        // const {id}: any = useParams();
+        const [openDialog, setOpenDialog] = React.useState(false);
+        const [gridApi, setGridApi] = React.useState<any>();
+
         const initColumnHeader = [
             {field: "name", headerName: t('phone.column.name')},
             {field: "price", headerName: t('phone.column.price')},
@@ -48,10 +48,14 @@ const Phone = () => {
         };
 
         const onSelectionChanged = React.useCallback(() => {
-            setSelectedRows(gridRef.current.api.getSelectedRows());
-        }, []);
+            if (gridApi) {
+                setSelectedRows(gridApi.getSelectedRows());
+            }
 
-        const onGridReady = React.useCallback(() => {
+        }, [gridApi]);
+
+        const onGridReady = React.useCallback((param: any) => {
+            setGridApi(param.api)
             dispatch(getListPhone());
         }, []);
 
@@ -62,8 +66,8 @@ const Phone = () => {
 
         const handleDisable = (): boolean => {
             let selected;
-            if (_.get(gridRef, 'current.api.getSelectedRows')) {
-                selected = gridRef.current.api.getSelectedRows();
+            if (_.get(gridApi, 'getSelectedRows')) {
+                selected = gridApi.getSelectedRows();
             }
             return !(
                 selected &&
@@ -82,6 +86,14 @@ const Phone = () => {
         };
 
         const handleDelete = async () => {
+            setOpenDialog(true);
+        };
+
+        const handleClose = () => {
+            setOpenDialog(false);
+        };
+
+        const handleApply = async () => {
             const id = _.get(selectedRows[0], "id");
             try {
                 await dispatch(deletePhone(id)).unwrap();
@@ -89,20 +101,16 @@ const Phone = () => {
                 dispatch(getListPhone());
             } catch (err) {
                 NotificationUtils.error(err);
+            } finally {
+                handleClose()
             }
-        };
+        }
 
         React.useEffect(() => {
             if (phoneId) {
                 setId(phoneId);
             }
         }, [phoneId]);
-
-        React.useEffect(() => {
-            if (_.get(gridRef, 'current.api.getSelectedRows')) {
-                setSelectedRows(gridRef.current.api.getSelectedRows())
-            }
-        }, []);
 
         // Trick switch language
         React.useEffect(() => {
@@ -144,11 +152,9 @@ const Phone = () => {
                 {actionState.isEdit && <PhoneEdit id={id}/>}
                 {_.isEmpty(actionState) && <AppAgGrid
                     rowData={listPhone}
-                    gridRef={gridRef}
                     onGridReady={onGridReady}
                     columnDefs={columnDefs}
                     defaultColDef={defaultColDef}
-                    // rowSelection={"multiple"}
                     onSelectionChanged={onSelectionChanged}
                     //  -----------  custom -----------------
                     selectMultiWithCheckbox={true}
@@ -160,6 +166,11 @@ const Phone = () => {
                 />
                 }
 
+                <AppDialog i18nKeyTitle='common.delete'
+                           open={openDialog}
+                           closeFunction={handleClose}
+                           applyFunction={handleApply}
+                />
             </div>
         );
     }

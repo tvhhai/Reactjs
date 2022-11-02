@@ -21,16 +21,12 @@ const TodoFilter = ({count, hasCompleted, filterTodo, clearTodoCompleted}: Props
     }
 
     const [activeTodoWord, setActiveTodoWord] = React.useState<any>(pluralize(count, 'item'));
-    const [filterButtons, setFilterButtons] = React.useState<ITodoBtn[]>(TODO_BTN_FILTER);
+    const [filterButtons] = React.useState<ITodoBtn[]>(TODO_BTN_FILTER);
+    const [activeType, setActiveType] = React.useState<string>('all');
 
 
     const handleFilter = (typeFilter: string) => {
-        filterButtons.map((v) => {
-            v.isActive = false;
-            if (v.type === typeFilter)
-                return v.isActive = true;
-        });
-        setFilterButtons([...filterButtons]);
+        setActiveType(typeFilter)
         filterTodo?.(typeFilter)
     }
 
@@ -48,7 +44,7 @@ const TodoFilter = ({count, hasCompleted, filterTodo, clearTodoCompleted}: Props
                     {
                         filterButtons.map((val, i) => {
                             return (
-                                <Button key={i} className={`filterBtn ${val.isActive ? 'active' : ''}`}
+                                <Button key={i} className={`filterBtn ${val.type === activeType? 'active' : ''}`}
                                         onClick={() => handleFilter(val.type)}
                                 >{val.label}</Button>
                             )

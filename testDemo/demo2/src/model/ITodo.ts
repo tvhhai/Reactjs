@@ -7,5 +7,4 @@ export interface ITodo {
 export interface ITodoBtn {
     type: string,
     label: string,
-    isActive: boolean
 }

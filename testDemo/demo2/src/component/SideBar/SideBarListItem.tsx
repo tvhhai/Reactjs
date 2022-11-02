@@ -1,10 +1,9 @@
 import React from "react";
 import {useLocation} from "react-router-dom";
 import {
-    Box,
     Divider,
     List,
-    ListItemText,
+    ListItemText, Stack,
 } from "@mui/material";
 import {SideBarConfigList} from "./SideBarConfigList";
 import {useTranslation} from "react-i18next";
@@ -46,7 +45,6 @@ function SideBarListItem({list}: any) {
                 app.active = false;
                 if (app.child && app.child.length > 0) {
                     app.child.map((child) => {
-                        console.log()
                         if (location.pathname.includes(child.url)) {
                             app.expand = true;
                             app.active = true;
@@ -60,9 +58,9 @@ function SideBarListItem({list}: any) {
 
     return (
         <List className={"sideBar"}>
-            <Box sx={{height: '64px'}}>
+            <Stack sx={{height: '64px'}}>
                 <img src={logo} className={'img-fit'} alt={''}/>
-            </Box>
+            </Stack>
             <Divider/>
             {
                 lists.map((sectionItem) => (
