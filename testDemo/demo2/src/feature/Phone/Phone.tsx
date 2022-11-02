@@ -157,7 +157,8 @@ const Phone = () => {
                     defaultColDef={defaultColDef}
                     onSelectionChanged={onSelectionChanged}
                     //  -----------  custom -----------------
-                    selectMultiWithCheckbox={true}
+                    selectMultiWithCheckbox={false}
+                    selectSingleWithoutCheckbox={true}
                     refresh={onGridReady}
                     searchAll={true}
                     title={t("phone.title")}

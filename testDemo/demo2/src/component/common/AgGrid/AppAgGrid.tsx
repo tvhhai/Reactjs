@@ -43,6 +43,7 @@ interface AgGridProps {
     toolbarLeftAction?: object[];
     classNameApp?: string;
     selectMultiWithCheckbox?: boolean;
+    selectSingleWithoutCheckbox?: boolean;
     loading: boolean;
 }
 
@@ -60,6 +61,7 @@ const AppAgGrid = ({
                        toolbarLeftAction,
                        classNameApp,
                        selectMultiWithCheckbox,
+                       selectSingleWithoutCheckbox,
                        loading,
                    }: AgGridProps) => {
     const gridRef = React.useRef<any>();
@@ -181,9 +183,7 @@ const AppAgGrid = ({
                             <Grid item xs={12} md={8}>
                                 <div className="toolbar-right">
                                     {searchAll ? (
-                                        <Paper
-                                            component="form"
-                                            sx={{display: "flex", alignItems: "center",}}
+                                        <Paper sx={{display: "flex", alignItems: "center",}}
                                         >
                                             <TextField size="small" id="outlined-basic" type='search' variant="outlined"
                                                        placeholder={i18n.t('common.searchAll')} onChange={handleSearch}
@@ -250,7 +250,7 @@ const AppAgGrid = ({
                             ref={gridRef}
                             rowData={rowData}
                             columnDefs={selectMultiWithCheckbox ? columnDefsWithCheckbox : columnDefs}
-                            rowSelection={selectMultiWithCheckbox ? 'multiple' : undefined}
+                            rowSelection={selectMultiWithCheckbox ? 'multiple' : selectSingleWithoutCheckbox ? 'single' : undefined}
                             defaultColDef={defaultColDef}
                             onSelectionChanged={onSelectionChanged}
                             onPaginationChanged={onPaginationChanged}
