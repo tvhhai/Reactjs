@@ -67,7 +67,7 @@ const Phone = () => {
 
         const handleDisable = (): boolean => {
             let selected;
-            if (_.get(gridApi, 'getSelectedRows')) {
+            if (_.get(gridApi, 'getSelectedRows') && !gridApi.destroyCalled) {
                 selected = gridApi.getSelectedRows();
             }
             return !(
@@ -99,7 +99,7 @@ const Phone = () => {
             try {
                 await dispatch(deletePhone(id)).unwrap();
                 NotificationUtils.success('Success');
-                dispatch(getListPhone());
+                // dispatch(getListPhone());
             } catch (err) {
                 NotificationUtils.error(err);
             } finally {

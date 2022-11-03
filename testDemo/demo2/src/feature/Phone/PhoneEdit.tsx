@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { getPhoneById, editPhone, getPhone, resetState } from "./PhoneSlice";
-import { useParams } from 'react-router-dom';
+import {getPhoneById, editPhone, getPhone, resetActionState, getListPhone} from "./PhoneSlice";
+// import { useParams } from 'react-router-dom';
 import { IPhone } from "../../model/IPhone";
 import { useTranslation } from "react-i18next";
 import CardLayout from "../../component/common/CardLayout/CardLayout";
@@ -18,7 +18,7 @@ interface props {
 
 const PhoneEdit = ({ id }: props) => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const dispatch = useDispatch<any>();
     const { getPhoneDetail, isLoading } = useSelector(getPhone);
     const [value, setValue] = React.useState<IPhone>(getPhoneDetail);
@@ -47,12 +47,12 @@ const PhoneEdit = ({ id }: props) => {
         } catch (err) {
             NotificationUtils.error(`Edit phone failed, ${err}`);
         }
-        dispatch(resetState())
         backPage();
     }
 
     const backPage = () => {
-        dispatch(resetState())
+        dispatch(resetActionState());
+        dispatch(getListPhone());
         // navigate(-1)
     }
 

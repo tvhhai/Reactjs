@@ -1,9 +1,10 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {
-    fetchCurrentListPhone,
     addPhonesService,
     deletePhoneService,
-    getPhoneByIdService, editPhoneService
+    editPhoneService,
+    fetchCurrentListPhone,
+    getPhoneByIdService
 } from "../../service/phoneService";
 import {IPhone, PhoneState} from "../../model/IPhone";
 
@@ -27,7 +28,9 @@ const phone = createSlice({
         setPhoneId: (state, action) => {
             state.phoneId = action.payload
         },
-        resetState: () => initialState
+        resetActionState: (state) => {
+            state.actionState = {}
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(getListPhone.pending, (state) => {
@@ -42,7 +45,6 @@ const phone = createSlice({
             // state.error = action.error.message;
         }).addCase(addPhone.pending, (state, action) => {
             state.isLoading = true;
-            state.listPhone = [];
         }).addCase(addPhone.fulfilled, (state, action) => {
             state.isLoading = false;
             // @ts-ignore
@@ -53,16 +55,15 @@ const phone = createSlice({
             // state.error = action.error.message;
         }).addCase(deletePhone.pending, (state, action) => {
             state.isLoading = true;
-            state.listPhone = [];
         }).addCase(deletePhone.fulfilled, (state, action) => {
             state.isLoading = false;
+            state.listPhone = [...state.listPhone].filter((val: any) => val.id !== action.payload.id);
         }).addCase(deletePhone.rejected, (state, action) => {
             state.isLoading = false;
             // state.error = action.error.message;
             console.log('rejected', action.payload)
         }).addCase(getPhoneById.pending, (state, action) => {
             state.isLoading = true;
-            state.listPhone = [];
         }).addCase(getPhoneById.fulfilled, (state, action) => {
             state.isLoading = false;
             state.getPhoneDetail = action.payload;
@@ -72,7 +73,6 @@ const phone = createSlice({
             console.log('rejected', action.payload)
         }).addCase(editPhone.pending, (state, action) => {
             state.isLoading = true;
-            state.listPhone = [];
         }).addCase(editPhone.fulfilled, (state, action) => {
             state.isLoading = false;
         }).addCase(editPhone.rejected, (state, action) => {
@@ -149,5 +149,5 @@ export const editPhone = createAsyncThunk(
 
 
 export const getPhone = (state: any) => state.phone
-export const {setActionState, resetState, setPhoneId} = phone.actions
+export const {setActionState, resetActionState, setPhoneId} = phone.actions
 export default phone.reducer

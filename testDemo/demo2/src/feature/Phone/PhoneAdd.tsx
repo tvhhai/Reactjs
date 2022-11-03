@@ -1,6 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router";
-import { addPhone, resetState } from "./PhoneSlice";
+// import { useNavigate } from "react-router";
+import {addPhone, resetActionState} from "./PhoneSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { IPhone } from "../../model/IPhone";
 import CardLayout from "../../component/common/CardLayout/CardLayout";
@@ -12,7 +12,7 @@ import NotificationUtils from "../../component/common/Notification/Notification"
 
 const PhoneAdd = () => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const { isLoading } = useSelector(getPhone);
     const [value, setValue] = React.useState<IPhone>({ image: "", name: "", price: 0 });
     const [isValid, setIsValid] = React.useState(true);
@@ -30,7 +30,7 @@ const PhoneAdd = () => {
 
     const backPage = () => {
         // navigate(-1)
-        dispatch(resetState());
+        dispatch(resetActionState());
     }
 
     const handleDisable = () => {
