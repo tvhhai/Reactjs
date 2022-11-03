@@ -18,11 +18,11 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import _ from "lodash";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
 import {AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/commonConstant";
-import {saveColumns, saveHideColumns} from "./AppAgGridSlice";
+import {getStateAg, saveColumns, saveHideColumns} from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
 import {Trans} from "react-i18next";
@@ -65,8 +65,10 @@ const AppAgGrid = ({
                    }: AgGridProps) => {
     const gridRef = React.useRef<any>();
     const dispatch = useDispatch<any>();
+    const {tableConfig} = useSelector(getStateAg);
+    const {columns, hideColumns} = tableConfig;
     const [fullScreen, setFulScreen] = React.useState(false);
-    const [columnDefsWithCheckbox, setColumnDefs] = React.useState(columnDefs);
+    const [columnDefsState, setColumnDefs] = React.useState(columnDefs);
     const [openDiaLog, setOpen] = React.useState(false);
     const [pageSize, setPageSize] = React.useState(paginationPageSize ? paginationPageSize : PAGINATION_PAGE_SIZE_OPTIONS[0]);
     const [currentPage, setCurrentPage] = React.useState<number>(1);
@@ -97,7 +99,12 @@ const AppAgGrid = ({
         const {columns, hideColumns} = val;
         dispatch(saveColumns(columns));
         dispatch(saveHideColumns(hideColumns));
-        const columnDefs = [AG_GRID_CHECKBOX_SELECTION, ...columns];
+        let columnDefs;
+        if (selectMultiWithCheckbox) {
+            columnDefs = [AG_GRID_CHECKBOX_SELECTION, ...columns];
+        } else {
+            columnDefs = [...columns];
+        }
         arrNotEmpty(columns) && gridRef.current.api.setColumnDefs(columnDefs);
     }
 
@@ -140,11 +147,18 @@ const AppAgGrid = ({
 
     React.useEffect(() => {
         if (selectMultiWithCheckbox) {
-            setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...columnDefs])
+            arrNotEmpty(columns) ? setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...columns]) :
+                setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...columnDefs])
         } else {
-            setColumnDefs(columnDefs)
+            arrNotEmpty(columns) ? setColumnDefs(columns) :
+                setColumnDefs(columnDefs)
         }
-        dispatch(saveColumns(columnDefs))
+
+        if (arrNotEmpty(columns)) {
+            dispatch(saveColumns(columns));
+        } else {
+            dispatch(saveColumns(columnDefs));
+        }
     }, [columnDefs]);
 
     return (
@@ -241,6 +255,7 @@ const AppAgGrid = ({
                             // suppressExcelExport={true}
                             // suppressFocusAfterRefresh={true}
                             suppressMenuHide={true}
+                            suppressDragLeaveHidesColumns={true}
                             rowMultiSelectWithClick={true}
                             animateRows={true}
                             pagination={true}
@@ -248,7 +263,7 @@ const AppAgGrid = ({
                             // -------------end default-----------------
                             paginationPageSize={paginationPageSize ? paginationPageSize : pageSize}
                             rowData={rowData}
-                            columnDefs={selectMultiWithCheckbox ? columnDefsWithCheckbox : columnDefs}
+                            columnDefs={columnDefsState}
                             rowSelection={selectMultiWithCheckbox ? 'multiple' : selectSingleWithoutCheckbox ? 'single' : undefined}
                             defaultColDef={defaultColDef}
                             onSelectionChanged={onSelectionChanged}

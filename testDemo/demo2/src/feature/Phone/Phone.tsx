@@ -49,13 +49,14 @@ const Phone = () => {
         };
 
         const onSelectionChanged = React.useCallback(() => {
-            if (gridApi) {
-                setSelectedRows(gridApi.getSelectedRows());
-            }
+            gridApi && setSelectedRows(gridApi.getSelectedRows());
         }, [gridApi]);
 
         const onGridReady = React.useCallback((param: any) => {
             setGridApi(param.api);
+        }, []);
+
+        const refresh = React.useCallback(() => {
             dispatch(getListPhone());
         }, []);
 
@@ -95,7 +96,6 @@ const Phone = () => {
 
         const handleApply = async () => {
             const id = _.get(selectedRows[0], "id");
-            console.log(selectedRows[0])
             try {
                 await dispatch(deletePhone(id)).unwrap();
                 NotificationUtils.success('Success');
@@ -106,6 +106,10 @@ const Phone = () => {
                 handleClose()
             }
         }
+
+        React.useEffect(() => {
+            dispatch(getListPhone());
+        }, []);
 
         React.useEffect(() => {
             if (phoneId) {
@@ -160,7 +164,7 @@ const Phone = () => {
                     //  -----------  custom -----------------
                     selectMultiWithCheckbox={false}
                     selectSingleWithoutCheckbox={true}
-                    refresh={onGridReady}
+                    refresh={refresh}
                     searchAll={true}
                     title={t("phone.title")}
                     toolbarLeftAction={[action.add, action.edit, action.delete]}
