@@ -20,6 +20,7 @@ import PhoneAdd from "./PhoneAdd";
 import PhoneEdit from "./PhoneEdit";
 import NotificationUtils from '../../component/common/Notification/Notification';
 import AppDialog from "../../component/common/Dialog/AppDialog";
+import i18n from "i18next";
 
 
 const Phone = () => {
@@ -41,7 +42,7 @@ const Phone = () => {
 
         const defaultColDef = {
             flex: 1,
-            editable: true,
+            editable: false,
             sortable: true,
             filter: true,
             resizable: true,
@@ -51,11 +52,10 @@ const Phone = () => {
             if (gridApi) {
                 setSelectedRows(gridApi.getSelectedRows());
             }
-
         }, [gridApi]);
 
         const onGridReady = React.useCallback((param: any) => {
-            setGridApi(param.api)
+            setGridApi(param.api);
             dispatch(getListPhone());
         }, []);
 
@@ -95,6 +95,7 @@ const Phone = () => {
 
         const handleApply = async () => {
             const id = _.get(selectedRows[0], "id");
+            console.log(selectedRows[0])
             try {
                 await dispatch(deletePhone(id)).unwrap();
                 NotificationUtils.success('Success');
@@ -171,6 +172,7 @@ const Phone = () => {
                            open={openDialog}
                            closeFunction={handleClose}
                            applyFunction={handleApply}
+                           textContent={i18n.t('phone.deleteMsg')}
                 />
             </div>
         );

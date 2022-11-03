@@ -9,7 +9,7 @@ import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AppIconBtn from "../Button/AppIconBtn";
 import {
-    FormControl, Grid,
+    FormControl, Grid, InputAdornment,
     MenuItem,
     Pagination,
     Paper,
@@ -27,7 +27,6 @@ import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
 import {Trans} from "react-i18next";
 import i18n from "i18next";
-import {styled} from '@mui/material/styles';
 
 interface AgGridProps {
     rowData: object[];
@@ -76,16 +75,10 @@ const AppAgGrid = ({
     const [fromIndex, setFromIndex] = React.useState<number>(currentPage);
     const [toIndex, setToIndex] = React.useState<number>(pageSize);
 
-    // TODO: Handle search all ag grid.
     const handleSearch = _.debounce((e: React.ChangeEvent<HTMLInputElement>) => {
         gridRef.current.api.setQuickFilter(e.target.value);
-        // const rowDataSearch = gridRef.current.api.getRenderedNodes()
-        // if (rowDataSearch.length === 0) {
-        //     gridRef.current.api.showNoRowsOverlay();
-        // } else {
-        //     gridRef.current.api.setQuickFilter(e.target.value)
-        //
-        // }
+        const rowDataSearch = gridRef.current.api.getRenderedNodes();
+        arrNotEmpty(rowDataSearch) ? gridRef.current.api.hideOverlay() : gridRef.current.api.showNoRowsOverlay();
     }, 500);
 
     const tableFullScreen = () => {
@@ -96,7 +89,7 @@ const AppAgGrid = ({
         setOpen(true);
     }
 
-    const handleClose = () => {
+    const closeDialogSetting = () => {
         setOpen(false);
     };
 
@@ -108,7 +101,7 @@ const AppAgGrid = ({
         arrNotEmpty(columns) && gridRef.current.api.setColumnDefs(columnDefs);
     }
 
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
         setCurrentPage(value);
         gridRef.current.api.paginationGoToPage(value - 1); // as the first page is zero
     };
@@ -185,9 +178,16 @@ const AppAgGrid = ({
                                     {searchAll ? (
                                         <Paper sx={{display: "flex", alignItems: "center",}}
                                         >
-                                            <TextField size="small" id="outlined-basic" type='search' variant="outlined"
-                                                       placeholder={i18n.t('common.searchAll')} onChange={handleSearch}
-                                                       fullWidth
+                                            <TextField size="small" fullWidth id="outlined-basic" type='search'
+                                                       variant="outlined" placeholder={i18n.t('common.searchAll')}
+                                                       onChange={handleSearch}
+                                                       InputProps={{
+                                                           startAdornment: (
+                                                               <InputAdornment position="start">
+                                                                   <SearchIcon/>
+                                                               </InputAdornment>
+                                                           ),
+                                                       }}
                                             />
                                         </Paper>
                                     ) : (
@@ -233,6 +233,7 @@ const AppAgGrid = ({
                     >
                         <AgGridReact
                             // -------------default-----------------
+                            ref={gridRef}
                             suppressCellFocus={true}
                             suppressPaginationPanel={true}
                             domLayout={'autoHeight'} // autoHeight/normal
@@ -243,21 +244,15 @@ const AppAgGrid = ({
                             rowMultiSelectWithClick={true}
                             animateRows={true}
                             pagination={true}
-                            overlayNoRowsTemplate={`<span>hahaah</span>`}
-
+                            overlayNoRowsTemplate={i18n.t('common.agGridNoData')}
                             // -------------end default-----------------
                             paginationPageSize={paginationPageSize ? paginationPageSize : pageSize}
-                            ref={gridRef}
                             rowData={rowData}
                             columnDefs={selectMultiWithCheckbox ? columnDefsWithCheckbox : columnDefs}
                             rowSelection={selectMultiWithCheckbox ? 'multiple' : selectSingleWithoutCheckbox ? 'single' : undefined}
                             defaultColDef={defaultColDef}
                             onSelectionChanged={onSelectionChanged}
                             onPaginationChanged={onPaginationChanged}
-
-                            // suppressRowClickSelection={true}
-                            // rowGroupPanelShow={''}
-                            // pivotMode={true}
                             onGridReady={onGridReady}
 
                             // TODO: research
@@ -319,7 +314,7 @@ const AppAgGrid = ({
                                                         color="primary"
                                                         shape="rounded"
                                                         showFirstButton showLastButton
-                                                        onChange={handleChange}/>
+                                                        onChange={handleChangePage}/>
                                         </Stack>
                                     </div>
                                 </Grid>
@@ -332,7 +327,7 @@ const AppAgGrid = ({
                 id="ringtone-menu"
                 keepMounted
                 open={openDiaLog}
-                onClose={handleClose}
+                onClose={closeDialogSetting}
                 apply={onBtnApply}
                 columns={columnDefs}
             />

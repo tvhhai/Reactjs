@@ -40,6 +40,7 @@
     "title": "Quản lí điện thoại",
     "add": "Thêm Điện Thoại",
     "edit": "Chỉnh Sửa Điện Thoại",
+    "deleteMsg": "Bạn có chắc chắn muốn xóa điện thoại đã chọn khỏi Trình quản lý điện thoại không?",
     "column": {
       "name": "Tên",
       "price": "Giá tiền",

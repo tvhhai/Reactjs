@@ -40,6 +40,7 @@
     "title": "Phone Manager",
     "add": "Add Phone",
     "edit": "Edit Phone",
+    "deleteMsg": "Are you sure you want to delete the selected phone from Phone Manager?",
     "column": {
       "name": "Name",
       "price": "Price",
