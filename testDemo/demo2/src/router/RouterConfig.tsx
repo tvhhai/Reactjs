@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate, useLocation} from "react-router-dom";
 import SideBar from "../component/SideBar/SideBar";
 import Home from "../feature/Home";
 import Collapse from "../feature/Collapse";
@@ -16,6 +16,7 @@ import PhoneEdit from "../feature/Phone/PhoneEdit";
 
 function RouterConfig() {
     let user = true;
+
     return (
         <BrowserRouter>
             {

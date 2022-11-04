@@ -1,12 +1,13 @@
 import React, {useEffect} from 'react';
-import {Outlet} from "react-router-dom";
+import {Outlet, useLocation} from "react-router-dom";
 import {styled, useTheme} from "@mui/material/styles";
-import Drawer from "@mui/material/Drawer";
+// import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import SideBarListItem from "../../component/SideBar/SideBarListItem";
 import Togglei18n from "../Togglei18n/Togglei18n";
+import _ from 'lodash'
 
 //ICON
 import IconButton from "@mui/material/IconButton";
@@ -50,7 +51,7 @@ const AppBar = styled(MuiAppBar, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
-    ...(open && ismdup &&{
+    ...(open && ismdup && {
         width: `calc(100% - ${drawerWidth}px)`,
         // marginLeft: `${drawerWidth}px`,
         transition: theme.transitions.create(["margin", "width"], {
@@ -79,6 +80,11 @@ export default function PersistentDrawerLeft() {
         setOpen(!open);
     };
 
+    const location = useLocation();
+    React.useEffect(() => {
+        let del_str = _.replace(location.pathname, '/', '');
+        document.title = _.capitalize(del_str);
+    }, [location]);
 
     useEffect(() => {
         setOpen(isMdUp)
@@ -112,13 +118,13 @@ export default function PersistentDrawerLeft() {
 
                 </Toolbar>
             </AppBar>
-            <Drawer
+            <SwipeableDrawer
                 sx={{
                     width: drawerWidth,
                     marginLeft: open ? 0 : `-${drawerWidth}px`,
                     flexShrink: 0,
                     zIndex: 1,
-                    transition:' margin 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,width 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
+                    transition: ' margin 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,width 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
                     "& .MuiDrawer-paper": {
                         width: drawerWidth,
                         marginLeft: open ? 0 : `-${drawerWidth}px`,
@@ -128,15 +134,16 @@ export default function PersistentDrawerLeft() {
                 ModalProps={{
                     keepMounted: true, // Better open performance on mobile.
                 }}
-                variant={isMdUp ? "permanent" : "temporary"}
+                variant={isMdUp ? "persistent" : "temporary"}
                 anchor="left"
                 open={open}
                 onClose={toggleDrawer}
+                onOpen={toggleDrawer}
             >
 
                 <SideBarListItem/>
 
-            </Drawer>
+            </SwipeableDrawer>
             <Main open={open} className={'main'}>
                 <DrawerHeader/>
                 <div className={'mainWrapper'}>
