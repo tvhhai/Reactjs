@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Outlet} from "react-router-dom";
 import {styled, useTheme} from "@mui/material/styles";
 import Drawer from "@mui/material/Drawer";
@@ -14,7 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import "./style.scss"
-import {Stack} from "@mui/material";
+import {Stack, SwipeableDrawer, useMediaQuery} from "@mui/material";
 
 
 const drawerWidth = 240;
@@ -28,7 +28,6 @@ const Main = styled("main", {shouldForwardProp: (prop) => prop !== "open"})<{
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: `-${drawerWidth}px`,
     ...(open && {
         transition: theme.transitions.create("margin", {
             easing: theme.transitions.easing.easeOut,
@@ -41,18 +40,19 @@ const Main = styled("main", {shouldForwardProp: (prop) => prop !== "open"})<{
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
+    ismdup?: boolean;
 }
 
 const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({theme, open}) => ({
+    shouldForwardProp: (prop) => prop !== "open" && prop !== "ismdup",
+})<AppBarProps>(({theme, open, ismdup}) => ({
     transition: theme.transitions.create(["margin", "width"], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
-    ...(open && {
+    ...(open && ismdup &&{
         width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
+        // marginLeft: `${drawerWidth}px`,
         transition: theme.transitions.create(["margin", "width"], {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
@@ -73,24 +73,25 @@ const DrawerHeader = styled("div")(({theme}) => ({
 export default function PersistentDrawerLeft() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
+    const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
+    const toggleDrawer = () => {
+        setOpen(!open);
     };
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
 
+    useEffect(() => {
+        setOpen(isMdUp)
+    }, [isMdUp])
 
     return (
         <Stack direction="row">
             <CssBaseline/>
-            <AppBar position="fixed" open={open} sx={{background: "white", color: "black", zIndex: 10}}>
+            <AppBar position="fixed" open={open} ismdup={isMdUp} sx={{background: "white", color: "black", zIndex: 1}}>
                 <Toolbar className='justify-content-between'>
                     {
                         open ? (
-                                <IconButton onClick={handleDrawerClose}>
+                                <IconButton onClick={toggleDrawer}>
                                     {theme.direction === "ltr" ? (<ChevronLeftIcon/>) : (<ChevronRightIcon/>)}
                                 </IconButton>
                             ) :
@@ -98,7 +99,7 @@ export default function PersistentDrawerLeft() {
                                 <IconButton
                                     color="inherit"
                                     aria-label="open drawer"
-                                    onClick={handleDrawerOpen}
+                                    onClick={toggleDrawer}
                                     edge="start">
                                     <MenuIcon/>
                                 </IconButton>
@@ -110,23 +111,27 @@ export default function PersistentDrawerLeft() {
                     </div>
 
                 </Toolbar>
-
-
             </AppBar>
             <Drawer
                 sx={{
                     width: drawerWidth,
+                    marginLeft: open ? 0 : `-${drawerWidth}px`,
                     flexShrink: 0,
-                    zIndex: 0,
+                    zIndex: 1,
+                    transition:' margin 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,width 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
                     "& .MuiDrawer-paper": {
                         width: drawerWidth,
-                        boxSizing: "border-box",
+                        marginLeft: open ? 0 : `-${drawerWidth}px`,
+                        boxSizing: "border-box"
                     },
                 }}
-                // style={{ zIndex: 9 }}
-                variant="persistent"
+                ModalProps={{
+                    keepMounted: true, // Better open performance on mobile.
+                }}
+                variant={isMdUp ? "permanent" : "temporary"}
                 anchor="left"
                 open={open}
+                onClose={toggleDrawer}
             >
 
                 <SideBarListItem/>

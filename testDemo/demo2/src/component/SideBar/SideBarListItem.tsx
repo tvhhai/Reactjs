@@ -10,12 +10,30 @@ import {useTranslation} from "react-i18next";
 import SideBarItem from "./SideBarItem";
 import SideBarItemCollapse from "./SideBarItemCollapse";
 import logo from "../../asset/logo.svg";
-import _ from "lodash";
+import {makeStyles} from '@mui/styles';
+
+const useStyles = makeStyles(
+    {
+        itemOne: {
+            "&.MuiDivider-root": {
+                "&::before": {
+                    borderTop: "thin solid rgb(113, 108, 134)"
+                },
+                "&::after": {
+                    borderTop: "thin solid rgb(113, 108, 134)"
+                }
+            },
+            "& .MuiDivider-wrapper": {
+                fontSize: 16
+            }
+        },
+    }
+);
 
 function SideBarListItem({list}: any) {
     const location = useLocation();
     const {t} = useTranslation();
-
+    const classes = useStyles();
     const [lists, setList] = React.useState([
         SideBarConfigList.home,
         SideBarConfigList.exercises,
@@ -65,7 +83,7 @@ function SideBarListItem({list}: any) {
             {
                 lists.map((sectionItem) => (
                     <div key={sectionItem.id} id={sectionItem.id} className={"sideBarSection"}>
-                        <Divider className={'divider'} textAlign="left">
+                        <Divider className={classes.itemOne} textAlign="left">
                             <ListItemText className={"sideBarSectionItem"}
                                           primary={t(sectionItem.i18nKey)}/>
                         </Divider>

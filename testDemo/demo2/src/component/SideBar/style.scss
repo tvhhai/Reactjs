@@ -14,7 +14,7 @@
     .sideBarSectionItem {
       text-transform: uppercase;
 
-      > span {
+      >span {
         color: $sideBarSectionItem;
         font-weight: bold !important;
       }
@@ -30,18 +30,16 @@
       position: relative;
       background: linear-gradient(270deg, $activeBgLink 0%, white 300%);
 
-      .sideBarTitle span {
-      }
+      .sideBarTitle span {}
 
-      .dot {
-      }
+      .dot {}
 
-      .sideBarIcon {
-      }
+      .sideBarIcon {}
     }
 
     .openCollapse {
       background-color: $openCollapse;
+
       .sideBarTitle span {
         font-weight: bold !important;
       }
@@ -65,9 +63,7 @@
       margin-right: 16px;
     }
 
-    .sideBarItemCollapse {
-
-    }
+    .sideBarItemCollapse {}
   }
 
   .sideBarIcon {
@@ -75,8 +71,7 @@
   }
 
   .sideBarTitle {
-    &:hover {
-    }
+    &:hover {}
   }
 }
 
@@ -94,8 +89,4 @@
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 10%);
     height: calc(100vh - 112px);
   }
-}
-
-@media only screen and (max-width: 992px) {
-
 }
