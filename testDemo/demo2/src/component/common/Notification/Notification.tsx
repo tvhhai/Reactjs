@@ -40,7 +40,7 @@ export default {
     toast(msg: string, variant: VariantType = "default") {
         useNotifyRef.enqueueSnackbar(msg, {
             variant,
-            autoHideDuration: 3000,
+            autoHideDuration: 5000,
             action: (key) => (
                 <React.Fragment>
                     <IconButton

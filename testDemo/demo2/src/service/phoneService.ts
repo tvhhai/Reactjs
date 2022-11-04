@@ -21,3 +21,7 @@ export const getPhoneByIdService = async (id: number) => {
 export const editPhoneService = async (id: number, data: IPhone) => {
     return await axiosConfig.put(apiConfig.phone + '/' + id, data);
 };
+
+export const test = async () => {
+    return await axiosConfig.get('/test');
+};
