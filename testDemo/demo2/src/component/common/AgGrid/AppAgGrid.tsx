@@ -21,54 +21,43 @@ import _ from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
-import {AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/commonConstant";
-import {getStateAg, saveColumns, saveHideColumns} from "./AppAgGridSlice";
+import {AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/agGridConstant";
+import {getStateAg, getTableConfig, saveColumns, saveHideColumns} from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
 import {Trans} from "react-i18next";
 import i18n from "i18next";
+import {IAgGrid} from "../../../model/IAgGrid";
 
-interface AgGridProps {
-    rowData: object[];
-    columnDefs: object[];
-    defaultColDef: object;
-    paginationPageSize?: number | undefined;
-    // rowSelection?: "single" | "multiple" | undefined;
-    onSelectionChanged: any;
-    onGridReady: any;
-    refresh?: any;
-    searchAll?: boolean;
-    title: string;
-    toolbarLeftAction?: object[];
-    classNameApp?: string;
-    selectMultiWithCheckbox?: boolean;
-    selectSingleWithoutCheckbox?: boolean;
-    loading: boolean;
-}
 
-const AppAgGrid = ({
-                       rowData,
-                       columnDefs,
-                       defaultColDef,
-                       paginationPageSize,
-                       // rowSelection,
-                       onSelectionChanged,
-                       onGridReady,
-                       refresh,
-                       searchAll,
-                       title,
-                       toolbarLeftAction,
-                       classNameApp,
-                       selectMultiWithCheckbox,
-                       selectSingleWithoutCheckbox,
-                       loading,
-                   }: AgGridProps) => {
+const AppAgGrid = (props: IAgGrid) => {
+    const {
+        gridName,
+        enableFullScreen,
+        enableTableConfig = true,
+        enableSaveColDrag,
+        rowData,
+        initialColumnDefs,
+        defaultColDef,
+        paginationPageSize,
+        onSelectionChanged,
+        onGridReady,
+        refresh,
+        searchAll,
+        title,
+        toolbarLeftAction,
+        classNameApp,
+        selectMultiWithCheckbox,
+        selectSingleWithoutCheckbox,
+        loading,
+    } = props;
+
     const gridRef = React.useRef<any>();
     const dispatch = useDispatch<any>();
     const {tableConfig} = useSelector(getStateAg);
     const {columns, hideColumns} = tableConfig;
     const [fullScreen, setFulScreen] = React.useState(false);
-    const [columnDefsState, setColumnDefs] = React.useState(columnDefs);
+    const [columnDefs, setColumnDefs] = React.useState(initialColumnDefs);
     const [openDiaLog, setOpen] = React.useState(false);
     const [pageSize, setPageSize] = React.useState(paginationPageSize ? paginationPageSize : PAGINATION_PAGE_SIZE_OPTIONS[0]);
     const [currentPage, setCurrentPage] = React.useState<number>(1);
@@ -113,6 +102,59 @@ const AppAgGrid = ({
         gridRef.current.api.paginationGoToPage(value - 1); // as the first page is zero
     };
 
+    const onDragStopped = () => {
+        console.log('onDragStopped');
+        updateColumns();
+    }
+    // TODO updateColumns
+    const updateColumns = () => {
+        console.log('updateColumns');
+        console.log(columnDefs,  gridRef.current.columnApi.columnModel)
+
+        handleSaveTableConfig();
+    }
+
+    const handleTableConfig = () => {
+        console.log('handleTableConfig');
+        console.log(columnDefs);
+        if (_.get(gridRef, 'gridRef.current')) {
+            gridRef.current.api.setColumnDefs(columnDefs);
+        }
+
+    }
+
+    const handleGetTableConfig = () => {
+        console.log('handleGetTableConfig');
+
+        if (enableTableConfig || enableSaveColDrag) {
+            // dispatch(getTableConfig(gridName))
+            console.log(columns, hideColumns, gridName)
+        }
+
+        handleTableConfig()
+    }
+
+    const handleSaveTableConfig = () => {
+        console.log('handleSaveTableConfig');
+
+        if (enableTableConfig || enableSaveColDrag) {
+            let requestTableConfig = {
+                id: gridName,
+                tableconfig: {
+                    columns: columnDefs,
+                    hideColumns: hideColumns,
+                    // filterList: filterList,
+                    // lists: filterFields,
+                    // viewMode: '',
+                    // viewModeVersion: tableListViewModeVersion,
+                    // gridColumns: gridColumns
+                }
+            };
+
+            console.log(requestTableConfig)
+        }
+    }
+
     const onPageSizeChanged = React.useCallback((event: any) => {
         setPageSize(event.target.value);
         gridRef.current.api.paginationSetPageSize(Number(event.target.value));
@@ -124,6 +166,10 @@ const AppAgGrid = ({
             setRowCount(gridRef.current.api.paginationGetRowCount());
             setCurrentPage(gridRef.current.api.paginationGetCurrentPage() + 1); // as the first page is zero
         }
+    }, []);
+
+    React.useEffect(() => {
+        handleGetTableConfig()
     }, []);
 
     React.useEffect(() => {
@@ -148,18 +194,18 @@ const AppAgGrid = ({
     React.useEffect(() => {
         if (selectMultiWithCheckbox) {
             arrNotEmpty(columns) ? setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...columns]) :
-                setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...columnDefs])
+                setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...initialColumnDefs])
         } else {
             arrNotEmpty(columns) ? setColumnDefs(columns) :
-                setColumnDefs(columnDefs)
+                setColumnDefs(initialColumnDefs)
         }
 
         if (arrNotEmpty(columns)) {
             dispatch(saveColumns(columns));
         } else {
-            dispatch(saveColumns(columnDefs));
+            dispatch(saveColumns(initialColumnDefs));
         }
-    }, [columnDefs]);
+    }, [initialColumnDefs]);
 
     return (
         <div
@@ -208,14 +254,17 @@ const AppAgGrid = ({
                                         <></>
                                     )}
 
-                                    <AppIconBtn
-                                        variant="contained"
-                                        className="ms-2"
-                                        tooltip={"common.fullScreen"}
-                                        onClick={tableFullScreen}
-                                    >
-                                        {fullScreen ? <CloseFullscreenIcon/> : <OpenInFullIcon/>}
-                                    </AppIconBtn>
+                                    {
+                                        enableFullScreen && <AppIconBtn
+                                            variant="contained"
+                                            className="ms-2"
+                                            tooltip={"common.fullScreen"}
+                                            onClick={tableFullScreen}
+                                        >
+                                            {fullScreen ? <CloseFullscreenIcon/> : <OpenInFullIcon/>}
+                                        </AppIconBtn>
+                                    }
+
 
                                     <AppIconBtn
                                         variant="contained"
@@ -248,12 +297,14 @@ const AppAgGrid = ({
                         <AgGridReact
                             // -------------default-----------------
                             ref={gridRef}
+                            onDragStopped={onDragStopped}
                             suppressCellFocus={true}
                             suppressPaginationPanel={true}
                             domLayout={'autoHeight'} // autoHeight/normal
                             // suppressCsvExport={true}
                             // suppressExcelExport={true}
                             // suppressFocusAfterRefresh={true}
+                            // suppressScrollOnNewData={true}
                             suppressMenuHide={true}
                             suppressDragLeaveHidesColumns={true}
                             rowMultiSelectWithClick={true}
@@ -263,7 +314,7 @@ const AppAgGrid = ({
                             // -------------end default-----------------
                             paginationPageSize={paginationPageSize ? paginationPageSize : pageSize}
                             rowData={rowData}
-                            columnDefs={columnDefsState}
+                            columnDefs={columnDefs}
                             rowSelection={selectMultiWithCheckbox ? 'multiple' : selectSingleWithoutCheckbox ? 'single' : undefined}
                             defaultColDef={defaultColDef}
                             onSelectionChanged={onSelectionChanged}
@@ -344,7 +395,7 @@ const AppAgGrid = ({
                 open={openDiaLog}
                 onClose={closeDialogSetting}
                 apply={onBtnApply}
-                columns={columnDefs}
+                columns={initialColumnDefs}
             />
         </div>
     )

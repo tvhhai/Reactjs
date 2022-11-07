@@ -24,7 +24,6 @@ function About() {
         test().then((res) => {
             if (res.status === STATUS_CODE.SUCCESS && arrNotEmpty(res.data.response)) {
                 console.log(res.data.response)
-
             }
         })
     })

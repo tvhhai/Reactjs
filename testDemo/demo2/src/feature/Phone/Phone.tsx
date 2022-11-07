@@ -156,9 +156,10 @@ const Phone = () => {
                 {actionState.isCreate && <PhoneAdd/>}
                 {actionState.isEdit && <PhoneEdit id={id}/>}
                 {_.isEmpty(actionState) && <AppAgGrid
+                    gridName="agGrid-phoneManager"
                     rowData={listPhone}
                     onGridReady={onGridReady}
-                    columnDefs={columnDefs}
+                    initialColumnDefs={columnDefs}
                     defaultColDef={defaultColDef}
                     onSelectionChanged={onSelectionChanged}
                     //  -----------  custom -----------------
@@ -169,7 +170,7 @@ const Phone = () => {
                     title={t("phone.title")}
                     toolbarLeftAction={[action.add, action.edit, action.delete]}
                     loading={isLoading}
-                />
+                 />
                 }
 
                 <AppDialog i18nKeyTitle='common.delete'

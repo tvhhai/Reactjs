@@ -7,6 +7,7 @@ import {
     getPhoneByIdService
 } from "../../service/phoneService";
 import {IPhone, PhoneState} from "../../model/IPhone";
+import NotificationUtils from "../../component/common/Notification/Notification";
 
 
 const initialState: PhoneState = {
@@ -92,8 +93,16 @@ export const getListPhone = createAsyncThunk(
     "phone/getListPhone",
     async () => {
         try {
-            const response = await fetchCurrentListPhone();
-            return response.data;
+            // const response = await fetchCurrentListPhone();
+            // return response.data;
+
+            return await fetchCurrentListPhone().then((res) => {
+                NotificationUtils.success('Get phone successfully!');
+                return res.data
+            }).catch((err) => {
+                NotificationUtils.error(err);
+                console.log(err)
+            })
         } catch (error) {
             console.error(error);
         }
