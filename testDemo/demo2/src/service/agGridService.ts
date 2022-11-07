@@ -6,6 +6,10 @@ export const getTableConfigService = async (tableId: string) => {
     return await axiosConfig.get(AG_GRID_URL.TABLE_CONFIG_URL + '/' + tableId);
 };
 
-export const saveTableConfig = async (data: object[]) => {
+export const saveTableConfigService = async (data: object) => {
     return await axiosConfig.post(AG_GRID_URL.TABLE_CONFIG_URL, data);
+};
+
+export const updateTableConfigService = async (tableId: string, data: object) => {
+    return await axiosConfig.put(AG_GRID_URL.TABLE_CONFIG_URL + '/' + tableId, data);
 };

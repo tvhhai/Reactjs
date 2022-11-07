@@ -8,26 +8,20 @@ import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AppIconBtn from "../Button/AppIconBtn";
-import {
-    FormControl, Grid, InputAdornment,
-    MenuItem,
-    Pagination,
-    Paper,
-    Select,
-    Stack, TextField
-} from "@mui/material";
+import {FormControl, Grid, InputAdornment, MenuItem, Pagination, Paper, Select, Stack, TextField} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import _ from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
 import {AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/agGridConstant";
-import {getStateAg, getTableConfig, saveColumns, saveHideColumns} from "./AppAgGridSlice";
+import {getStateAg, saveColumns, saveHideColumns, saveTableConfig, updateTableConfig} from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
 import {Trans} from "react-i18next";
 import i18n from "i18next";
 import {IAgGrid} from "../../../model/IAgGrid";
+import {DragStoppedEvent} from "ag-grid-community";
 
 
 const AppAgGrid = (props: IAgGrid) => {
@@ -102,16 +96,50 @@ const AppAgGrid = (props: IAgGrid) => {
         gridRef.current.api.paginationGoToPage(value - 1); // as the first page is zero
     };
 
-    const onDragStopped = () => {
-        console.log('onDragStopped');
-        updateColumns();
+    const onDragStopped = (params: DragStoppedEvent) => {
+        console.log('---onDragStopped', params);
+
+        // let headerNameColumnMoved: string;
+        //
+        // let fieldIdColumnMoved;
+        // if (params.target && params.target.innerText) {
+        //     // search fielId corresponding to the name of column (caller headerNamecolumnMoved)
+        //     headerNameColumnMoved = params.target.innerText;
+        //     let indexInnerText = _.findIndex(columnDefs, function (item: any) {
+        //         return item.headerName.toUpperCase() === headerNameColumnMoved.toUpperCase();
+        //     });
+        //
+        //     // defense (because "special sort" on some header add "\n1" and "\n2" at the end of the header name)
+        //     if (indexInnerText === -1) {
+        //         headerNameColumnMoved = headerNameColumnMoved.replace("\n2", "").replace("\n1", "").trim();
+        //         indexInnerText = _.findIndex(columnDefs, function (item: any) {
+        //             return item.headerName.toUpperCase() === headerNameColumnMoved.toUpperCase();
+        //         });
+        //     }
+        //
+        //     fieldIdColumnMoved = (indexInnerText > -1) ? columnDefs[indexInnerText].field : undefined;
+        //
+        //     console.log(fieldIdColumnMoved, indexInnerText)
+        // }
+
+        let columnState = params.columnApi.getColumnState().filter(col => col.colId !== "id").map(col => ({
+            colId: col.colId,
+            sort: col.sort,
+            show: true
+        }));
+
+
+        console.log(columnState)
+        handleSaveTableConfig(columnState)
+        // updateColumns();
     }
+
     // TODO updateColumns
     const updateColumns = () => {
         console.log('updateColumns');
-        console.log(columnDefs,  gridRef.current.columnApi.columnModel)
+        // console.log(columnDefs, gridRef.current.columnApi.columnModel)
 
-        handleSaveTableConfig();
+        // handleSaveTableConfig();
     }
 
     const handleTableConfig = () => {
@@ -134,24 +162,23 @@ const AppAgGrid = (props: IAgGrid) => {
         handleTableConfig()
     }
 
-    const handleSaveTableConfig = () => {
+    const handleSaveTableConfig = (data: any) => {
         console.log('handleSaveTableConfig');
-
         if (enableTableConfig || enableSaveColDrag) {
-            let requestTableConfig = {
-                id: gridName,
-                tableconfig: {
-                    columns: columnDefs,
+            let tableConfig = {
+                tableId: gridName,
+                configJson: [{
+                    columns: data,
                     hideColumns: hideColumns,
                     // filterList: filterList,
                     // lists: filterFields,
                     // viewMode: '',
                     // viewModeVersion: tableListViewModeVersion,
                     // gridColumns: gridColumns
-                }
+                }]
             };
-
-            console.log(requestTableConfig)
+            dispatch(updateTableConfig({gridName, tableConfig}))
+            console.log(tableConfig)
         }
     }
 

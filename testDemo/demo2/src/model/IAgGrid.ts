@@ -30,7 +30,7 @@ export interface IAgGrid {
     title: string;
     gridName: string;
     rowData: object[];
-    initialColumnDefs: object[];
+    initialColumnDefs: any;
     defaultColDef: object;
     loading: boolean;
     onSelectionChanged: (event: SelectionChangedEvent<object>) => void;

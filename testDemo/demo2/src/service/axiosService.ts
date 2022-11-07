@@ -8,7 +8,7 @@ const {dispatch} = store;
 // Timeout 3,5 sec for each requests, ref: https://stackoverflow.com/questions/266281/best-practices-for-web-service-timeouts
 // Handle timeout by checking error.message.indexOf("timeout")
 const instance = axios.create({
-    baseURL: 'http://localhost:8080/api/',
+    baseURL: 'http://localhost:8080/',
     timeout: 30000,
     // headers: {
     //     Authorization: 'Bearer {token}'
