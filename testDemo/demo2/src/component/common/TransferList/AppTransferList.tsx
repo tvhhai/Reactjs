@@ -13,7 +13,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import {getStateAg} from "../AgGrid/AppAgGridSlice";
 import AppIconBtn from "../Button/AppIconBtn";
-import './style.scss';
+import '../Dialog/style.scss';
 import {useSelector} from "react-redux";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 
@@ -28,16 +28,17 @@ function intersection(a: number[], b: any) {
 interface TransferListProps {
     setShowCol: (val: object[]) => void,
     setHideCol: (val: object[]) => void,
+    column: object[]
 }
 
 export default function TransferList(props: TransferListProps) {
-    const {setShowCol, setHideCol} = props;
+    const {setShowCol, setHideCol, column} = props;
     const {tableConfig, cancel} = useSelector(getStateAg);
     const {columns, hideColumns} = tableConfig;
 
     const [checked, setChecked] = React.useState<number[]>([]);
     const [left, setLeft] = React.useState<object[]>(hideColumns);
-    const [right, setRight] = React.useState<object[]>(columns);
+    const [right, setRight] = React.useState<object[]>(column);
     // const [selectedListIndex, setSelectedListIndex] = React.useState<number[]>([]);
 
     const leftChecked = intersection(checked, left);
@@ -159,11 +160,11 @@ export default function TransferList(props: TransferListProps) {
         setHideCol(left);
     }, [right, left]);
 
-    React.useEffect(() => {
-        setLeft(hideColumns)
-        setRight(columns);
-        setChecked([])
-    }, [cancel, hideColumns, columns]);
+    // React.useEffect(() => {
+    //     setLeft(hideColumns)
+    //     setRight(columns);
+    //     setChecked([])
+    // }, [cancel, hideColumns, columns]);
 
     const listTransfer = (items: readonly any[], rightSide: boolean) => (
         <List component="nav" dense role="list" className="transfer-list">

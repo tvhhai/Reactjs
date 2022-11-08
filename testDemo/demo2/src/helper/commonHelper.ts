@@ -57,3 +57,13 @@ export const getFunction = function (values: any, exp: any, defaultVal?: any) {
     var val = _.get(values, exp);
     return _.isFunction(val) ? val : defaultVal || _.noop();
 };
+
+export const getColumnList = (columns: any[]) => {
+    let result: any[] = [];
+    _.forEach(columns, (value) => {
+        value.colId = _.isUndefined(value.id) ? value.field : value.key;
+        value.field = _.isUndefined(value.field) ? value.key : value.field;
+        result.push(value);
+    })
+    return result
+}

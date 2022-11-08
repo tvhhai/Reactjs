@@ -15,7 +15,14 @@ import {useDispatch, useSelector} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
 import {AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/agGridConstant";
-import {getStateAg, saveColumns, saveHideColumns, saveTableConfig, updateTableConfig} from "./AppAgGridSlice";
+import {
+    getStateAg,
+    getTableConfig,
+    saveColumns,
+    saveHideColumns,
+    saveTableConfig,
+    updateTableConfig
+} from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
 import {Trans} from "react-i18next";
@@ -79,16 +86,39 @@ const AppAgGrid = (props: IAgGrid) => {
     };
 
     const onBtnApply = (val: any) => {
-        const {columns, hideColumns} = val;
-        dispatch(saveColumns(columns));
-        dispatch(saveHideColumns(hideColumns));
-        let columnDefs;
-        if (selectMultiWithCheckbox) {
-            columnDefs = [AG_GRID_CHECKBOX_SELECTION, ...columns];
-        } else {
-            columnDefs = [...columns];
+        console.log('onBtnApply')
+        const {left, right} = val;
+        // console.log(left, right)
+
+        if (enableTableConfig || enableSaveColDrag) {
+            let tableConfig = {
+                tableId: gridName,
+                configJson: [{
+                    columns: right,
+                    hideColumns: left,
+                    // filterList: filterList,
+                    // lists: filterFields,
+                    // viewMode: '',
+                    // viewModeVersion: tableListViewModeVersion,
+                    // gridColumns: gridColumns
+                }]
+            };
+            dispatch(saveTableConfig(tableConfig));
+            // gridRef.current.api.setColumnDefs(right);
+            console.log('right',right)
+            setColumnDefs(right)
+            // console.log(tableConfig)
         }
-        arrNotEmpty(columns) && gridRef.current.api.setColumnDefs(columnDefs);
+        // handleSaveTableConfig({columnState})
+        // dispatch(saveColumns(columns));
+        // dispatch(saveHideColumns(hideColumns));
+        // let columnDefs;
+        // if (selectMultiWithCheckbox) {
+        //     columnDefs = [AG_GRID_CHECKBOX_SELECTION, ...columns];
+        // } else {
+        //     columnDefs = [...columns];
+        // }
+        // arrNotEmpty(columns) && gridRef.current.api.setColumnDefs(columnDefs);
     }
 
     const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -121,49 +151,73 @@ const AppAgGrid = (props: IAgGrid) => {
         //
         //     console.log(fieldIdColumnMoved, indexInnerText)
         // }
-
+        console.log(columnDefs)
         let columnState = params.columnApi.getColumnState().filter(col => col.colId !== "id").map(col => ({
-            colId: col.colId,
-            sort: col.sort,
-            show: true
-        }));
+                colId: col.colId,
+                sort: col.sort,
+                show: true
+            })
+        );
 
 
-        console.log(columnState)
+        // console.log(columnState)
         handleSaveTableConfig(columnState)
         // updateColumns();
     }
 
     // TODO updateColumns
     const updateColumns = () => {
-        console.log('updateColumns');
-        // console.log(columnDefs, gridRef.current.columnApi.columnModel)
-
+        // console.log('----updateColumns-------');
+        // console.log(columnDefs, gridRef.current.columnApi.columnModel);
+        dispatch(updateTableConfig({gridName, tableConfig}))
         // handleSaveTableConfig();
     }
 
     const handleTableConfig = () => {
-        console.log('handleTableConfig');
-        console.log(columnDefs);
-        if (_.get(gridRef, 'gridRef.current')) {
-            gridRef.current.api.setColumnDefs(columnDefs);
+        console.log('----handleTableConfig-------', columns, columnDefs);
+
+        // console.log(columns, hideColumns, columnDefs)
+        console.log(columns, columnDefs)
+        const c = _.cloneDeep(columnDefs)
+        let a: any[] = [];
+        let b: any[] = [];
+        if (arrNotEmpty(columns)) {
+            for (let i = 0; i < columns.length; i++) {
+                for (let j = 0; j < c.length; j++) {
+                    if (columns[i]['colId'] === c[j]['colId']) {
+                        a.push(_.clone(c[j]));
+                        b.splice(j, 1);
+                        break;
+                    }
+                }
+            }
+            // console.log(a, b)
+            if(_.get(gridRef, 'current.api')){
+                gridRef.current.api.setColumnDefs(a);
+            }
+
+            setColumnDefs(a)
         }
+    }
+
+    const syncIndexColumn = () => {
 
     }
 
+
+    React.useEffect(() => {
+        handleTableConfig();
+    }, [tableConfig]);
+
     const handleGetTableConfig = () => {
-        console.log('handleGetTableConfig');
-
+        // console.log('----handleGetTableConfig----');
         if (enableTableConfig || enableSaveColDrag) {
-            // dispatch(getTableConfig(gridName))
-            console.log(columns, hideColumns, gridName)
+            dispatch(getTableConfig(gridName))
         }
-
-        handleTableConfig()
     }
 
     const handleSaveTableConfig = (data: any) => {
-        console.log('handleSaveTableConfig');
+        // console.log('----handleSaveTableConfig----');
         if (enableTableConfig || enableSaveColDrag) {
             let tableConfig = {
                 tableId: gridName,
@@ -177,7 +231,7 @@ const AppAgGrid = (props: IAgGrid) => {
                     // gridColumns: gridColumns
                 }]
             };
-            dispatch(updateTableConfig({gridName, tableConfig}))
+            dispatch(saveTableConfig(tableConfig))
             console.log(tableConfig)
         }
     }
@@ -194,6 +248,7 @@ const AppAgGrid = (props: IAgGrid) => {
             setCurrentPage(gridRef.current.api.paginationGetCurrentPage() + 1); // as the first page is zero
         }
     }, []);
+
 
     React.useEffect(() => {
         handleGetTableConfig()
@@ -219,19 +274,22 @@ const AppAgGrid = (props: IAgGrid) => {
     }, [pageSize]);
 
     React.useEffect(() => {
-        if (selectMultiWithCheckbox) {
-            arrNotEmpty(columns) ? setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...columns]) :
-                setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...initialColumnDefs])
-        } else {
-            arrNotEmpty(columns) ? setColumnDefs(columns) :
-                setColumnDefs(initialColumnDefs)
-        }
+        // if (selectMultiWithCheckbox) {
+        //     arrNotEmpty(columns) ? setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...columns]) :
+        //         setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...initialColumnDefs])
+        // } else {
+        //     arrNotEmpty(columns) ? setColumnDefs(columns) :
+        //         setColumnDefs(initialColumnDefs)
+        // }
+        //
+        // if (arrNotEmpty(columns)) {
+        //     dispatch(saveColumns(columns));
+        // } else {
+        //     dispatch(saveColumns(initialColumnDefs));
+        // }
 
-        if (arrNotEmpty(columns)) {
-            dispatch(saveColumns(columns));
-        } else {
-            dispatch(saveColumns(initialColumnDefs));
-        }
+        // console.log('initialColumnDefs', initialColumnDefs)
+        console.log(initialColumnDefs, columnDefs)
     }, [initialColumnDefs]);
 
     return (
@@ -422,7 +480,7 @@ const AppAgGrid = (props: IAgGrid) => {
                 open={openDiaLog}
                 onClose={closeDialogSetting}
                 apply={onBtnApply}
-                columns={initialColumnDefs}
+                columns={columnDefs}
             />
         </div>
     )

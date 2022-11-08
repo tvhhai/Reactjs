@@ -2,8 +2,8 @@ import axiosConfig from "./axiosService";
 import {AG_GRID_URL} from "../constant/urlConstant";
 
 
-export const getTableConfigService = async (tableId: string) => {
-    return await axiosConfig.get(AG_GRID_URL.TABLE_CONFIG_URL + '/' + tableId);
+export const getTableConfigService = (tableId: string) => {
+    return axiosConfig.get(AG_GRID_URL.TABLE_CONFIG_URL + '/' + tableId);
 };
 
 export const saveTableConfigService = async (data: object) => {

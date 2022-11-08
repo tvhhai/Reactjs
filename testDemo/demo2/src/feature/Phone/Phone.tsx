@@ -21,6 +21,7 @@ import PhoneEdit from "./PhoneEdit";
 import NotificationUtils from '../../component/common/Notification/Notification';
 import AppDialog from "../../component/common/Dialog/AppDialog";
 import i18n from "i18next";
+import {getColumnList} from "../../helper/commonHelper";
 
 
 const Phone = () => {
@@ -32,13 +33,13 @@ const Phone = () => {
         const [openDialog, setOpenDialog] = React.useState(false);
         const [gridApi, setGridApi] = React.useState<any>();
 
-        const initColumnHeader = [
+        const columns = [
             {field: "name", headerName: t('phone.column.name')},
             {field: "price", headerName: t('phone.column.price')},
             {field: "image", headerName: t('phone.column.image'), cellRenderer: ImageCellRender},
         ]
 
-        const [columnDefs, setColumnDefs] = React.useState(initColumnHeader);
+        const [columnDefs, setColumnDefs] = React.useState(getColumnList(columns));
 
         const defaultColDef = {
             flex: 1,
@@ -119,7 +120,7 @@ const Phone = () => {
 
         // Trick switch language
         React.useEffect(() => {
-            setColumnDefs(initColumnHeader);
+            setColumnDefs(columns);
         }, [t('phone.column.name')]);
 
         const action = {
@@ -170,7 +171,7 @@ const Phone = () => {
                     title={t("phone.title")}
                     toolbarLeftAction={[action.add, action.edit, action.delete]}
                     loading={isLoading}
-                 />
+                />
                 }
 
                 <AppDialog i18nKeyTitle='common.delete'

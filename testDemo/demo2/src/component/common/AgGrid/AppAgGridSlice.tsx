@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import NotificationUtils from "../Notification/Notification";
 import {getTableConfigService, saveTableConfigService, updateTableConfigService} from "../../../service/agGridService";
+import _ from "lodash";
 
 const appAgGridSlice = createSlice({
     name: 'appAgGrid',
@@ -30,7 +31,9 @@ const appAgGridSlice = createSlice({
         builder.addCase(getTableConfig.pending, (state) => {
 
         }).addCase(getTableConfig.fulfilled, (state, action) => {
-
+            state.tableConfig.columns = _.get(action, 'payload[0].configJson[0].columns', []);
+            state.tableConfig.hideColumns = _.get(action, 'payload[0].configJson[0].hideColumns', []);
+            console.log(_.get(action, 'payload[0].configJson[0].columns', []), _.get(action, 'payload[0].configJson[0].hideColumns', []))
         }).addCase(getTableConfig.rejected, (state, action) => {
 
         }).addCase(saveTableConfig.pending, (state) => {
@@ -51,14 +54,13 @@ const appAgGridSlice = createSlice({
 
 export const getTableConfig = createAsyncThunk(
     "appAgGrid/getTableConfig",
-    async (tableId: string) => {
-        return await getTableConfigService(tableId)
+    (tableId: string) => {
+        return getTableConfigService(tableId)
             .then((res) => {
                 return res.data
             }).catch((err) => {
                 console.log(err)
             })
-
     }
 );
 export const saveTableConfig = createAsyncThunk(
@@ -78,7 +80,7 @@ export const updateTableConfig = createAsyncThunk(
     "appAgGrid/updateTableConfig",
     async (tableData: any) => {
         console.log(tableData)
-        const { gridName, tableConfig } = tableData
+        const {gridName, tableConfig} = tableData
         return await updateTableConfigService(gridName, tableConfig)
             .then((res) => {
                 return res.data

@@ -1,8 +1,11 @@
 export const AG_GRID_CHECKBOX_SELECTION =
     {
         field: "",
+        colId: 'app-ag-grid-check-box',
         pinned: "left",
         width: 54,
+        minWidth: 54,
+        maxWidth: 54,
         checkboxSelection: true,
         headerCheckboxSelection: true,
         sortable: false,
