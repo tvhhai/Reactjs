@@ -19,7 +19,6 @@ import {
     getStateAg,
     getTableConfig,
     saveTableConfig,
-    updateTableConfig
 } from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
@@ -133,11 +132,6 @@ const AppAgGrid = (props: IAgGrid) => {
         }
     }
 
-    const syncIndexColumn = () => {
-
-    }
-
-
     React.useEffect(() => {
         handleTableConfig();
     }, [tableConfig]);
@@ -174,9 +168,12 @@ const AppAgGrid = (props: IAgGrid) => {
 
     const onPaginationChanged = React.useCallback(() => {
         if (_.get(gridRef, 'current.api')) {
+            const rowData = gridRef.current.api.getRenderedNodes();
+
             setTotalPage(gridRef.current.api.paginationGetTotalPages());
             setRowCount(gridRef.current.api.paginationGetRowCount());
-            setCurrentPage(gridRef.current.api.paginationGetCurrentPage() + 1); // as the first page is zero
+            arrNotEmpty(rowData) ? setCurrentPage(gridRef.current.api.paginationGetCurrentPage() + 1) // as the first page is zero
+                : setCurrentPage(0);
         }
     }, []);
 
@@ -186,7 +183,7 @@ const AppAgGrid = (props: IAgGrid) => {
     }, []);
 
     React.useEffect(() => {
-        let fromIndex = currentPage > 1 ? (currentPage - 1) * pageSize + 1 : 1;
+        let fromIndex = currentPage >= 1 ? (currentPage - 1) * pageSize + 1 : 0;
         let toIndex = Math.min(fromIndex + pageSize - 1, rowCount);
         setFromIndex(fromIndex);
         setToIndex(toIndex);

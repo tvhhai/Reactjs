@@ -166,6 +166,7 @@ const Phone = () => {
                     //  -----------  custom -----------------
                     selectMultiWithCheckbox={false}
                     selectSingleWithoutCheckbox={true}
+                    enableFullScreen={true}
                     refresh={refresh}
                     searchAll={true}
                     title={t("phone.title")}
