@@ -15,7 +15,7 @@ import {
 } from "./PhoneSlice";
 import _ from "lodash";
 import "./style.scss";
-import ImageCellRender from "./ImageCellRender";
+import ImageCellRender from "../../component/common/CellRender/ImageCellRender";
 import PhoneAdd from "./PhoneAdd";
 import PhoneEdit from "./PhoneEdit";
 import NotificationUtils from '../../component/common/Notification/Notification';

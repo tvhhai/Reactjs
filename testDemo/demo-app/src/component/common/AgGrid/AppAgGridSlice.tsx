@@ -1,40 +1,28 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import NotificationUtils from "../Notification/Notification";
 import {getTableConfigService, saveTableConfigService, updateTableConfigService} from "../../../service/agGridService";
 import _ from "lodash";
 
 const appAgGridSlice = createSlice({
     name: 'appAgGrid',
     initialState: {
+        isLoading: true,
         tableConfig: {
             showColumns: [],
             hiddenColumns: []
         },
-        cancel: false
+
     },
 
-    reducers: {
-        saveColumns(state, action) {
-            state.tableConfig.showColumns = action.payload
-        },
-        saveHideColumns(state, action) {
-            state.tableConfig.hiddenColumns = action.payload
-        },
-        setCancel(state, action) {
-            state.cancel = action.payload
-        },
-        resetCancel(state, action) {
-            state.cancel = false;
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getTableConfig.pending, (state) => {
-
+            state.isLoading = true;
         }).addCase(getTableConfig.fulfilled, (state, action) => {
             state.tableConfig.showColumns = _.get(action, 'payload.tableConfig[0].showColumns', []);
             state.tableConfig.hiddenColumns = _.get(action, 'payload.tableConfig[0].hiddenColumns', []);
+            state.isLoading = false;
         }).addCase(getTableConfig.rejected, (state, action) => {
-
+            state.isLoading = false;
         }).addCase(saveTableConfig.pending, (state) => {
 
         }).addCase(saveTableConfig.fulfilled, (state, action) => {
@@ -92,5 +80,5 @@ export const updateTableConfig = createAsyncThunk(
 );
 
 export const getStateAg = (state: any) => state.appAgGridSlice
-export const {saveColumns, saveHideColumns, setCancel} = appAgGridSlice.actions
+export const {} = appAgGridSlice.actions
 export default appAgGridSlice.reducer

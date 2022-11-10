@@ -53,7 +53,7 @@ const AppAgGrid = (props: IAgGrid) => {
 
     const gridRef = React.useRef<any>();
     const dispatch = useDispatch<any>();
-    const {tableConfig} = useSelector(getStateAg);
+    const {tableConfig, isLoading} = useSelector(getStateAg);
     const {showColumns, hiddenColumns} = tableConfig;
     const [fullScreen, setFulScreen] = React.useState(false);
     const [columnDefs, setColumnDefs] = React.useState(initialColumnDefs);
@@ -208,7 +208,7 @@ const AppAgGrid = (props: IAgGrid) => {
         <div
             className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen" : ""}`}
         >
-            <AppLoader isLoading={loading}/>
+            <AppLoader isLoading={loading || isLoading}/>
             <CardLayout titleHeader={title}>
                 <>
                     <div className="app-ag-grid-toolbar">

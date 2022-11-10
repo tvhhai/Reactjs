@@ -9,8 +9,8 @@ const {dispatch} = store;
 // Timeout 3,5 sec for each requests, ref: https://stackoverflow.com/questions/266281/best-practices-for-web-service-timeouts
 // Handle timeout by checking error.message.indexOf("timeout")
 const instance = axios.create({
-    // baseURL: 'http://localhost:8085/',
-    baseURL: 'https://springboot-mongo-app.herokuapp.com/',
+    baseURL: 'http://localhost:8085/',
+    // baseURL: 'https://springboot-mongo-app.herokuapp.com/',
     timeout: 30000,
     // headers: {
     //     Authorization: 'Bearer {token}'
