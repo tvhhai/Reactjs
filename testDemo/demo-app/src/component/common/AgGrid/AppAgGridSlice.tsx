@@ -31,8 +31,8 @@ const appAgGridSlice = createSlice({
         builder.addCase(getTableConfig.pending, (state) => {
 
         }).addCase(getTableConfig.fulfilled, (state, action) => {
-            state.tableConfig.showColumns = _.get(action, 'payload[0].tableConfig[0].showColumns', []);
-            state.tableConfig.hiddenColumns = _.get(action, 'payload[0].tableConfig[0].hiddenColumns', []);
+            state.tableConfig.showColumns = _.get(action, 'payload.tableConfig[0].showColumns', []);
+            state.tableConfig.hiddenColumns = _.get(action, 'payload.tableConfig[0].hiddenColumns', []);
         }).addCase(getTableConfig.rejected, (state, action) => {
 
         }).addCase(saveTableConfig.pending, (state) => {
