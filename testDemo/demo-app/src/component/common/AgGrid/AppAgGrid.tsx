@@ -18,8 +18,6 @@ import {AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS} from "../../..
 import {
     getStateAg,
     getTableConfig,
-    saveColumns,
-    saveHideColumns,
     saveTableConfig,
     updateTableConfig
 } from "./AppAgGridSlice";
@@ -56,7 +54,7 @@ const AppAgGrid = (props: IAgGrid) => {
     const gridRef = React.useRef<any>();
     const dispatch = useDispatch<any>();
     const {tableConfig} = useSelector(getStateAg);
-    const {columns, hideColumns} = tableConfig;
+    const {showColumns, hiddenColumns} = tableConfig;
     const [fullScreen, setFulScreen] = React.useState(false);
     const [columnDefs, setColumnDefs] = React.useState(initialColumnDefs);
     const [openDiaLog, setOpen] = React.useState(false);
@@ -88,26 +86,9 @@ const AppAgGrid = (props: IAgGrid) => {
     const onBtnApply = (val: any) => {
         console.log('onBtnApply')
         const {left, right} = val;
-        // console.log(left, right)
-
         if (enableTableConfig || enableSaveColDrag) {
-            let tableConfig = {
-                tableId: gridName,
-                configJson: [{
-                    columns: right,
-                    hideColumns: left,
-                    // filterList: filterList,
-                    // lists: filterFields,
-                    // viewMode: '',
-                    // viewModeVersion: tableListViewModeVersion,
-                    // gridColumns: gridColumns
-                }]
-            };
-            dispatch(saveTableConfig(tableConfig));
-            // gridRef.current.api.setColumnDefs(right);
-            console.log('right',right)
+            dispatch(saveTableConfig(requestTableConfig(right, left)));
             setColumnDefs(right)
-            // console.log(tableConfig)
         }
         // handleSaveTableConfig({columnState})
         // dispatch(saveColumns(columns));
@@ -127,76 +108,28 @@ const AppAgGrid = (props: IAgGrid) => {
     };
 
     const onDragStopped = (params: DragStoppedEvent) => {
-        console.log('---onDragStopped', params);
-
-        // let headerNameColumnMoved: string;
-        //
-        // let fieldIdColumnMoved;
-        // if (params.target && params.target.innerText) {
-        //     // search fielId corresponding to the name of column (caller headerNamecolumnMoved)
-        //     headerNameColumnMoved = params.target.innerText;
-        //     let indexInnerText = _.findIndex(columnDefs, function (item: any) {
-        //         return item.headerName.toUpperCase() === headerNameColumnMoved.toUpperCase();
-        //     });
-        //
-        //     // defense (because "special sort" on some header add "\n1" and "\n2" at the end of the header name)
-        //     if (indexInnerText === -1) {
-        //         headerNameColumnMoved = headerNameColumnMoved.replace("\n2", "").replace("\n1", "").trim();
-        //         indexInnerText = _.findIndex(columnDefs, function (item: any) {
-        //             return item.headerName.toUpperCase() === headerNameColumnMoved.toUpperCase();
-        //         });
-        //     }
-        //
-        //     fieldIdColumnMoved = (indexInnerText > -1) ? columnDefs[indexInnerText].field : undefined;
-        //
-        //     console.log(fieldIdColumnMoved, indexInnerText)
-        // }
-        console.log(columnDefs)
-        let columnState = params.columnApi.getColumnState().filter(col => col.colId !== "id").map(col => ({
-                colId: col.colId,
-                sort: col.sort,
-                show: true
-            })
-        );
-
-
-        // console.log(columnState)
-        handleSaveTableConfig(columnState)
-        // updateColumns();
-    }
-
-    // TODO updateColumns
-    const updateColumns = () => {
-        // console.log('----updateColumns-------');
-        // console.log(columnDefs, gridRef.current.columnApi.columnModel);
-        dispatch(updateTableConfig({gridName, tableConfig}))
-        // handleSaveTableConfig();
+        console.log('---onDragStopped----');
+        const getColumnState = params.columnApi.getColumnState();
+        const mergedColumnsByColId = _.merge(_.keyBy(getColumnState, 'colId'), _.keyBy(columnDefs, 'colId'));
+        const columnsState = _.values(mergedColumnsByColId);
+        handleSaveTableConfig(columnsState)
     }
 
     const handleTableConfig = () => {
-        console.log('----handleTableConfig-------', columns, columnDefs);
+        console.log('----handleTableConfig-------');
+        if (arrNotEmpty(showColumns)) {
+            let syncColumns: any[] = [];
+            let columnDefsMap: Record<string, any> = {};
+            initialColumnDefs.forEach((v: any) => {
+                columnDefsMap[v.colId] = v;
+            });
 
-        // console.log(columns, hideColumns, columnDefs)
-        console.log(columns, columnDefs)
-        const c = _.cloneDeep(columnDefs)
-        let a: any[] = [];
-        let b: any[] = [];
-        if (arrNotEmpty(columns)) {
-            for (let i = 0; i < columns.length; i++) {
-                for (let j = 0; j < c.length; j++) {
-                    if (columns[i]['colId'] === c[j]['colId']) {
-                        a.push(_.clone(c[j]));
-                        b.splice(j, 1);
-                        break;
-                    }
-                }
-            }
-            // console.log(a, b)
-            if(_.get(gridRef, 'current.api')){
-                gridRef.current.api.setColumnDefs(a);
-            }
+            showColumns.forEach((v: any) => {
+                const col = columnDefsMap[v.colId];
+                col && syncColumns.push(col);
+            });
 
-            setColumnDefs(a)
+            setColumnDefs(syncColumns);
         }
     }
 
@@ -210,29 +143,27 @@ const AppAgGrid = (props: IAgGrid) => {
     }, [tableConfig]);
 
     const handleGetTableConfig = () => {
-        // console.log('----handleGetTableConfig----');
+        console.log('----handleGetTableConfig----');
         if (enableTableConfig || enableSaveColDrag) {
             dispatch(getTableConfig(gridName))
         }
     }
 
     const handleSaveTableConfig = (data: any) => {
-        // console.log('----handleSaveTableConfig----');
+        console.log('----handleSaveTableConfig----');
         if (enableTableConfig || enableSaveColDrag) {
-            let tableConfig = {
-                tableId: gridName,
-                configJson: [{
-                    columns: data,
-                    hideColumns: hideColumns,
-                    // filterList: filterList,
-                    // lists: filterFields,
-                    // viewMode: '',
-                    // viewModeVersion: tableListViewModeVersion,
-                    // gridColumns: gridColumns
-                }]
-            };
-            dispatch(saveTableConfig(tableConfig))
-            console.log(tableConfig)
+            dispatch(saveTableConfig(requestTableConfig(data, hiddenColumns)))
+        }
+    }
+
+    const requestTableConfig = (showColumns: object[], hiddenColumns: object[]) => {
+        return {
+            tableId: gridName,
+            tableConfig: [{
+                showColumns: showColumns,
+                hiddenColumns: hiddenColumns,
+                gridColumns: initialColumnDefs
+            }]
         }
     }
 
@@ -272,25 +203,6 @@ const AppAgGrid = (props: IAgGrid) => {
             }
         }
     }, [pageSize]);
-
-    React.useEffect(() => {
-        // if (selectMultiWithCheckbox) {
-        //     arrNotEmpty(columns) ? setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...columns]) :
-        //         setColumnDefs([AG_GRID_CHECKBOX_SELECTION, ...initialColumnDefs])
-        // } else {
-        //     arrNotEmpty(columns) ? setColumnDefs(columns) :
-        //         setColumnDefs(initialColumnDefs)
-        // }
-        //
-        // if (arrNotEmpty(columns)) {
-        //     dispatch(saveColumns(columns));
-        // } else {
-        //     dispatch(saveColumns(initialColumnDefs));
-        // }
-
-        // console.log('initialColumnDefs', initialColumnDefs)
-        console.log(initialColumnDefs, columnDefs)
-    }, [initialColumnDefs]);
 
     return (
         <div

@@ -7,18 +7,18 @@ const appAgGridSlice = createSlice({
     name: 'appAgGrid',
     initialState: {
         tableConfig: {
-            columns: [],
-            hideColumns: []
+            showColumns: [],
+            hiddenColumns: []
         },
         cancel: false
     },
 
     reducers: {
         saveColumns(state, action) {
-            state.tableConfig.columns = action.payload
+            state.tableConfig.showColumns = action.payload
         },
         saveHideColumns(state, action) {
-            state.tableConfig.hideColumns = action.payload
+            state.tableConfig.hiddenColumns = action.payload
         },
         setCancel(state, action) {
             state.cancel = action.payload
@@ -31,9 +31,8 @@ const appAgGridSlice = createSlice({
         builder.addCase(getTableConfig.pending, (state) => {
 
         }).addCase(getTableConfig.fulfilled, (state, action) => {
-            state.tableConfig.columns = _.get(action, 'payload[0].configJson[0].columns', []);
-            state.tableConfig.hideColumns = _.get(action, 'payload[0].configJson[0].hideColumns', []);
-            console.log(_.get(action, 'payload[0].configJson[0].columns', []), _.get(action, 'payload[0].configJson[0].hideColumns', []))
+            state.tableConfig.showColumns = _.get(action, 'payload[0].tableConfig[0].showColumns', []);
+            state.tableConfig.hiddenColumns = _.get(action, 'payload[0].tableConfig[0].hiddenColumns', []);
         }).addCase(getTableConfig.rejected, (state, action) => {
 
         }).addCase(saveTableConfig.pending, (state) => {

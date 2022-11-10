@@ -3,14 +3,14 @@ import rootReducer from "../redux/reducer";
 
 const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-        serializableCheck: {
-            // Ignore these action types
-            ignoredActions: ['appAgGrid/saveColumns', 'appAgGrid/saveHideColumns'],
-            // Ignore these field paths in all actions
-            ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
-            // Ignore these paths in the state
-            ignoredPaths: ['appAgGridSlice.tableConfig'],
-        },
+        // serializableCheck: {
+        //     // Ignore these action types
+        //     ignoredActions: ['appAgGrid/saveColumns', 'appAgGrid/saveHideColumns'],
+        //     // Ignore these field paths in all actions
+        //     ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
+        //     // Ignore these paths in the state
+        //     ignoredPaths: ['appAgGridSlice.tableConfig'],
+        // },
     }),
     preloadedState: undefined,
     reducer: rootReducer

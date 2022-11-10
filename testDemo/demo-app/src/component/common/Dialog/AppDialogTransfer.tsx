@@ -5,10 +5,10 @@ import {
     DialogContent,
     DialogTitle, ListItem, ListItemButton, ListItemIcon, ListItemText,
 } from "@mui/material";
-import TransferList from "../TransferList/AppTransferList";
+
 import i18n from "i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {getStateAg, setCancel} from "../AgGrid/AppAgGridSlice";
+import {getStateAg} from "../AgGrid/AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import Grid from "@mui/material/Grid";
 import AppIconBtn from "../Button/AppIconBtn";
@@ -19,6 +19,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import List from "@mui/material/List";
+import './style.scss'
 
 interface ConfirmationDialogRawProps {
     id: string;
@@ -40,18 +41,14 @@ function intersection(a: number[], b: any) {
 const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
     const {columns: columnsProp, open, apply, onClose, ...other} = props;
     const dispatch = useDispatch<any>();
-    const {tableConfig, cancel} = useSelector(getStateAg);
-    const {columns, hideColumns:hide} = tableConfig;
+    const {tableConfig} = useSelector(getStateAg);
+    const {showColumns, hiddenColumns} = tableConfig;
 
     const [disable, setDisabled] = React.useState(false);
 
-    // const [columns, setCol] = React.useState<object[]>([]);
-    const [hideColumns, setHideCol] = React.useState<object[]>(hide);
-
     const [checked, setChecked] = React.useState<number[]>([]);
-    const [left, setLeft] = React.useState<object[]>(hideColumns);
+    const [left, setLeft] = React.useState<object[]>(hiddenColumns);
     const [right, setRight] = React.useState<object[]>(columnsProp);
-    // const [selectedListIndex, setSelectedListIndex] = React.useState<number[]>([]);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
@@ -67,14 +64,16 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
 
 
     const handleCancel = () => {
-        dispatch(setCancel(!cancel));
+        setChecked([]);
+        setLeft(hiddenColumns);
+        setRight(showColumns);
         onClose();
     };
 
     const handleOk = () => {
+        setChecked([]);
         apply({left, right});
         onClose();
-
     };
 
 
@@ -188,17 +187,13 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
             // setSelectedListIndex(selectedRows);
         }
     }
-    //
-    // React.useEffect(() => {
-    //     setRight(column);
-    //     // setHideCol(left);
-    // }, [column]);
+
 
     React.useEffect(() => {
-        setLeft(hide)
-        // setRight(columns);
-        // setChecked([])
-    }, [cancel, hide]);
+        setLeft(hiddenColumns)
+    }, [hiddenColumns]);
+
+
     const listTransfer = (items: readonly any[], rightSide: boolean) => (
         <List component="nav" dense role="list" className="transfer-list">
             {items.map((value: any, i) => {
@@ -253,7 +248,6 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
             </DialogTitle>
 
             <DialogContent dividers>
-                {/*<TransferList column={columnsProp} setShowCol={setCol} setHideCol={setHideCol}/>*/}
                 <Grid container spacing={0} justifyContent="center" className="transfer-list-wrapper">
                     <Grid xs={12} md={6} item>
                         <div className='left-list'>

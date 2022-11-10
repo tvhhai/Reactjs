@@ -63,6 +63,9 @@ export const getColumnList = (columns: any[]) => {
     _.forEach(columns, (value) => {
         value.colId = _.isUndefined(value.id) ? value.field : value.key;
         value.field = _.isUndefined(value.field) ? value.key : value.field;
+        value.sortable = _.isUndefined(value.sortable) ? true : value.sortable;
+        value.resizable = _.isUndefined(value.resizable) ? true : value.resizable;
+
         result.push(value);
     })
     return result
