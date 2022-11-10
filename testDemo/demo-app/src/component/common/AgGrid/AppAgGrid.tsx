@@ -208,7 +208,7 @@ const AppAgGrid = (props: IAgGrid) => {
         <div
             className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen" : ""}`}
         >
-            <AppLoader isLoading={loading || isLoading}/>
+            <AppLoader isLoading={true}/>
             <CardLayout titleHeader={title}>
                 <>
                     <div className="app-ag-grid-toolbar">
