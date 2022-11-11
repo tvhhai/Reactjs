@@ -9,7 +9,6 @@ import {
 import {IPhone, PhoneState} from "../../model/IPhone";
 import NotificationUtils from "../../component/common/Notification/Notification";
 
-
 const initialState: PhoneState = {
     isLoading: true,
     phoneId: null,
@@ -36,6 +35,8 @@ const phone = createSlice({
     extraReducers: (builder) => {
         builder.addCase(getListPhone.pending, (state) => {
             state.isLoading = true;
+            // dispatch(setter(true))
+            // console.log(dispatch)
             state.listPhone = [];
         }).addCase(getListPhone.fulfilled, (state, action) => {
             state.isLoading = false;

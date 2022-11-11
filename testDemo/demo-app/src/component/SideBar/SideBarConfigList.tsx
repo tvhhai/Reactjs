@@ -1,21 +1,21 @@
 import React from 'react';
 
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import SettingsIcon from '@mui/icons-material/Settings';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 export const SideBarConfigList = {
+    dashboard: {
+        id: 'dashboard',
+        i18nKey: 'sidebar.dashboard',
+        url: '/dashboard',
+        icon: <DashboardIcon/>,
+    },
     home: {
         id: 'home',
-        i18nKey: 'home',
+        i18nKey: 'sidebar.home',
         apps: [{
-            i18nKey: 'sidebar.home',
-            url: '/home',
-            icon: <HomeOutlinedIcon/>,
-            child: [],
-            expand: false,
-            active: false
-        }, {
             i18nKey: 'sidebar.about',
             url: '/about',
             icon: <InboxIcon/>,
@@ -35,7 +35,6 @@ export const SideBarConfigList = {
         }],
     },
 
-
     exercises: {
         id: 'exercises',
         i18nKey: 'sidebar.exercises',
@@ -52,17 +51,39 @@ export const SideBarConfigList = {
                     i18nKey: 'sidebar.phone',
                     url: '/phone'
                 },
-                {
-                    i18nKey: 'sidebar.weather',
-                    url: '/weather'
-                },
-                {
-                    i18nKey: 'Counter',
-                    url: '/counter'
-                }
+                // {
+                //     i18nKey: 'sidebar.weather',
+                //     url: '/weather'
+                // },
+                // {
+                //     i18nKey: 'Counter',
+                //     url: '/counter'
+                // }
             ],
             expand: false,
             active: false
         }],
+    },
+
+    administration: {
+        id: 'administration',
+        i18nKey: 'sidebar.administration',
+        apps: [{
+            i18nKey: 'sidebar.preferences',
+            url: '/preferences',
+            icon: <SettingsIcon/>,
+            expand: false,
+            active: false,
+            child: [
+                {
+                    i18nKey: 'sidebar.userSetting',
+                    url: '/userSettings'
+                },
+                {
+                    i18nKey: 'sidebar.systemSetting',
+                    url: '/systemSettings'
+                }
+            ],
+        }]
     }
 }

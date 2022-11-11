@@ -10,7 +10,19 @@
     color: $primaryColorSideBar;
   }
 
+  .activeLink {
+    position: relative;
+    background: linear-gradient(270deg, $activeBgLink 0%, white 300%);
+
+    .sideBarTitle span {}
+
+    .dot {}
+
+    .sideBarIcon {}
+  }
+
   .sideBarSection {
+
     .sideBarSectionItem {
       text-transform: uppercase;
 
@@ -26,16 +38,7 @@
       }
     }
 
-    .activeLink {
-      position: relative;
-      background: linear-gradient(270deg, $activeBgLink 0%, white 300%);
 
-      .sideBarTitle span {}
-
-      .dot {}
-
-      .sideBarIcon {}
-    }
 
     .openCollapse {
       background-color: $openCollapse;

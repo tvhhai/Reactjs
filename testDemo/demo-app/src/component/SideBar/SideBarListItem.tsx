@@ -14,8 +14,9 @@ import {makeStyles} from '@mui/styles';
 
 const useStyles = makeStyles(
     {
-        itemOne: {
+        divider: {
             "&.MuiDivider-root": {
+                margin: "24px 0 4px 0",
                 "&::before": {
                     borderTop: "thin solid rgb(113, 108, 134)"
                 },
@@ -27,6 +28,13 @@ const useStyles = makeStyles(
                 fontSize: 16
             }
         },
+        divider2: {
+            "&.MuiDivider-root": {
+                borderColor: "rgb(113, 108, 134)",
+                opacity: 1
+            }
+
+        }
     }
 );
 
@@ -35,8 +43,9 @@ function SideBarListItem({list}: any) {
     const {t} = useTranslation();
     const classes = useStyles();
     const [lists, setList] = React.useState([
-        SideBarConfigList.home,
+        // SideBarConfigList.home,
         SideBarConfigList.exercises,
+        SideBarConfigList.administration
     ]);
 
     //TODO: Optimization
@@ -79,11 +88,15 @@ function SideBarListItem({list}: any) {
             <Stack sx={{height: '64px'}}>
                 <img src={logo} className={'img-fit'} alt={''}/>
             </Stack>
-            <Divider/>
+
+            <Divider className={classes.divider2} light/>
+
+            <SideBarItem sx={{mt: 3}} sideBarItem={SideBarConfigList.dashboard}/>
+
             {
                 lists.map((sectionItem) => (
                     <div key={sectionItem.id} id={sectionItem.id} className={"sideBarSection"}>
-                        <Divider className={classes.itemOne} textAlign="left">
+                        <Divider className={classes.divider} textAlign="left">
                             <ListItemText className={"sideBarSectionItem"}
                                           primary={t(sectionItem.i18nKey)}/>
                         </Divider>
@@ -112,39 +125,5 @@ function SideBarListItem({list}: any) {
         </List>
     );
 }
-
-// function ListItem({listItem}: any) {
-//     return (
-//         <div>
-//             <span>
-//                 {Array.isArray(listItem) && <Lista list={listItem}/>}
-//             </span>
-//         </div>
-//     );
-// }
-//
-// function ListItemCollape({listItem}: any) {
-//     return (
-//         <div>
-//             {Array.isArray(listItem) && <Lista list={listItem}/>}
-//         </div>
-//     );
-// }
-//
-// function Lista({list}: any) {
-//     // console.log(list)
-//     return (
-//         <ul>
-//             {list.map((listItem: any, i: number) => (
-//                 <div key={i}>
-//                     <li>{listItem.i18nKey}</li>
-//                     {listItem.child && listItem.child.length > 0 ? <ListItemCollape listItem={listItem.child}/> :
-//                         <ListItem key={i} listItem={listItem.apps}/>}
-//
-//                 </div>
-//             ))}
-//         </ul>
-//     );
-// }
 
 export default SideBarListItem;

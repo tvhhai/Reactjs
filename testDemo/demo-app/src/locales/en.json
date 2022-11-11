@@ -29,12 +29,17 @@
   },
   "sidebar": {
     "home": "Home",
+    "dashboard": "Dashboard",
     "test": "Test",
     "about": "About",
     "exercises": "Exercises",
     "weather": "Weather",
     "phone": "Phone",
-    "todo": "Todo"
+    "todo": "Todo",
+    "administration": "Administration",
+    "preferences":"Preferences",
+    "userSetting": "User Setting",
+    "systemSetting": "System Setting"
   },
   "phone": {
     "title": "Phone Manager",

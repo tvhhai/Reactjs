@@ -29,12 +29,17 @@
   },
   "sidebar": {
     "home": "Trang chủ",
+    "dashboard": "Trang quản trị",
     "test": "Test",
     "about": "Giới thiệu",
     "exercises": "Bài tập",
     "weather": "Thời tiết",
     "phone": "Điện thoại",
-    "todo": "Việc cần làm"
+    "todo": "Việc cần làm",
+    "administration": "Quản trị",
+    "preferences":"Ưu tiên",
+    "userSetting": "Cài đặt người dùng",
+    "systemSetting": "Cài đặt hệ thống"
   },
   "phone": {
     "title": "Quản lí điện thoại",
