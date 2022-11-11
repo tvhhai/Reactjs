@@ -8,7 +8,8 @@ const appAgGridSlice = createSlice({
         isLoading: true,
         tableConfig: {
             showColumns: [],
-            hiddenColumns: []
+            hiddenColumns: [],
+            gridColumns: []
         },
 
     },
@@ -18,16 +19,20 @@ const appAgGridSlice = createSlice({
         builder.addCase(getTableConfig.pending, (state) => {
             state.isLoading = true;
         }).addCase(getTableConfig.fulfilled, (state, action) => {
-            state.tableConfig.showColumns = _.get(action, 'payload.tableConfig[0].showColumns', []);
-            state.tableConfig.hiddenColumns = _.get(action, 'payload.tableConfig[0].hiddenColumns', []);
+            // state.tableConfig.showColumns = _.get(action, 'payload.tableConfig[0].showColumns', []);
+            // state.tableConfig.hiddenColumns = _.get(action, 'payload.tableConfig[0].hiddenColumns', []);
+            // state.tableConfig.gridColumns = _.get(action, 'payload.tableConfig[0].gridColumns', []);
+            state.tableConfig = _.get(action, 'payload.tableConfig[0]', {});
             state.isLoading = false;
         }).addCase(getTableConfig.rejected, (state, action) => {
             state.isLoading = false;
         }).addCase(saveTableConfig.pending, (state) => {
 
         }).addCase(saveTableConfig.fulfilled, (state, action) => {
-            state.tableConfig.showColumns = _.get(action, 'payload.tableConfig[0].showColumns', []);
-            state.tableConfig.hiddenColumns = _.get(action, 'payload.tableConfig[0].hiddenColumns', []);
+            // state.tableConfig.showColumns = _.get(action, 'payload.tableConfig[0].showColumns', []);
+            // state.tableConfig.hiddenColumns = _.get(action, 'payload.tableConfig[0].hiddenColumns', []);
+            // state.tableConfig.gridColumns = _.get(action, 'payload.tableConfig[0].gridColumns', []);
+            state.tableConfig = _.get(action, 'payload.tableConfig[0]', {});
         }).addCase(saveTableConfig.rejected, (state, action) => {
 
         }).addCase(updateTableConfig.pending, (state) => {

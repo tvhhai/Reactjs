@@ -9,7 +9,7 @@ import {
 import i18n from "i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {getStateAg} from "../AgGrid/AppAgGridSlice";
-import {arrNotEmpty} from "../../../helper/commonHelper";
+import {arrNotEmpty, compareObj} from "../../../helper/commonHelper";
 import Grid from "@mui/material/Grid";
 import AppIconBtn from "../Button/AppIconBtn";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
@@ -19,7 +19,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import List from "@mui/material/List";
-import './style.scss'
+import './style.scss';
+import _ from "lodash";
 
 interface ConfirmationDialogRawProps {
     id: string;
@@ -40,33 +41,45 @@ function intersection(a: number[], b: any) {
 
 const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
     const {columns: columnsProp, open, apply, onClose, ...other} = props;
-    const dispatch = useDispatch<any>();
     const {tableConfig} = useSelector(getStateAg);
-    const {showColumns, hiddenColumns} = tableConfig;
-
-    const [disable, setDisabled] = React.useState(false);
-
+    const {showColumns, hiddenColumns, gridColumns} = tableConfig;
+    const [disable, setDisabled] = React.useState<boolean>(true);
     const [checked, setChecked] = React.useState<number[]>([]);
-    const [left, setLeft] = React.useState<object[]>(hiddenColumns);
+    const [left, setLeft] = React.useState<object[]>(hiddenColumns || []);
     const [right, setRight] = React.useState<object[]>(columnsProp);
+    const [valueBk, setValueBk] = React.useState<object[]>(_.cloneDeep(columnsProp));
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
 
 
     React.useEffect(() => {
-        !arrNotEmpty(right) ? setDisabled(true) : setDisabled(false)
+        // !arrNotEmpty(right) ? setDisabled(true) : setDisabled(false);
+        setValueBk(_.cloneDeep(columnsProp));
+
     }, [right]);
 
     React.useEffect(() => {
         setRight(columnsProp);
     }, [columnsProp]);
 
+    const handleDisable = (): boolean => {
+        // console.log(right, valueBk, compareObj(right, valueBk));
+        return compareObj(right, valueBk);
+    }
 
     const handleCancel = () => {
         setChecked([]);
         setLeft(hiddenColumns);
+        console.log(showColumns)
         setRight(showColumns);
+
+        // console.log({
+        //     'left': left,
+        //     'right': right,
+        //     'hiddenColumns': hiddenColumns,
+        //     'showColumns': showColumns
+        // })
         onClose();
     };
 
@@ -75,7 +88,6 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
         apply({left, right});
         onClose();
     };
-
 
     const handleToggle = (value: any) => () => {
         const currentIndex = checked.indexOf(value);
@@ -325,7 +337,7 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
                         {i18n.t('common.btn.cancel')}
                     </>
                 </Button>
-                <Button variant='contained' disabled={disable} onClick={handleOk}>
+                <Button variant='contained' disabled={handleDisable()} onClick={handleOk}>
                     <>
                         {i18n.t('common.btn.save')}
                     </>

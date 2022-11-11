@@ -28,9 +28,9 @@ const PhoneEdit = ({id}: props) => {
 
     // const {id}: any = useParams();
 
-    React.useEffect(() => {
-        // dispatch(getPhoneById(Number(id)));
-    }, []);
+    // React.useEffect(() => {
+    //     dispatch(getPhoneById(Number(id)));
+    // }, []);
 
     React.useEffect(() => {
         if (!_.isEmpty(getPhoneDetail)) {
