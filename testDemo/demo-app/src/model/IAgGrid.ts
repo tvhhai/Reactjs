@@ -25,6 +25,7 @@
  * @param {boolean} selectSingleWithoutCheckbox(option)
  */
 import {GridReadyEvent, SelectionChangedEvent} from "ag-grid-community";
+import {ReactNode} from "react";
 
 export interface IAgGrid {
     title: string;
@@ -48,4 +49,35 @@ export interface IAgGrid {
     selectSingleWithoutCheckbox?: boolean;
 
     // rowSelection?: "single" | "multiple" | undefined;
+}
+
+export interface IAgGridTableConfigShowColumnsState {
+    aggFunc: any;
+    cellRenderer: ReactNode;
+    colId: string;
+    field: string;
+    flex: number;
+    headerName: string;
+    hide: boolean;
+    pinned: any;
+    pivot: boolean;
+    pivotIndex: any;
+    resizable: boolean;
+    rowGroup: boolean;
+    rowGroupIndex: any;
+    sort: string;
+    sortIndex: any;
+    sortable: boolean;
+    width: number;
+}
+
+export interface IAgGridTableConfigState {
+    hiddenColumns: any;
+    showColumns: IAgGridTableConfigShowColumnsState[];
+    gridColumns: any;
+}
+
+export interface IAgGridState {
+    isLoading: boolean;
+    tableConfig: IAgGridTableConfigState;
 }

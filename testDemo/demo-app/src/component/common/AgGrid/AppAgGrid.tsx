@@ -8,21 +8,30 @@ import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AppIconBtn from "../Button/AppIconBtn";
-import {FormControl, Grid, InputAdornment, MenuItem, Pagination, Paper, Select, Stack, TextField} from "@mui/material";
+import {
+    FormControl,
+    Grid,
+    InputAdornment,
+    MenuItem,
+    Pagination,
+    Paper,
+    Select,
+    Stack,
+    TextField,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import _ from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
 import {PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/agGridConstant";
-import {getStateAg, getTableConfig, saveTableConfig,} from "./AppAgGridSlice";
+import {getStateAg, getTableConfig, saveTableConfig} from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
 import {Trans} from "react-i18next";
 import i18n from "i18next";
 import {IAgGrid} from "../../../model/IAgGrid";
-import {DragStoppedEvent} from "ag-grid-community";
-
+import {DragStoppedEvent, SortChangedEvent} from "ag-grid-community";
 
 const AppAgGrid = (props: IAgGrid) => {
     const {
@@ -53,7 +62,9 @@ const AppAgGrid = (props: IAgGrid) => {
     const [fullScreen, setFulScreen] = React.useState(false);
     const [columnDefs, setColumnDefs] = React.useState(initialColumnDefs);
     const [openDiaLog, setOpen] = React.useState(false);
-    const [pageSize, setPageSize] = React.useState(paginationPageSize ? paginationPageSize : PAGINATION_PAGE_SIZE_OPTIONS[0]);
+    const [pageSize, setPageSize] = React.useState(
+        paginationPageSize ? paginationPageSize : PAGINATION_PAGE_SIZE_OPTIONS[0]
+    );
     const [currentPage, setCurrentPage] = React.useState<number>(1);
     const [rowCount, setRowCount] = React.useState<number>(0);
     const [totalPage, setTotalPage] = React.useState<number>(0);
@@ -63,7 +74,9 @@ const AppAgGrid = (props: IAgGrid) => {
     const handleSearch = _.debounce((e: React.ChangeEvent<HTMLInputElement>) => {
         gridRef.current.api.setQuickFilter(e.target.value);
         const rowDataSearch = gridRef.current.api.getRenderedNodes();
-        arrNotEmpty(rowDataSearch) ? gridRef.current.api.hideOverlay() : gridRef.current.api.showNoRowsOverlay();
+        arrNotEmpty(rowDataSearch)
+            ? gridRef.current.api.hideOverlay()
+            : gridRef.current.api.showNoRowsOverlay();
     }, 500);
 
     const tableFullScreen = () => {
@@ -72,18 +85,18 @@ const AppAgGrid = (props: IAgGrid) => {
 
     const openDialogSetting = () => {
         setOpen(true);
-    }
+    };
 
     const closeDialogSetting = () => {
         setOpen(false);
     };
 
     const onBtnApply = (val: any) => {
-        console.log('onBtnApply')
+        console.log("onBtnApply");
         const {left, right} = val;
         if (enableTableConfig || enableSaveColDrag) {
             dispatch(saveTableConfig(requestTableConfig(right, left)));
-            setColumnDefs(right)
+            setColumnDefs(right);
         }
         // handleSaveTableConfig({columnState})
         // dispatch(saveColumns(columns));
@@ -95,18 +108,31 @@ const AppAgGrid = (props: IAgGrid) => {
         //     columnDefs = [...columns];
         // }
         // arrNotEmpty(columns) && gridRef.current.api.setColumnDefs(columnDefs);
-    }
+    };
 
-    const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handleChangePage = (
+        event: React.ChangeEvent<unknown>,
+        value: number
+    ) => {
         setCurrentPage(value);
         gridRef.current.api.paginationGoToPage(value - 1); // as the first page is zero
     };
 
     const onDragStopped = (params: DragStoppedEvent) => {
-        console.log('---onDragStopped----');
+        console.log("---onDragStopped----");
         const getColumnStateOrder = params.columnApi.getColumnState();
+        // console.log(syncColumns(getColumnStateOrder, columnDefs))
         handleSaveTableConfig(syncColumns(getColumnStateOrder, columnDefs));
-    }
+    };
+
+    const afterSortChanged = (params: SortChangedEvent) => {
+        const getColumnState = params.columnApi.getColumnState();
+        getColumnState.forEach((v: any, i: number) => {
+            columnDefs[i].sort = v.sort;
+        });
+        console.log(columnDefs);
+        setColumnDefs(columnDefs);
+    };
 
     const syncColumns = (columnsOrder: object[], columnDefs: object[]) => {
         let columnDefsMap: Record<string, any> = {};
@@ -116,54 +142,64 @@ const AppAgGrid = (props: IAgGrid) => {
         });
 
         return columnsOrder.map((v: any) => {
-            return columnDefsMap[v.colId]
+            return columnDefsMap[v.colId];
         });
-    }
+    };
 
     const handleTableConfig = () => {
-        console.log('----handleTableConfig-------');
-
+        console.log("----handleTableConfig-------");
         if (arrNotEmpty(showColumns)) {
-            setColumnDefs(showColumns);
+            const syncColumnDefs = syncColumns(showColumns, initialColumnDefs);
+            const mergeColumnDefs = _.merge(syncColumnDefs, showColumns);
+            setColumnDefs(mergeColumnDefs);
         } else {
             if (gridRef.current.columnApi) {
-                const getColumnState = gridRef.current.columnApi.columnModel.getColumnState();
-                const mergedColumnsByColId = _.merge(_.keyBy(getColumnState, 'colId'), _.keyBy(columnDefs, 'colId'));
+                const getColumnState =
+                    gridRef.current.columnApi.columnModel.getColumnState();
+                const mergedColumnsByColId = _.merge(
+                    _.keyBy(getColumnState, "colId"),
+                    _.keyBy(columnDefs, "colId")
+                );
                 const columnsState = _.values(mergedColumnsByColId);
                 setColumnDefs(columnsState);
                 handleSaveTableConfig(columnsState);
             }
         }
-    }
+    };
 
     React.useEffect(() => {
         handleTableConfig();
     }, [tableConfig]);
 
     const handleGetTableConfig = () => {
-        console.log('----handleGetTableConfig----');
+        console.log("----handleGetTableConfig----");
         if (enableTableConfig || enableSaveColDrag) {
-            dispatch(getTableConfig(gridName))
+            dispatch(getTableConfig(gridName));
         }
-    }
+    };
 
     const handleSaveTableConfig = (data: any) => {
-        console.log('----handleSaveTableConfig----');
+        console.log("----handleSaveTableConfig----");
         if (enableTableConfig || enableSaveColDrag) {
-            dispatch(saveTableConfig(requestTableConfig(data, hiddenColumns)))
+            dispatch(saveTableConfig(requestTableConfig(data, hiddenColumns)));
         }
-    }
+    };
 
-    const requestTableConfig = (showColumns: object[], hiddenColumns: object[]) => {
+    const requestTableConfig = (
+        showColumns: object[],
+        hiddenColumns: object[]
+    ) => {
         return {
             tableId: gridName,
-            tableConfig: [{
-                showColumns: showColumns,
-                hiddenColumns: hiddenColumns,
-                gridColumns: initialColumnDefs
-            }]
-        }
-    }
+            tableConfig: [
+                {
+                    showColumns: showColumns,
+                    hiddenColumns: hiddenColumns,
+                    gridColumns: initialColumnDefs,
+                },
+            ],
+        };
+    };
 
     const onPageSizeChanged = React.useCallback((event: any) => {
         setPageSize(event.target.value);
@@ -171,19 +207,19 @@ const AppAgGrid = (props: IAgGrid) => {
     }, []);
 
     const onPaginationChanged = React.useCallback(() => {
-        if (_.get(gridRef, 'current.api')) {
+        if (_.get(gridRef, "current.api")) {
             const rowData = gridRef.current.api.getRenderedNodes();
 
             setTotalPage(gridRef.current.api.paginationGetTotalPages());
             setRowCount(gridRef.current.api.paginationGetRowCount());
-            arrNotEmpty(rowData) ? setCurrentPage(gridRef.current.api.paginationGetCurrentPage() + 1) // as the first page is zero
+            arrNotEmpty(rowData)
+                ? setCurrentPage(gridRef.current.api.paginationGetCurrentPage() + 1) // as the first page is zero
                 : setCurrentPage(0);
         }
     }, []);
 
-
     React.useEffect(() => {
-        handleGetTableConfig()
+        handleGetTableConfig();
     }, []);
 
     React.useEffect(() => {
@@ -194,20 +230,25 @@ const AppAgGrid = (props: IAgGrid) => {
     }, [rowCount, pageSize, totalPage, fromIndex, toIndex, currentPage]);
 
     React.useEffect(() => {
-        if (_.get(gridRef, 'current.api.setDomLayout')) {
+        if (_.get(gridRef, "current.api.setDomLayout")) {
             if (pageSize >= 10) {
-                gridRef.current.api.setDomLayout('normal');
-                (document.querySelector(".app-ag-grid-body") as HTMLElement).style.height = '471px';
+                gridRef.current.api.setDomLayout("normal");
+                (
+                    document.querySelector(".app-ag-grid-body") as HTMLElement
+                ).style.height = "471px";
             } else {
-                gridRef.current.api.setDomLayout('autoHeight');
-                (document.querySelector(".app-ag-grid-body") as HTMLElement).style.height = '';
+                gridRef.current.api.setDomLayout("autoHeight");
+                (
+                    document.querySelector(".app-ag-grid-body") as HTMLElement
+                ).style.height = "";
             }
         }
     }, [pageSize]);
 
     return (
         <div
-            className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen" : ""}`}
+            className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen" : ""
+            }`}
         >
             <AppLoader isLoading={loading || isLoading}/>
             <CardLayout titleHeader={title}>
@@ -234,35 +275,42 @@ const AppAgGrid = (props: IAgGrid) => {
                             <Grid item xs={12} md={8}>
                                 <div className="toolbar-right">
                                     {searchAll ? (
-                                        <Paper sx={{display: "flex", alignItems: "center",}}
-                                        >
-                                            <TextField size="small" fullWidth id="outlined-basic" type='search'
-                                                       variant="outlined" placeholder={i18n.t('common.searchAll')}
-                                                       onChange={handleSearch}
-                                                       InputProps={{
-                                                           startAdornment: (
-                                                               <InputAdornment position="start">
-                                                                   <SearchIcon/>
-                                                               </InputAdornment>
-                                                           ),
-                                                       }}
+                                        <Paper sx={{display: "flex", alignItems: "center"}}>
+                                            <TextField
+                                                size="small"
+                                                fullWidth
+                                                id="outlined-basic"
+                                                type="search"
+                                                variant="outlined"
+                                                placeholder={i18n.t("common.searchAll")}
+                                                onChange={handleSearch}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <SearchIcon/>
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
                                             />
                                         </Paper>
                                     ) : (
                                         <></>
                                     )}
 
-                                    {
-                                        enableFullScreen && <AppIconBtn
+                                    {enableFullScreen && (
+                                        <AppIconBtn
                                             variant="contained"
                                             className="ms-2"
                                             tooltip={"common.fullScreen"}
                                             onClick={tableFullScreen}
                                         >
-                                            {fullScreen ? <CloseFullscreenIcon/> : <OpenInFullIcon/>}
+                                            {fullScreen ? (
+                                                <CloseFullscreenIcon/>
+                                            ) : (
+                                                <OpenInFullIcon/>
+                                            )}
                                         </AppIconBtn>
-                                    }
-
+                                    )}
 
                                     <AppIconBtn
                                         variant="contained"
@@ -290,15 +338,15 @@ const AppAgGrid = (props: IAgGrid) => {
                         </Grid>
                     </div>
 
-                    <div className={`app-ag-grid-body ag-theme-alpine ${classNameApp}`}
-                    >
+                    <div className={`app-ag-grid-body ag-theme-alpine ${classNameApp}`}>
                         <AgGridReact
                             // -------------default-----------------
                             ref={gridRef}
                             onDragStopped={onDragStopped}
+                            onSortChanged={afterSortChanged}
                             suppressCellFocus={true}
                             suppressPaginationPanel={true}
-                            domLayout={'autoHeight'} // autoHeight/normal
+                            domLayout={"autoHeight"} // autoHeight/normal
                             // suppressCsvExport={true}
                             // suppressExcelExport={true}
                             // suppressFocusAfterRefresh={true}
@@ -308,12 +356,20 @@ const AppAgGrid = (props: IAgGrid) => {
                             rowMultiSelectWithClick={true}
                             animateRows={true}
                             pagination={true}
-                            overlayNoRowsTemplate={i18n.t('common.agGridNoData')}
+                            overlayNoRowsTemplate={i18n.t("common.agGridNoData")}
                             // -------------end default-----------------
-                            paginationPageSize={paginationPageSize ? paginationPageSize : pageSize}
+                            paginationPageSize={
+                                paginationPageSize ? paginationPageSize : pageSize
+                            }
                             rowData={rowData}
                             columnDefs={columnDefs}
-                            rowSelection={selectMultiWithCheckbox ? 'multiple' : selectSingleWithoutCheckbox ? 'single' : undefined}
+                            rowSelection={
+                                selectMultiWithCheckbox
+                                    ? "multiple"
+                                    : selectSingleWithoutCheckbox
+                                        ? "single"
+                                        : undefined
+                            }
                             defaultColDef={defaultColDef}
                             onSelectionChanged={onSelectionChanged}
                             onPaginationChanged={onPaginationChanged}
@@ -333,7 +389,12 @@ const AppAgGrid = (props: IAgGrid) => {
                         />
 
                         <div className="app-ag-grid-paging">
-                            <Grid container spacing={2} alignItems="center" justifyContent="space-between">
+                            <Grid
+                                container
+                                spacing={2}
+                                alignItems="center"
+                                justifyContent="space-between"
+                            >
                                 <Grid item xs={12} md={4}>
                                     <div className="pull-left">
                                         <FormControl size="small">
@@ -343,42 +404,44 @@ const AppAgGrid = (props: IAgGrid) => {
                                                 value={pageSize}
                                                 onChange={onPageSizeChanged}
                                             >
-                                                {
-                                                    PAGINATION_PAGE_SIZE_OPTIONS.map((v, i) => (
-                                                        <MenuItem key={i} value={v}>{v}</MenuItem>
-                                                    ))
-                                                }
+                                                {PAGINATION_PAGE_SIZE_OPTIONS.map((v, i) => (
+                                                    <MenuItem key={i} value={v}>
+                                                        {v}
+                                                    </MenuItem>
+                                                ))}
                                             </Select>
                                         </FormControl>
-                                        <span className='page-inform'>
-                                            <Trans
-                                                i18nKey="common.pageInform1"
-                                            >
-                                                Showing <strong>{{fromIndex}}</strong> - <strong>{{toIndex}}</strong> of <strong>{{rowCount}}</strong> records
+                                        <span className="page-inform">
+                                            <Trans i18nKey="common.pageInform1">
+                                                Showing <strong>{{fromIndex}}</strong> -{" "}
+                                                <strong>{{toIndex}}</strong> of{" "}
+                                                <strong>{{rowCount}}</strong> records
                                             </Trans>
                                         </span>
                                     </div>
                                 </Grid>
 
                                 <Grid item xs={12} md={8}>
-                                    <div className='app-ag-grid-pager-nav pull-right'>
-                                        <span className='page-inform'>
-                                            <Trans
-                                                i18nKey="common.pageInform2"
-                                            >
-                                                Page <strong>{{currentPage}}</strong> of <strong>{{totalPage}}</strong>
+                                    <div className="app-ag-grid-pager-nav pull-right">
+                                        <span className="page-inform">
+                                            <Trans i18nKey="common.pageInform2">
+                                                Page <strong>{{currentPage}}</strong> of{" "}
+                                                <strong>{{totalPage}}</strong>
                                             </Trans>
-
                                         </span>
                                         <Stack spacing={2}>
-                                            <Pagination count={totalPage}
-                                                        page={currentPage}
-                                                        siblingCount={0} boundaryCount={0}
-                                                        variant="outlined"
-                                                        color="primary"
-                                                        shape="rounded"
-                                                        showFirstButton showLastButton
-                                                        onChange={handleChangePage}/>
+                                            <Pagination
+                                                count={totalPage}
+                                                page={currentPage}
+                                                siblingCount={0}
+                                                boundaryCount={0}
+                                                variant="outlined"
+                                                color="primary"
+                                                shape="rounded"
+                                                showFirstButton
+                                                showLastButton
+                                                onChange={handleChangePage}
+                                            />
                                         </Stack>
                                     </div>
                                 </Grid>
@@ -396,8 +459,7 @@ const AppAgGrid = (props: IAgGrid) => {
                 columns={columnDefs}
             />
         </div>
-    )
-        ;
+    );
 };
 
 export default AppAgGrid;

@@ -42,43 +42,35 @@ function intersection(a: number[], b: any) {
 const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
     const {columns: columnsProp, open, apply, onClose, ...other} = props;
     const {tableConfig} = useSelector(getStateAg);
-    const {showColumns, hiddenColumns, gridColumns} = tableConfig;
+    const {showColumns, hiddenColumns} = tableConfig;
     const [disable, setDisabled] = React.useState<boolean>(true);
     const [checked, setChecked] = React.useState<number[]>([]);
     const [left, setLeft] = React.useState<object[]>(hiddenColumns || []);
-    const [right, setRight] = React.useState<object[]>(columnsProp);
-    const [valueBk, setValueBk] = React.useState<object[]>(_.cloneDeep(columnsProp));
+    const [right, setRight] = React.useState<object[]>(showColumns);
+    const [valueBk, setValueBk] = React.useState<object[]>(_.cloneDeep(showColumns));
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
 
 
     React.useEffect(() => {
-        // !arrNotEmpty(right) ? setDisabled(true) : setDisabled(false);
-        setValueBk(_.cloneDeep(columnsProp));
-
+        setValueBk(_.cloneDeep(showColumns));
     }, [right]);
 
     React.useEffect(() => {
-        setRight(columnsProp);
-    }, [columnsProp]);
+        setRight(showColumns);
+    }, [showColumns]);
 
     const handleDisable = (): boolean => {
-        // console.log(right, valueBk, compareObj(right, valueBk));
-        return compareObj(right, valueBk);
+        const isValid = arrNotEmpty(right);
+        return compareObj(right, valueBk) && isValid || !isValid;
     }
+
 
     const handleCancel = () => {
         setChecked([]);
         setLeft(hiddenColumns);
         setRight(showColumns);
-
-        console.log({
-            'left': left,
-            'right': right,
-            'hiddenColumns': hiddenColumns,
-            'showColumns': showColumns
-        })
         onClose();
     };
 
@@ -106,12 +98,16 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
     };
 
     const handleCheckedRight = () => {
+        if (leftChecked.length === 1) {
+            setChecked(not(checked, leftChecked));
+        }
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
         // setChecked(not(checked, leftChecked));
     };
 
     const handleCheckedLeft = () => {
+        console.log('vl')
         setLeft(left.concat(rightChecked));
         setRight(not(right, rightChecked));
         // setChecked(not(checked, rightChecked));
