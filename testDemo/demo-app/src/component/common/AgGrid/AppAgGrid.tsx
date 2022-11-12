@@ -14,12 +14,8 @@ import _ from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
-import {AG_GRID_CHECKBOX_SELECTION, PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/agGridConstant";
-import {
-    getStateAg,
-    getTableConfig,
-    saveTableConfig,
-} from "./AppAgGridSlice";
+import {PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/agGridConstant";
+import {getStateAg, getTableConfig, saveTableConfig,} from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
 import {Trans} from "react-i18next";
@@ -108,27 +104,35 @@ const AppAgGrid = (props: IAgGrid) => {
 
     const onDragStopped = (params: DragStoppedEvent) => {
         console.log('---onDragStopped----');
-        const getColumnState = params.columnApi.getColumnState();
-        const mergedColumnsByColId = _.merge(_.keyBy(getColumnState, 'colId'), _.keyBy(columnDefs, 'colId'));
-        const columnsState = _.values(mergedColumnsByColId);
-        handleSaveTableConfig(columnsState)
+        const getColumnStateOrder = params.columnApi.getColumnState();
+        handleSaveTableConfig(syncColumns(getColumnStateOrder, columnDefs));
+    }
+
+    const syncColumns = (columnsOrder: object[], columnDefs: object[]) => {
+        let columnDefsMap: Record<string, any> = {};
+
+        columnDefs.forEach((v: any) => {
+            columnDefsMap[v.colId] = v;
+        });
+
+        return columnsOrder.map((v: any) => {
+            return columnDefsMap[v.colId]
+        });
     }
 
     const handleTableConfig = () => {
         console.log('----handleTableConfig-------');
+
         if (arrNotEmpty(showColumns)) {
-            let syncColumns: any[] = [];
-            let columnDefsMap: Record<string, any> = {};
-            initialColumnDefs.forEach((v: any) => {
-                columnDefsMap[v.colId] = v;
-            });
-
-            showColumns.forEach((v: any) => {
-                const col = columnDefsMap[v.colId];
-                col && syncColumns.push(col);
-            });
-
-            setColumnDefs(syncColumns);
+            setColumnDefs(showColumns);
+        } else {
+            if (gridRef.current.columnApi) {
+                const getColumnState = gridRef.current.columnApi.columnModel.getColumnState();
+                const mergedColumnsByColId = _.merge(_.keyBy(getColumnState, 'colId'), _.keyBy(columnDefs, 'colId'));
+                const columnsState = _.values(mergedColumnsByColId);
+                setColumnDefs(columnsState);
+                handleSaveTableConfig(columnsState);
+            }
         }
     }
 

@@ -71,15 +71,14 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
     const handleCancel = () => {
         setChecked([]);
         setLeft(hiddenColumns);
-        console.log(showColumns)
         setRight(showColumns);
 
-        // console.log({
-        //     'left': left,
-        //     'right': right,
-        //     'hiddenColumns': hiddenColumns,
-        //     'showColumns': showColumns
-        // })
+        console.log({
+            'left': left,
+            'right': right,
+            'hiddenColumns': hiddenColumns,
+            'showColumns': showColumns
+        })
         onClose();
     };
 
@@ -202,7 +201,7 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
 
 
     React.useEffect(() => {
-        setLeft(hiddenColumns)
+        setLeft(hiddenColumns);
     }, [hiddenColumns]);
 
 
