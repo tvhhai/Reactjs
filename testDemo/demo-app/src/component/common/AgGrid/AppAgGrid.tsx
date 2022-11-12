@@ -126,12 +126,12 @@ const AppAgGrid = (props: IAgGrid) => {
     };
 
     const afterSortChanged = (params: SortChangedEvent) => {
-        const getColumnState = params.columnApi.getColumnState();
-        getColumnState.forEach((v: any, i: number) => {
-            columnDefs[i].sort = v.sort;
-        });
-        console.log(columnDefs);
-        setColumnDefs(columnDefs);
+        // const getColumnState = params.columnApi.getColumnState();
+        // getColumnState.forEach((v: any, i: number) => {
+        //     columnDefs[i].sort = v.sort;
+        //     columnDefs[i].sortIndex = v.sortIndex;
+        // });
+        // handleSaveTableConfig(columnDefs);
     };
 
     const syncColumns = (columnsOrder: object[], columnDefs: object[]) => {
@@ -456,7 +456,8 @@ const AppAgGrid = (props: IAgGrid) => {
                 open={openDiaLog}
                 onClose={closeDialogSetting}
                 apply={onBtnApply}
-                columns={columnDefs}
+                // columns={columnDefs}
+
             />
         </div>
     );

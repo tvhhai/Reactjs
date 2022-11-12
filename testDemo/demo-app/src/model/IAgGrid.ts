@@ -72,9 +72,9 @@ export interface IAgGridTableConfigShowColumnsState {
 }
 
 export interface IAgGridTableConfigState {
-    hiddenColumns: any;
-    showColumns: IAgGridTableConfigShowColumnsState[];
-    gridColumns: any;
+    hiddenColumns: [];
+    showColumns: [];
+    gridColumns: [];
 }
 
 export interface IAgGridState {

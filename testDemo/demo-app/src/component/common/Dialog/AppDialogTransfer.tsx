@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 
 import i18n from "i18next";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {getStateAg} from "../AgGrid/AppAgGridSlice";
 import {arrNotEmpty, compareObj} from "../../../helper/commonHelper";
 import Grid from "@mui/material/Grid";
@@ -25,7 +25,7 @@ import _ from "lodash";
 interface ConfirmationDialogRawProps {
     id: string;
     keepMounted: boolean;
-    columns: object[];
+    columns?: object[];
     open: boolean;
     onClose: (value?: string) => void;
     apply: (value?: any) => void;
@@ -40,26 +40,17 @@ function intersection(a: number[], b: any) {
 }
 
 const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
-    const {columns: columnsProp, open, apply, onClose, ...other} = props;
+    const {columns, open, apply, onClose, ...other} = props;
+
     const {tableConfig} = useSelector(getStateAg);
     const {showColumns, hiddenColumns} = tableConfig;
-    const [disable, setDisabled] = React.useState<boolean>(true);
     const [checked, setChecked] = React.useState<number[]>([]);
-    const [left, setLeft] = React.useState<object[]>(hiddenColumns || []);
+    const [left, setLeft] = React.useState<object[]>(hiddenColumns);
     const [right, setRight] = React.useState<object[]>(showColumns);
     const [valueBk, setValueBk] = React.useState<object[]>(_.cloneDeep(showColumns));
-
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
 
-
-    React.useEffect(() => {
-        setValueBk(_.cloneDeep(showColumns));
-    }, [right]);
-
-    React.useEffect(() => {
-        setRight(showColumns);
-    }, [showColumns]);
 
     const handleDisable = (): boolean => {
         const isValid = arrNotEmpty(right);
@@ -98,16 +89,13 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
     };
 
     const handleCheckedRight = () => {
-        if (leftChecked.length === 1) {
-            setChecked(not(checked, leftChecked));
-        }
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
+        console.log(left, leftChecked)
         // setChecked(not(checked, leftChecked));
     };
 
     const handleCheckedLeft = () => {
-        console.log('vl')
         setLeft(left.concat(rightChecked));
         setRight(not(right, rightChecked));
         // setChecked(not(checked, rightChecked));
@@ -195,11 +183,17 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
         }
     }
 
-
     React.useEffect(() => {
         setLeft(hiddenColumns);
-    }, [hiddenColumns]);
+        setRight(showColumns);
+    }, [hiddenColumns, showColumns]);
 
+    React.useEffect(() => {
+        if (right.length === 1) {
+            setChecked(not(checked, right));
+        }
+        setValueBk(_.cloneDeep(showColumns));
+    }, [right]);
 
     const listTransfer = (items: readonly any[], rightSide: boolean) => (
         <List component="nav" dense role="list" className="transfer-list">
