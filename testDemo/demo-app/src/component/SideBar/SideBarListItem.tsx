@@ -44,6 +44,7 @@ function SideBarListItem({list}: any) {
     const classes = useStyles();
     const [lists, setList] = React.useState([
         // SideBarConfigList.home,
+        SideBarConfigList.product,
         SideBarConfigList.exercises,
         SideBarConfigList.administration
     ]);

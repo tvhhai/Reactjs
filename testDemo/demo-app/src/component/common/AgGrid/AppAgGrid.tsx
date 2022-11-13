@@ -24,7 +24,7 @@ import _ from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
-import {PAGINATION_PAGE_SIZE_OPTIONS} from "../../../constant/agGridConstant";
+import {PAGINATION_PAGE_SIZE_OPTIONS, DEFAULT_COL_DEFS} from "../../../constant/agGridConstant";
 import {getStateAg, getTableConfig, saveTableConfig} from "./AppAgGridSlice";
 import {arrNotEmpty} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
@@ -370,7 +370,7 @@ const AppAgGrid = (props: IAgGrid) => {
                                         ? "single"
                                         : undefined
                             }
-                            defaultColDef={defaultColDef}
+                            defaultColDef={defaultColDef ? defaultColDef : DEFAULT_COL_DEFS}
                             onSelectionChanged={onSelectionChanged}
                             onPaginationChanged={onPaginationChanged}
                             onGridReady={onGridReady}

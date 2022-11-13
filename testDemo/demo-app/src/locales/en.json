@@ -2,6 +2,8 @@
   "common": {
     "title": "",
     "intro": "",
+    "name": "Name",
+    "image": "Image",
     "agGridNoData": "No items to show",
     "add": "Add",
     "edit": "Edit",
@@ -37,9 +39,11 @@
     "phone": "Phone",
     "todo": "Todo",
     "administration": "Administration",
-    "preferences":"Preferences",
+    "preferences": "Preferences",
     "userSetting": "User Setting",
-    "systemSetting": "System Setting"
+    "systemSetting": "System Setting",
+    "product": "Product",
+    "productCategory": "Category"
   },
   "phone": {
     "title": "Phone Manager",
@@ -50,6 +54,21 @@
       "name": "Name",
       "price": "Price",
       "image": "Image"
+    }
+  },
+  "product": {
+    "title": "Product Manager",
+    "add": "Add Product",
+    "edit": "Edit Product",
+    "deleteMsg": "Are you sure you want to delete the selected product from Product Manager?",
+    "column": {
+      "name": "Name",
+      "type": "Type",
+      "price": "Price",
+      "importPrice": "Import Price",
+      "image": "Image",
+      "sale": "Sale",
+      "description": "Description"
     }
   },
   "todo": {

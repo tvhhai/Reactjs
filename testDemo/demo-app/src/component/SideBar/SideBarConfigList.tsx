@@ -4,6 +4,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import CategoryIcon from '@mui/icons-material/Category';
 
 export const SideBarConfigList = {
     dashboard: {
@@ -33,6 +34,26 @@ export const SideBarConfigList = {
             expand: false,
             active: false
         }],
+    },
+
+    product: {
+        id: 'product',
+        i18nKey: 'sidebar.product',
+        apps: [{
+            i18nKey: 'sidebar.product',
+            url: '/product',
+            icon: <MenuBookIcon/>,
+            expand: false,
+            active: false,
+            child: []
+        }, {
+            i18nKey: 'sidebar.productCategory',
+            url: '/product-category',
+            icon: <CategoryIcon/>,
+            expand: false,
+            active: false,
+            child: []
+        }]
     },
 
     exercises: {

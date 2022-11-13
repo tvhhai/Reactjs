@@ -11,6 +11,8 @@ import PhoneEdit from "../feature/Phone/PhoneEdit";
 import Dashboard from "../feature/Dashboard/Dashboard";
 import SignUp from "../feature/Auth/SignUp/SignUp";
 import SignIn from "../feature/Auth/SignIn/SignIn";
+import Product from "../feature/Product/Product";
+import ProductType from "../feature/ProductType/ProductType";
 
 
 function RouterConfig() {
@@ -31,6 +33,11 @@ function RouterConfig() {
                                 <Route path="phone" element={<Phone/>}/>
                                 <Route path="phone/add" element={<PhoneAdd/>}/>
                                 <Route path="phone/edit/:id" element={<PhoneEdit/>}/>
+
+                                <Route path="product" element={<Product/>}/>
+                                <Route path="product-category" element={<ProductType/>}/>
+
+
                                 <Route path="*" element={<Navigate to="/dashboard"/>}
                                 />
                             </Route>
