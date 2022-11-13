@@ -413,22 +413,22 @@ const AppAgGrid = (props: IAgGrid) => {
                                         </FormControl>
                                         <span className="page-inform">
                                             <Trans i18nKey="common.pageInform1">
-                                                Showing <strong>{{fromIndex}}</strong> -{" "}
-                                                <strong>{{toIndex}}</strong> of{" "}
+                                                Showing <strong>{{fromIndex}}</strong> -
+                                                <strong>{{toIndex}}</strong> of
                                                 <strong>{{rowCount}}</strong> records
                                             </Trans>
                                         </span>
                                     </div>
                                 </Grid>
-
                                 <Grid item xs={12} md={8}>
                                     <div className="app-ag-grid-pager-nav pull-right">
                                         <span className="page-inform">
                                             <Trans i18nKey="common.pageInform2">
-                                                Page <strong>{{currentPage}}</strong> of{" "}
+                                                Page <strong>{{currentPage}}</strong> of
                                                 <strong>{{totalPage}}</strong>
                                             </Trans>
                                         </span>
+
                                         <Stack spacing={2}>
                                             <Pagination
                                                 count={totalPage}
