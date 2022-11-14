@@ -52,3 +52,15 @@ body {
   justify-content: center;
 }
 
+.enable{
+    background: green;
+    border-radius: 4px;
+    padding:4px;
+    color:$white
+}
+.disable{
+    background: red;
+    border-radius: 4px;
+    padding:4px;
+    color:$white
+}

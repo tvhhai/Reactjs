@@ -11,3 +11,6 @@ export const STATUS_CODE = {
     PERMANENT_REDIRECT: 308,
 };
 
+export const ENABLE = "enable"
+export const DISABLE = "disable"
+

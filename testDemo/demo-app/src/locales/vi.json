@@ -2,6 +2,11 @@
   "common": {
     "title": "",
     "intro": "",
+    "enable": "Cho phép",
+    "disable": "Vô hiệu hóa",
+    "name": "Tên",
+    "status": "Trạng thái",
+    "image": "Hình ảnh",
     "agGridNoData": "Không có dữ liệu để hiển thị",
     "add": "Thêm",
     "edit": "Sửa",
@@ -39,7 +44,9 @@
     "administration": "Quản trị",
     "preferences":"Ưu tiên",
     "userSetting": "Cài đặt người dùng",
-    "systemSetting": "Cài đặt hệ thống"
+    "systemSetting": "Cài đặt hệ thống",
+    "product": "Sản Phẩm",
+    "productType": "Loại Sản Phẩm"
   },
   "phone": {
     "title": "Quản lí điện thoại",
@@ -51,6 +58,22 @@
       "price": "Giá tiền",
       "image": "Hình ảnh"
     }
+  },
+  "product": {
+    "title": "Product Manager",
+    "add": "Add Product",
+    "edit": "Edit Product",
+    "deleteMsg": "Are you sure you want to delete the selected product from Product Manager?",
+    "column": {
+      "type": "Loại",
+      "price": "Giá Bán",
+      "importPrice": "Giá Nhập",
+      "sale": "Khuyến Mãi",
+      "description": "Description"
+    }
+  },
+  "productType": {
+    "title": "Loại Sản Phẩm"
   },
   "todo": {
     "title": "Việc cần làm"

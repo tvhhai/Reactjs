@@ -3,7 +3,7 @@ import {IPhone} from "../model/IPhone";
 
 export const useYupValidationResolver = (validationSchema: any) =>
     React.useCallback(
-        async (data: IPhone) => {
+        async (data: any) => {
             try {
                 const values = await validationSchema.validate(data, {
                     abortEarly: false,

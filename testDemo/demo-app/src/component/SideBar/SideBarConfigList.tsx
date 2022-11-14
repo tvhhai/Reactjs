@@ -47,8 +47,8 @@ export const SideBarConfigList = {
             active: false,
             child: []
         }, {
-            i18nKey: 'sidebar.productCategory',
-            url: '/product-category',
+            i18nKey: 'sidebar.productType',
+            url: '/product-type',
             icon: <CategoryIcon/>,
             expand: false,
             active: false,

@@ -2,7 +2,10 @@
   "common": {
     "title": "",
     "intro": "",
+    "enable": "Enable",
+    "disable": "Disable",
     "name": "Name",
+    "status": "Status",
     "image": "Image",
     "agGridNoData": "No items to show",
     "add": "Add",
@@ -43,7 +46,7 @@
     "userSetting": "User Setting",
     "systemSetting": "System Setting",
     "product": "Product",
-    "productCategory": "Category"
+    "productType": "Product Type"
   },
   "phone": {
     "title": "Phone Manager",
@@ -62,14 +65,15 @@
     "edit": "Edit Product",
     "deleteMsg": "Are you sure you want to delete the selected product from Product Manager?",
     "column": {
-      "name": "Name",
       "type": "Type",
       "price": "Price",
       "importPrice": "Import Price",
-      "image": "Image",
       "sale": "Sale",
       "description": "Description"
     }
+  },
+  "productType": {
+    "title": "Product Type"
   },
   "todo": {
     "title": "Todo App"

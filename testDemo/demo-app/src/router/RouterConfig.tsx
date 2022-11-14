@@ -35,7 +35,7 @@ function RouterConfig() {
                                 <Route path="phone/edit/:id" element={<PhoneEdit/>}/>
 
                                 <Route path="product" element={<Product/>}/>
-                                <Route path="product-category" element={<ProductType/>}/>
+                                <Route path="product-type" element={<ProductType/>}/>
 
 
                                 <Route path="*" element={<Navigate to="/dashboard"/>}
