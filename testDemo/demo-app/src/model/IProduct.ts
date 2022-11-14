@@ -11,7 +11,7 @@ export interface IProduct {
     name: string,
     type: string,
     price: number,
-    image: string,
+    image: any,
     importPrice: number,
     sale: string,
     description: string,

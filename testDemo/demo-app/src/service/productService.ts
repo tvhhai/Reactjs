@@ -16,7 +16,12 @@ export const editProductService = async (id: number, data: IProduct) => {
 };
 
 export const addProductService = async (data: IProduct) => {
-    return await axiosConfig.post(PRODUCT_URL.PRODUCT, data);
+    return await axiosConfig.post(PRODUCT_URL.PRODUCT, data,{
+        headers:{
+            'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundarybbEPTuzJ10qV9ugF',
+        }
+
+    });
 };
 
 export const deleteProductService = async (id: number) => {

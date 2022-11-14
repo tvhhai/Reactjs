@@ -27,12 +27,55 @@ const ProductAdd = () => {
 
     const handleClick = async () => {
         try {
-            await dispatch(addProduct(value)).unwrap();
+            // console.log(value.image.get('image'))
+            let formData = new FormData();
+            console.log(value.image)
+            for (let i = 0; i < value.image.length; i++) {
+                formData.append('images', value.image[i])
+            }
+            // formData.append("images", value.image);
+
+            formData.append('user', new Blob([JSON.stringify({
+                "name": value.name,
+                "price": value.price,
+                "importPrice": value.importPrice,
+                "sale": value.sale,
+                "description": value.description,
+            })], {
+                type: "application/json"
+            }));
+            console.log(formData.get('user'), formData.get('images'))
+            await dispatch(addProduct(formData));
             NotificationUtils.success('PhoneAdd phone successfully!');
         } catch (err) {
             NotificationUtils.error(err);
         }
         backPage();
+    }
+
+    const createFormData = (object: IProduct, form: any, namespace: any) => {
+        const formData = new FormData();
+        for (let property in object) {
+            // @ts-ignore
+            if (!object.hasOwnProperty(property) || !object[property]) {
+                continue;
+            }
+            const formKey = namespace ? `${namespace}[${property}]` : property;
+            // @ts-ignore
+            if (object[property] instanceof Date) {
+                // @ts-ignore
+                formData.append(formKey, object[property].toISOString());
+            } else { // @ts-ignore
+                if (typeof object[property] === 'object' && !(object[property] instanceof File)) {
+                    // @ts-ignore
+                    createFormData(object[property], formData, formKey);
+                } else {
+                    // @ts-ignore
+                    formData.append(formKey, object[property]);
+                }
+            }
+        }
+        return formData
     }
 
     const backPage = () => {

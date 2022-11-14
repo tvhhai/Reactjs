@@ -77,7 +77,7 @@ export const getListProduct = createAsyncThunk(
 
 export const addProduct = createAsyncThunk(
     "product/addProduct",
-    async (data: IProduct) => {
+    async (data: any) => {
         try {
             const response = await addProductService(data);
             return response.data;

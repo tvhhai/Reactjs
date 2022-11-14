@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getListProductType, getProductType} from "../ProductType/ProductTypeSlice";
 import {getListProduct} from "./ProductSlice";
 import UploadImage from "../../component/common/Upload/UploadImage";
+import ImageUploading from 'react-images-uploading';
 
 interface ProductProps {
     value: IProduct;
@@ -32,7 +33,7 @@ const ProductForm = (props: ProductProps) => {
         description: yup.string().required('common.validate.requite'),
         price: yup.string().matches(/^[0-9]+$/, "common.validate.number")
             .max(9, 'common.validate.maxNumberLength').required('common.validate.requite'),
-        image: yup.string().trim().required('common.validate.requite'),
+        // image: yup.f().trim().required('common.validate.requite'),
     });
 
     const {register, formState} = useForm<IProduct>({
@@ -49,6 +50,15 @@ const ProductForm = (props: ProductProps) => {
     React.useEffect(() => {
         dispatch(getListProductType());
     }, []);
+
+
+    const handleChange = (imageList: any, addUpdateIndex: any) => {
+        console.log(imageList[0].file, addUpdateIndex);
+
+        const formData = new FormData();
+        formData.append('file', imageList[0].file);
+        setValue({...value, image: formData});
+    }
 
     return (
         <Grid container rowSpacing={3} columnSpacing={{xs: 1, sm: 2, md: 3}}>
@@ -140,22 +150,87 @@ const ProductForm = (props: ProductProps) => {
                     error={!!errors.sale}
                 />
             </Grid>
+            {/*<Grid item sm={12} md={6}>*/}
+            {/*    <AppInputLabel i18nTitleKey={"common.image"} required/>*/}
+            {/*    <UploadImage value={value.image || ""}  {...register("image", {*/}
+            {/*        onChange: (e) => setValue({...value, image: e.target.value}),*/}
+            {/*    })}/>*/}
+            {/*</Grid>*/}
             <Grid item sm={12} md={6}>
-                <AppInputLabel i18nTitleKey={"common.image"} required/>
-                <UploadImage value={value.image || ""}  {...register("image", {
-                    onChange: (e) => setValue({...value, image: e.target.value}),
-                })}/>
-            </Grid>
-            <Grid item sm={12} md={6}>
-                <Button variant="contained" component="label">
-                    Upload
-                    <input hidden accept="image/*" multiple type="file"
-                           value={value.image || ""}
-                           {...register("image", {
-                               onChange: (e) => setValue({...value, image: e.target.value}),
-                           })}
-                    />
-                </Button>
+                <input  type="file" accept="image/*" multiple
+                        defaultValue={value.image}
+                       {...register("image", {
+                           onChange: async (e) => {
+                               // const formData = new FormData();
+                               // const reader = new FileReader();
+                               //
+                               // if (e.target.files[0]) {
+                               //     reader.readAsDataURL(e.target.files[0]);
+                               // }
+                               // reader.onload = (readerEvent) => {
+                               //     // @ts-ignore
+                               //     console.log( readerEvent.target.result)
+                               //     // @ts-ignore
+                               //     formData.append("image", readerEvent.target.result);
+                               //     // @ts-ignore
+                               //     setValue({...value, image: readerEvent.target.result})
+                               // };
+                               // console.log(formData.get('image'))
+                               const formData = new FormData();
+                               const files = e.target.files
+
+                               for (let i = 0; i < files.length; i++) {
+                                   formData.append('image', files[i])
+                               }
+
+                               setValue({...value, image: files})
+                           }
+
+                           // setValue({...value, image: e.target.files[0].name})
+
+                       })}
+
+                />
+                {/*</Button>*/}
+                {/*<ImageUploading*/}
+                {/*    multiple*/}
+                {/*    value={value.image || ""}*/}
+                {/*    onChange={handleChange}*/}
+                {/*    maxNumber={69}*/}
+                {/*    dataURLKey="data_url"*/}
+                {/*>*/}
+                {/*    {({*/}
+                {/*          imageList,*/}
+                {/*          onImageUpload,*/}
+                {/*          onImageRemoveAll,*/}
+                {/*          onImageUpdate,*/}
+                {/*          onImageRemove,*/}
+                {/*          isDragging,*/}
+                {/*          dragProps,*/}
+                {/*      }) => (*/}
+                {/*        // write your building UI*/}
+                {/*        <div className="upload__image-wrapper">*/}
+                {/*            <button*/}
+                {/*                style={isDragging ? {color: 'red'} : undefined}*/}
+                {/*                onClick={onImageUpload}*/}
+                {/*                {...dragProps}*/}
+                {/*            >*/}
+                {/*                Click or Drop here*/}
+                {/*            </button>*/}
+                {/*            &nbsp;*/}
+                {/*            <button onClick={onImageRemoveAll}>Remove all images</button>*/}
+                {/*            {imageList.map((image, index) => (*/}
+                {/*                <div key={index} className="image-item">*/}
+                {/*                    <img src={image['data_url']} alt="" width="100"/>*/}
+                {/*                    <div className="image-item__btn-wrapper">*/}
+                {/*                        <button onClick={() => onImageUpdate(index)}>Update</button>*/}
+                {/*                        <button onClick={() => onImageRemove(index)}>Remove</button>*/}
+                {/*                    </div>*/}
+                {/*                </div>*/}
+                {/*            ))}*/}
+                {/*        </div>*/}
+                {/*    )}*/}
+                {/*</ImageUploading>*/}
             </Grid>
             <Grid item sm={12} md={6}>
                 <AppInputLabel i18nTitleKey={"product.column.description"} required/>
