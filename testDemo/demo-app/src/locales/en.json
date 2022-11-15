@@ -68,7 +68,8 @@
       "type": "Type",
       "price": "Price",
       "importPrice": "Import Price",
-      "sale": "Sale",
+      "discountBy": "Discount By",
+      "discountValue": "Discount Value",
       "description": "Description"
     }
   },

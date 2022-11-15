@@ -19,7 +19,8 @@ const ProductAdd = () => {
         type: "",
         price: 0,
         importPrice: 0,
-        sale: "",
+        discountBy: "",
+        discountValue: 0,
         description: ""
     });
     const [isValid, setIsValid] = React.useState(true);
@@ -47,7 +48,8 @@ const ProductAdd = () => {
             "productType": value.type,
             "price": value.price,
             "importPrice": value.importPrice,
-            "sale": value.sale,
+            "discountBy": value.discountBy,
+            "discountValue": value.discountValue,
             "description": value.description,
         })], {
             type: "application/json"
@@ -61,8 +63,8 @@ const ProductAdd = () => {
     }
 
     const handleDisable = () => {
-        // return !isValid;
-        return false
+        return !isValid;
+        // return false
     }
 
     const checkIsValid = (isValid: boolean) => {

@@ -11,6 +11,20 @@ export const STATUS_CODE = {
     PERMANENT_REDIRECT: 308,
 };
 
-export const ENABLE = "enable"
-export const DISABLE = "disable"
+export const ENABLE = "enable";
+export const DISABLE = "disable";
 
+export const DISCOUNT_BY = [
+    {
+        title: "None",
+        value: "",
+    },
+    {
+        title: "Percent",
+        value: "percent",
+    },
+    {
+        title: "Value",
+        value: "value",
+    },
+];

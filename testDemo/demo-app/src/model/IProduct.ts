@@ -10,9 +10,10 @@ export interface ProductState {
 export interface IProduct {
     name: string,
     type: string,
+    importPrice: number,
     price: number,
     image: any,
-    importPrice: number,
-    sale: string,
+    discountBy: string,
+    discountValue: number,
     description: string,
 }
