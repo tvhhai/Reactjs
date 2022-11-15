@@ -161,33 +161,13 @@ const ProductForm = (props: ProductProps) => {
                         defaultValue={value.image}
                        {...register("image", {
                            onChange: async (e) => {
-                               // const formData = new FormData();
-                               // const reader = new FileReader();
-                               //
-                               // if (e.target.files[0]) {
-                               //     reader.readAsDataURL(e.target.files[0]);
-                               // }
-                               // reader.onload = (readerEvent) => {
-                               //     // @ts-ignore
-                               //     console.log( readerEvent.target.result)
-                               //     // @ts-ignore
-                               //     formData.append("image", readerEvent.target.result);
-                               //     // @ts-ignore
-                               //     setValue({...value, image: readerEvent.target.result})
-                               // };
-                               // console.log(formData.get('image'))
                                const formData = new FormData();
                                const files = e.target.files
-
                                for (let i = 0; i < files.length; i++) {
                                    formData.append('image', files[i])
                                }
-
                                setValue({...value, image: files})
                            }
-
-                           // setValue({...value, image: e.target.files[0].name})
-
                        })}
 
                 />

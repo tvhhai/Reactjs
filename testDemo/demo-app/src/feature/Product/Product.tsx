@@ -21,9 +21,9 @@ const Product = () => {
 
     const columns = [
         {field: "name", headerName: t('common.name'),},
-        {field: "type", headerName: t('product.column.type')},
+        {field: "productType", headerName: t('product.column.type')},
         {field: "price", headerName: t('product.column.price')},
-        {field: "import_price", headerName: t('product.column.importPrice')},
+        {field: "importPrice", headerName: t('product.column.importPrice')},
         {field: "image", headerName: t('common.image'), },
         {field: "sale", headerName: t('product.column.sale')},
         {field: "description", headerName: t('product.column.description')},
