@@ -29,7 +29,8 @@
     "validate": {
       "requite": "This field is requite",
       "number": "Must be only digits",
-      "maxNumberLength": "Max {{ length }} numbers"
+      "maxNumberLength": "Max {{ length }} numbers",
+      "percentValue": "Value should not exceed 100"
     }
   },
   "sidebar": {

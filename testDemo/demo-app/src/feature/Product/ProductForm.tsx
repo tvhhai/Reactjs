@@ -1,16 +1,17 @@
 import React from 'react';
 import * as yup from "yup";
 
-import { Button, FormControl, FormHelperText, Grid, MenuItem, Select, TextField } from "@mui/material";
+import {Button, FormControl, FormHelperText, Grid, MenuItem, Select, TextField} from "@mui/material";
 import AppInputLabel from "../../component/common/InputLabel/AppInputLabel";
-import { useTranslation } from "react-i18next";
-import { useForm } from "react-hook-form";
-import { useYupValidationResolver } from "../../helper/yupHelper";
-import { IProduct } from "../../model/IProduct";
-import { useDispatch, useSelector } from "react-redux";
-import { getListProductType, getProductType } from "../ProductType/ProductTypeSlice";
-import { DISCOUNT_BY } from "../../constant/commonConstant";
-import { log } from 'console';
+import {useTranslation} from "react-i18next";
+import {useForm} from "react-hook-form";
+import {useYupValidationResolver} from "../../helper/yupHelper";
+import {IProduct} from "../../model/IProduct";
+import {useDispatch, useSelector} from "react-redux";
+import {getListProductType, getProductType} from "../ProductType/ProductTypeSlice";
+import {DISCOUNT_BY} from "../../constant/commonConstant";
+
+import _ from "lodash";
 
 interface ProductProps {
     value: IProduct;
@@ -19,10 +20,10 @@ interface ProductProps {
 }
 
 const ProductForm = (props: ProductProps) => {
-    const { value, setValue, checkIsValidForm } = props
-    const { t } = useTranslation();
+    const {value, setValue, checkIsValidForm} = props
+    const {t} = useTranslation();
     const dispatch = useDispatch<any>();
-    const { listProductType } = useSelector(getProductType);
+    const {listProductType} = useSelector(getProductType);
 
     const validationSchema = yup.object().shape({
         name: yup.string().required('common.validate.requite'),
@@ -31,16 +32,42 @@ const ProductForm = (props: ProductProps) => {
             .max(9, 'common.validate.maxNumberLength').required('common.validate.requite'),
         importPrice: yup.string().matches(/^[0-9]+$/, "common.validate.number")
             .max(9, 'common.validate.maxNumberLength').required('common.validate.requite'),
-        discountValue: yup.string().matches(/^[0-9]+$/, "common.validate.number")
-            .max(9, 'common.validate.maxNumberLength'),
+        // discountValue: yup.string().when("discountBy", {
+        //         is: (value: string) => value === DISCOUNT_BY[1].value,
+        //         then: yup.string().test('len', 'common.validate.percentValue', (val:any) => val <= 100),
+        //         otherwise: yup.string().max(9, 'common.validate.maxNumberLength')
+        //     }).matches(/^[0-9]+$/, "common.validate.number")
+
+        discountValue: yup.string().test('values-test', 'dummy message', (val: any, validationContext: any) => {
+            const {
+                createError,
+                parent: {
+                    discountBy,
+                },
+            } = validationContext;
+
+            if (_.isEmpty(discountBy)) {
+                return true;
+            }
+
+            if (discountBy === DISCOUNT_BY[1].value && val >= 100) {
+                return createError({message: 'listType = 1, ' + val});
+            } else if (discountBy === DISCOUNT_BY[2].value && val.length >= 9) {
+                return createError({message: 'listType = 1, ' + val});
+            } else {
+                return true
+            }
+        })
     });
 
-    const { register, formState } = useForm<IProduct>({
+    const {register, formState} = useForm<IProduct>({
         mode: "all",
         resolver: useYupValidationResolver(validationSchema),
     });
 
-    const { errors, isValid } = formState;
+    const {errors, isValid} = formState;
+
+    console.log(errors)
 
     React.useEffect(() => {
         checkIsValidForm?.(isValid);
@@ -51,21 +78,21 @@ const ProductForm = (props: ProductProps) => {
     }, []);
 
     return (
-        <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid container rowSpacing={3} columnSpacing={{xs: 1, sm: 2, md: 3}}>
 
             <Grid item sm={12} md={12}>
                 <input type="file" accept="image/*" multiple
-                    defaultValue={value.image}
-                    {...register("image", {
-                        onChange: async (e) => {
-                            const formData = new FormData();
-                            const files = e.target.files
-                            for (let i = 0; i < files.length; i++) {
-                                formData.append('image', files[i])
-                            }
-                            setValue({ ...value, image: files })
-                        }
-                    })}
+                       defaultValue={value.image}
+                       {...register("image", {
+                           onChange: async (e) => {
+                               const formData = new FormData();
+                               const files = e.target.files
+                               for (let i = 0; i < files.length; i++) {
+                                   formData.append('image', files[i])
+                               }
+                               setValue({...value, image: files})
+                           }
+                       })}
 
                 />
                 {/*</Button>*/}
@@ -111,12 +138,12 @@ const ProductForm = (props: ProductProps) => {
             </Grid>
 
             <Grid item sm={12} md={6}>
-                <AppInputLabel i18nTitleKey={"common.name"} required />
+                <AppInputLabel i18nTitleKey={"common.name"} required/>
                 <TextField
                     {...register("name", {
                         onChange: (e) => {
                             const name = e.target.value && e.target.value.trimLeft();
-                            setValue({ ...value, name: name })
+                            setValue({...value, name: name})
                         },
                     })}
                     fullWidth
@@ -128,12 +155,12 @@ const ProductForm = (props: ProductProps) => {
                 />
             </Grid>
             <Grid item sm={12} md={6}>
-                <AppInputLabel i18nTitleKey={"product.column.type"} required />
+                <AppInputLabel i18nTitleKey={"product.column.type"} required/>
                 <FormControl fullWidth error={!!(errors.type)}>
                     <Select
                         id="type"
                         {...register("type", {
-                            onChange: (e) => setValue({ ...value, type: e.target.value }),
+                            onChange: (e) => setValue({...value, type: e.target.value}),
                         })}
                         value={value.type || ""}
                     >
@@ -145,48 +172,48 @@ const ProductForm = (props: ProductProps) => {
                 </FormControl>
             </Grid>
             <Grid item sm={12} md={6}>
-                <AppInputLabel i18nTitleKey={"product.column.price"} required />
+                <AppInputLabel i18nTitleKey={"product.column.price"} required/>
                 <TextField
                     {...register("price", {
                         onChange: (e) =>
-                            setValue({ ...value, price: Number(e.target.value) }),
+                            setValue({...value, price: Number(e.target.value)}),
                     })}
                     fullWidth
                     id="outlined-basic"
                     type="tel"
                     variant="outlined"
                     value={value.price || ""}
-                    helperText={errors.price && t(`${errors.price.message}`, { length: 9 })}
+                    helperText={errors.price && t(`${errors.price.message}`, {length: 9})}
                     error={!!errors.price}
                 />
             </Grid>
             <Grid item sm={12} md={6}>
-                <AppInputLabel i18nTitleKey={"product.column.importPrice"} required />
+                <AppInputLabel i18nTitleKey={"product.column.importPrice"} required/>
                 <TextField
                     {...register("importPrice", {
                         onChange: (e) =>
-                            setValue({ ...value, importPrice: Number(e.target.value) }),
+                            setValue({...value, importPrice: Number(e.target.value)}),
                     })}
                     fullWidth
                     id="outlined-basic"
                     type="tel"
                     variant="outlined"
                     value={value.importPrice || ""}
-                    helperText={errors.importPrice && t(`${errors.importPrice.message}`, { length: 9 })}
+                    helperText={errors.importPrice && t(`${errors.importPrice.message}`, {length: 9})}
                     error={!!errors.importPrice}
                 />
             </Grid>
             <Grid item sm={12} md={6}>
-                <AppInputLabel i18nTitleKey={"product.column.discountBy"} />
+                <AppInputLabel i18nTitleKey={"product.column.discountBy"}/>
                 <FormControl fullWidth error={!!(errors.discountBy)}>
                     <Select
                         id="discountBy"
                         {...register("discountBy", {
                             onChange: (e) => {
                                 if (!(e.target.value)) {
-                                    setValue({ ...value, discountValue: 0})
+                                    setValue({...value, discountValue: 0})
                                 }
-                                setValue({ ...value, discountBy: e.target.value })
+                                setValue({...value, discountBy: e.target.value})
                             },
                         })}
                         value={value.discountBy || ""}
@@ -198,26 +225,25 @@ const ProductForm = (props: ProductProps) => {
                     <FormHelperText>{errors.discountBy && t(`${errors.discountBy.message}`)}</FormHelperText>
                 </FormControl>
             </Grid>
-            {value.discountBy &&
-                <Grid item sm={12} md={6}>
-                    <AppInputLabel i18nTitleKey={"product.column.discountValue"} />
-                    <TextField
-                        fullWidth
-                        id="discountValue"
-                        type="tel"
-                        {...register("discountValue", {
-                            onChange: (e) =>
-                                setValue({ ...value, discountValue: e.target.value }),
-                        })}
-                        value={value.discountValue || 0}
-                        helperText={errors.discountValue && t(`${errors.discountValue.message}`)}
-                        error={!!errors.discountValue}
-                    />
-                </Grid>
-            }
+            <Grid item sm={12} md={6}>
+                <AppInputLabel i18nTitleKey={"product.column.discountValue"}/>
+                <TextField
+                    fullWidth
+                    // disabled={!value.discountBy}
+                    id="discountValue"
+                    type="tel"
+                    {...register("discountValue", {
+                        onChange: (e) =>
+                            setValue({...value, discountValue: e.target.value}),
+                    })}
+                    value={value.discountValue || ""}
+                    helperText={errors.discountValue && t(`${errors.discountValue.message}`, {length: 9})}
+                    error={!!errors.discountValue}
+                />
+            </Grid>
 
             <Grid item sm={12} md={12}>
-                <AppInputLabel i18nTitleKey={"product.column.description"} />
+                <AppInputLabel i18nTitleKey={"product.column.description"}/>
                 <TextField
                     fullWidth
                     id="description"
@@ -227,7 +253,7 @@ const ProductForm = (props: ProductProps) => {
 
                     {...register("description", {
                         onChange: (e) =>
-                            setValue({ ...value, description: e.target.value }),
+                            setValue({...value, description: e.target.value}),
                     })}
                     value={value.description || ""}
                     helperText={errors.description && t(`${errors.description.message}`)}
