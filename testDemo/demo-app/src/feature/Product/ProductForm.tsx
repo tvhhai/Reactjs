@@ -27,47 +27,42 @@ const ProductForm = (props: ProductProps) => {
 
     const validationSchema = yup.object().shape({
         name: yup.string().required('common.validate.requite'),
-        type: yup.string().required('common.validate.requite'),
+        productType: yup.string().required('common.validate.requite'),
         price: yup.string().matches(/^[0-9]+$/, "common.validate.number")
             .max(9, 'common.validate.maxNumberLength').required('common.validate.requite'),
         importPrice: yup.string().matches(/^[0-9]+$/, "common.validate.number")
             .max(9, 'common.validate.maxNumberLength').required('common.validate.requite'),
-        // discountValue: yup.string().when("discountBy", {
-        //         is: (value: string) => value === DISCOUNT_BY[1].value,
-        //         then: yup.string().test('len', 'common.validate.percentValue', (val:any) => val <= 100),
-        //         otherwise: yup.string().max(9, 'common.validate.maxNumberLength')
-        //     }).matches(/^[0-9]+$/, "common.validate.number")
-
-        discountValue: yup.string().test('values-test', 'dummy message', (val: any, validationContext: any) => {
+        discountValue: yup.string().matches(/^[0-9]+$|^$/, "common.validate.number").test('values-test', 'dummy message', (val: any, validationContext: any) => {
             const {
                 createError,
+                originalValue,
                 parent: {
                     discountBy,
                 },
             } = validationContext;
 
-            if (_.isEmpty(discountBy)) {
-                return true;
-            }
-
-            if (discountBy === DISCOUNT_BY[1].value && val >= 100) {
-                return createError({message: 'listType = 1, ' + val});
-            } else if (discountBy === DISCOUNT_BY[2].value && val.length >= 9) {
-                return createError({message: 'listType = 1, ' + val});
+            if (discountBy === DISCOUNT_BY[1].value && val > 100) {
+                return createError({message: 'common.validate.percentValue'});
+            } else if (discountBy === DISCOUNT_BY[2].value && val.length > 9) {
+                return createError({message: 'common.validate.maxNumberLength'});
             } else {
+                if (_.isEmpty(discountBy) && !Number(originalValue)) {
+                    clearErrors('discountValue');
+                    return true;
+                }
                 return true
             }
         })
     });
 
-    const {register, formState} = useForm<IProduct>({
+    const {register, formState, clearErrors} = useForm<IProduct>({
         mode: "all",
         resolver: useYupValidationResolver(validationSchema),
     });
 
-    const {errors, isValid} = formState;
+    const {errors} = formState;
 
-    console.log(errors)
+    const isValid = !Object.keys(errors).length
 
     React.useEffect(() => {
         checkIsValidForm?.(isValid);
@@ -155,20 +150,20 @@ const ProductForm = (props: ProductProps) => {
                 />
             </Grid>
             <Grid item sm={12} md={6}>
-                <AppInputLabel i18nTitleKey={"product.column.type"} required/>
-                <FormControl fullWidth error={!!(errors.type)}>
+                <AppInputLabel i18nTitleKey={"product.column.productType"} required/>
+                <FormControl fullWidth error={!!(errors.productType)}>
                     <Select
-                        id="type"
-                        {...register("type", {
-                            onChange: (e) => setValue({...value, type: e.target.value}),
+                        id="productType"
+                        {...register("productType", {
+                            onChange: (e) => setValue({...value, productType: e.target.value}),
                         })}
-                        value={value.type || ""}
+                        value={value.productType || ""}
                     >
                         {listProductType.map((val: any, i: number) => (
                             <MenuItem key={i} value={val.name}>{val.name}</MenuItem>
                         ))}
                     </Select>
-                    <FormHelperText>{errors.type && t(`${errors.type.message}`)}</FormHelperText>
+                    <FormHelperText>{errors.productType && t(`${errors.productType.message}`)}</FormHelperText>
                 </FormControl>
             </Grid>
             <Grid item sm={12} md={6}>
@@ -211,9 +206,10 @@ const ProductForm = (props: ProductProps) => {
                         {...register("discountBy", {
                             onChange: (e) => {
                                 if (!(e.target.value)) {
-                                    setValue({...value, discountValue: 0})
+                                    setValue({...value, discountBy: e.target.value, discountValue: 0})
+                                } else {
+                                    setValue({...value, discountBy: e.target.value})
                                 }
-                                setValue({...value, discountBy: e.target.value})
                             },
                         })}
                         value={value.discountBy || ""}
@@ -229,7 +225,7 @@ const ProductForm = (props: ProductProps) => {
                 <AppInputLabel i18nTitleKey={"product.column.discountValue"}/>
                 <TextField
                     fullWidth
-                    // disabled={!value.discountBy}
+                    disabled={!value.discountBy}
                     id="discountValue"
                     type="tel"
                     {...register("discountValue", {

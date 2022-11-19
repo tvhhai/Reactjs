@@ -16,7 +16,7 @@ const ProductAdd = () => {
     const [value, setValue] = React.useState<IProduct>({
         name: "",
         image: "",
-        type: "",
+        productType: "",
         price: 0,
         importPrice: 0,
         discountBy: "",
@@ -28,7 +28,6 @@ const ProductAdd = () => {
 
     const handleClick = () => {
         try {
-            console.log(createFormData(value))
             dispatch(addProduct(createFormData(value)));
             NotificationUtils.success('PhoneAdd phone successfully!');
         } catch (err) {
@@ -45,7 +44,7 @@ const ProductAdd = () => {
 
         formData.append('user', new Blob([JSON.stringify({
             "name": value.name,
-            "productType": value.type,
+            "productType": value.productType,
             "price": value.price,
             "importPrice": value.importPrice,
             "discountBy": value.discountBy,

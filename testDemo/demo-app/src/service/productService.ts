@@ -24,7 +24,7 @@ export const addProductService = async (data: IProduct) => {
     });
 };
 
-export const deleteProductService = async (id: number) => {
+export const deleteProductService = async (id: string[]) => {
     return await axiosConfig.delete(PRODUCT_URL.PRODUCT + '/' + id);
 };
 

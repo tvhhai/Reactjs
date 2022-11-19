@@ -26,7 +26,11 @@ import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
 import {PAGINATION_PAGE_SIZE_OPTIONS, DEFAULT_COL_DEFS} from "../../../constant/agGridConstant";
 import {getStateAg, getTableConfig, saveTableConfig} from "./AppAgGridSlice";
-import {arrNotEmpty} from "../../../helper/commonHelper";
+import {
+    arrNotEmpty,
+    removeArrByObjKey,
+    sortObjByObjMap
+} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
 import {Trans} from "react-i18next";
 import i18n from "i18next";
@@ -121,8 +125,7 @@ const AppAgGrid = (props: IAgGrid) => {
     const onDragStopped = (params: DragStoppedEvent) => {
         console.log("---onDragStopped----");
         const getColumnStateOrder = params.columnApi.getColumnState();
-        // console.log(syncColumns(getColumnStateOrder, columnDefs))
-        handleSaveTableConfig(syncColumns(getColumnStateOrder, columnDefs));
+        handleSaveTableConfig(syncOrderColumns(getColumnStateOrder, columnDefs));
     };
 
     const afterSortChanged = (params: SortChangedEvent) => {
@@ -134,7 +137,7 @@ const AppAgGrid = (props: IAgGrid) => {
         // handleSaveTableConfig(columnDefs);
     };
 
-    const syncColumns = (columnsOrder: object[], columnDefs: object[]) => {
+    const syncOrderColumns = (columnsOrder: object[], columnDefs: object[]) => {
         let columnDefsMap: Record<string, any> = {};
 
         columnDefs.forEach((v: any) => {
@@ -146,23 +149,42 @@ const AppAgGrid = (props: IAgGrid) => {
         });
     };
 
+    const getColumnsList = () => {
+        const getColumnState = gridRef.current.columnApi.columnModel.getColumnState();
+        const mergedColumnsByColId = _.merge(
+            _.keyBy(getColumnState, "colId"),
+            _.keyBy(initialColumnDefs, "colId")
+        );
+
+        return _.values(mergedColumnsByColId);
+    }
+
     const handleTableConfig = () => {
-        console.log("----handleTableConfig-------");
-        if (arrNotEmpty(showColumns)) {
-            const syncColumnDefs = syncColumns(showColumns, initialColumnDefs);
-            const mergeColumnDefs = _.merge(syncColumnDefs, showColumns);
-            setColumnDefs(mergeColumnDefs);
-        } else {
-            if (gridRef.current.columnApi) {
-                const getColumnState =
-                    gridRef.current.columnApi.columnModel.getColumnState();
-                const mergedColumnsByColId = _.merge(
-                    _.keyBy(getColumnState, "colId"),
-                    _.keyBy(columnDefs, "colId")
-                );
-                const columnsState = _.values(mergedColumnsByColId);
-                setColumnDefs(columnsState);
-                handleSaveTableConfig(columnsState);
+        if (gridRef.current.columnApi) {
+            const columnsState = getColumnsList();
+            if (arrNotEmpty(showColumns)) {
+                const isAddNewOrDeleteColumns: boolean = showColumns.length + hiddenColumns.length !== columnsState.length;
+
+                // Remove hideColumn
+                const columnList = removeArrByObjKey(columnsState, hiddenColumns, 'colId');
+                const columnMapOrder = showColumns.map((v: any) => v.colId);
+
+                // Sort order current column based on column retrieved from DB
+                // If the current columns are not in the column list retrieved from the DB, those columns will be bossed at the end
+                const columnOrder = sortObjByObjMap(_.cloneDeep(columnList), columnMapOrder, 'colId');
+
+                if (isAddNewOrDeleteColumns) {
+                    handleSaveTableConfig(columnOrder);
+                }
+
+                setColumnDefs(columnOrder);
+
+            } else {
+                if (gridRef.current.columnApi) {
+                    const columnsState = getColumnsList();
+                    setColumnDefs(columnsState);
+                    handleSaveTableConfig(columnsState);
+                }
             }
         }
     };
@@ -233,14 +255,10 @@ const AppAgGrid = (props: IAgGrid) => {
         if (_.get(gridRef, "current.api.setDomLayout")) {
             if (pageSize >= 10) {
                 gridRef.current.api.setDomLayout("normal");
-                (
-                    document.querySelector(".app-ag-grid-body") as HTMLElement
-                ).style.height = "471px";
+                (document.querySelector(".app-ag-grid-body") as HTMLElement).style.height = "471px";
             } else {
                 gridRef.current.api.setDomLayout("autoHeight");
-                (
-                    document.querySelector(".app-ag-grid-body") as HTMLElement
-                ).style.height = "";
+                (document.querySelector(".app-ag-grid-body") as HTMLElement).style.height = "";
             }
         }
     }, [pageSize]);
@@ -358,9 +376,7 @@ const AppAgGrid = (props: IAgGrid) => {
                             pagination={true}
                             overlayNoRowsTemplate={i18n.t("common.agGridNoData")}
                             // -------------end default-----------------
-                            paginationPageSize={
-                                paginationPageSize ? paginationPageSize : pageSize
-                            }
+                            paginationPageSize={paginationPageSize ? paginationPageSize : pageSize}
                             rowData={rowData}
                             columnDefs={columnDefs}
                             rowSelection={

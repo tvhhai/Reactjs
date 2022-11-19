@@ -39,7 +39,6 @@ const productSlice = createSlice({
             state.listProduct = [];
         }).addCase(getListProduct.fulfilled, (state, action) => {
             state.isLoading = false;
-            console.log(action.payload)
             state.listProduct = action.payload;
         }).addCase(getListProduct.rejected, (state, action) => {
             state.isLoading = false;
@@ -52,6 +51,35 @@ const productSlice = createSlice({
             state.isLoading = false;
             state.listProduct = [...state.listProduct, action.payload];
         }).addCase(addProduct.rejected, (state, action) => {
+            state.isLoading = false;
+            console.log('rejected', action.payload)
+        })
+            // Get Product by id
+        .addCase(getProductById.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(getProductById.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.getProductDetail = action.payload;
+        }).addCase(getProductById.rejected, (state, action) => {
+            state.isLoading = false;
+            console.log('rejected', action.payload)
+        })
+            // Edit Product by id
+        .addCase(editProduct.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(editProduct.fulfilled, (state, action) => {
+            state.isLoading = false;
+        }).addCase(editProduct.rejected, (state, action) => {
+            state.isLoading = false;
+            console.log('rejected', action.payload)
+        })
+            // Delete
+        .addCase(deleteProduct.pending, (state) => {
+            state.isLoading = true;
+        }).addCase(deleteProduct.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.listProduct = [...state.listProduct].filter((value: any) => !action.payload.includes(value.id));
+        }).addCase(deleteProduct.rejected, (state, action) => {
             state.isLoading = false;
             console.log('rejected', action.payload)
         })
@@ -89,7 +117,7 @@ export const addProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
     "product/deleteProduct",
-    async (id: number) => {
+    async (id: string[]) => {
         try {
             const response = await deleteProductService(id);
             return response.data;

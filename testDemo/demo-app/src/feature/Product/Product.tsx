@@ -2,8 +2,7 @@ import React from 'react';
 import AppAgGrid from "../../component/common/AgGrid/AppAgGrid";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {getListProduct, getProduct, setActionState} from "./ProductSlice";
-import ImageCellRender from "../../component/common/CellRender/ImageCellRender";
+import {deleteProduct, getListProduct, getProduct, getProductById, setActionState, setProductId} from "./ProductSlice";
 import {getColumnList} from "../../helper/commonHelper";
 import ProductAdd from "./ProductAdd";
 import AddIcon from "@mui/icons-material/Add";
@@ -11,21 +10,29 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import _ from "lodash";
+import ProductEdit from "./ProductEdit";
+import AppDialog from "../../component/common/Dialog/AppDialog";
+import i18n from "i18next";
+import NotificationUtils from "../../component/common/Notification/Notification";
+
 
 const Product = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch<any>();
-    const {listProduct, isLoading, actionState} = useSelector(getProduct);
+    const {listProduct, isLoading, actionState, productId} = useSelector(getProduct);
+    const [id, setId] = React.useState(productId);
     const [gridApi, setGridApi] = React.useState<any>();
+    const [openDialog, setOpenDialog] = React.useState(false);
     const [selectedRows, setSelectedRows] = React.useState<object[]>([]);
 
     const columns = [
-        {field: "name", headerName: t('common.name'),},
+        {field: "name", headerName: t('common.name')},
         {field: "productType", headerName: t('product.column.type')},
         {field: "price", headerName: t('product.column.price')},
         {field: "importPrice", headerName: t('product.column.importPrice')},
         {field: "image", headerName: t('common.image'), },
-        {field: "sale", headerName: t('product.column.sale')},
+        {field: "discountBy", headerName: t('product.column.discountBy')},
+        {field: "discountValue", headerName: t('product.column.discountValue')},
         {field: "description", headerName: t('product.column.description')},
     ]
 
@@ -46,8 +53,49 @@ const Product = () => {
 
     const handleAdd = () => {
         dispatch(setActionState({isCreate: true, isEdit: false}));
-        // navigate("/phone/add");
     };
+
+    const handleEdit = () => {
+        const id = _.get(selectedRows[0], "id");
+        dispatch(getProductById(id));
+        dispatch(setProductId(id));
+        dispatch(setActionState({isCreate: false, isEdit: true}));
+    };
+
+    const handleDelete = () => {
+        setOpenDialog(true);
+    };
+
+    const handleClose = () => {
+        setOpenDialog(false);
+    };
+
+    const handleApply = async () => {
+        const ids = selectedRows.map((val:any)=>{
+            return val.id
+        });
+
+        try {
+            await dispatch(deleteProduct(ids));
+            NotificationUtils.success('Success');
+        } catch (err) {
+            NotificationUtils.error(err);
+        } finally {
+            handleClose()
+        }
+    }
+
+    const handleDisable = () => {
+        let selected;
+        if (_.get(gridApi, 'getSelectedRows') && !gridApi.destroyCalled) {
+            selected = gridApi.getSelectedRows();
+        }
+        return !(
+            selected &&
+            selected.length > 0 &&
+            selected.length <= 1
+        );
+    }
 
     const action = {
         add: {
@@ -61,8 +109,8 @@ const Product = () => {
         edit: {
             id: "edit",
             i18nKey: "common.edit",
-            // onClick: handleEdit,
-            // disable: handleDisable(),
+            onClick: handleEdit,
+            disable: handleDisable(),
             icon: <EditIcon/>,
             colorIcon: "success",
             // permission: Todo
@@ -70,7 +118,7 @@ const Product = () => {
         delete: {
             id: "delete",
             i18nKey: "common.delete",
-            // onClick: handleDelete,
+            onClick: handleDelete,
             // disable: handleDisable(),
             icon: <DeleteIcon/>,
             colorIcon: "error",
@@ -79,12 +127,19 @@ const Product = () => {
     };
 
     React.useEffect(() => {
+        if (productId) {
+            setId(productId);
+        }
+    }, [productId]);
+
+    React.useEffect(() => {
         dispatch(getListProduct());
     }, []);
 
     return (
         <div className='product-wrapper'>
             {actionState.isCreate && <ProductAdd/>}
+            {actionState.isEdit && <ProductEdit id={id}/>}
             {_.isEmpty(actionState) && <AppAgGrid
                 gridName="product"
                 title={t("product.title")}
@@ -100,6 +155,13 @@ const Product = () => {
                 toolbarLeftAction={[action.add, action.edit, action.delete]}
                 loading={isLoading}
             />}
+
+            <AppDialog i18nKeyTitle='common.delete'
+                       open={openDialog}
+                       closeFunction={handleClose}
+                       applyFunction={handleApply}
+                       textContent={i18n.t('phone.deleteMsg')}
+            />
         </div>
     );
 };

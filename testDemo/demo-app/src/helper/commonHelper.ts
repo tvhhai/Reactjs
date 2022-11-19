@@ -16,15 +16,9 @@ export const compareValue = function (val1: any, val2: any) {
     return val1 === val2;
 };
 
-// deep compareObj
-export const compareObj = (obj1: object, obj2: object) => {
+// Deep comparison, care about order
+export const compareObj = (obj1: any, obj2: any): boolean => {
     if (_.isObject(obj1) && _.isObject(obj2)) {
-        // if (obj1.$$hashKey) {
-        //     delete obj1.$$hashKey;
-        // }
-        // if (obj2.$$hashKey) {
-        //     delete obj2.$$hashKey;
-        // }
         if (Object.keys(obj1).length !== Object.keys(obj2).length) {
             return false;
         }
@@ -33,13 +27,9 @@ export const compareObj = (obj1: object, obj2: object) => {
         // @ts-ignore
         for (property in obj1) {
             if (_.isPlainObject(obj1[property])) {
-                if (!compareObj(obj1[property], obj2[property])) {
-                    return false;
-                }
+                return compareObj(obj1[property], obj2[property]);
             } else {
-                if (!compareValue(obj1[property], obj2[property])) {
-                    return false;
-                }
+                return compareValue(obj1[property], obj2[property]);
             }
         }
         return true;
@@ -47,6 +37,39 @@ export const compareObj = (obj1: object, obj2: object) => {
         return false;
     }
 };
+
+// Deep comparison, doesn't care about order
+export const compareDeepObj = (obj1: object, obj2: object): boolean => {
+    if (_.isObject(obj1) && Object.keys(obj1).length > 0) {
+        return Object.keys(obj1).length === Object.keys(obj2).length && Object.keys(obj1).every((p: string) => {
+                // @ts-ignore
+                return compareDeepObj(obj1[p], obj2[p])
+            }
+        )
+    } else {
+        return compareValue(obj1, obj2);
+    }
+}
+
+// Sort object in the array  by array keymap
+// If the array lengths are not equal, the residuals will be at the end of the array
+export const sortObjByObjMap = (obj: any, arrMap: object[], keySort: string): object[] => {
+    return obj.sort((a: { [x: string]: object; }, b: { [x: string]: object; }) => {
+        const aIndex = arrMap.indexOf(a[keySort]);
+        const bIndex = arrMap.indexOf(b[keySort]);
+        return (aIndex === -1 ? Number.MAX_VALUE : aIndex) - (bIndex === -1 ? Number.MAX_VALUE : bIndex);
+    });
+}
+
+// Remove the object from the array by another array object
+export const removeArrByObjKey = (arr: any, arrRemove: any, key: string): any => {
+    return arr.filter(function (objFromA: { [x: string]: any; }) {
+        return !arrRemove.find(function (objFromB: { [x: string]: any; }) {
+            return objFromA[key] === objFromB[key];
+        })
+    });
+}
+
 
 // Is array and not empty
 export const arrNotEmpty = (arr: any[]) => {

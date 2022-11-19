@@ -91,7 +91,6 @@ const AppDialogTransfer = (props: ConfirmationDialogRawProps) => {
     const handleCheckedRight = () => {
         setRight(right.concat(leftChecked));
         setLeft(not(left, leftChecked));
-        console.log(left, leftChecked)
         // setChecked(not(checked, leftChecked));
     };
 
