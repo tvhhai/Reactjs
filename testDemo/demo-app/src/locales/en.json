@@ -18,6 +18,9 @@
     "pageInform1": "Showing <1>{{fromIndex}}</1> - <1>{{toIndex}}</1> of <1>{{rowCount}}</1> records",
     "pageInform2": "Page <1>{{currentPage}}</1> of <3>{{totalPage}}</3>",
     "searchAll": "Search All...",
+    "msg": {
+      "deleteSuccess": "Delete Successfully"
+    },
     "btn": {
       "add": "Add",
       "cancel": "Cancel",
@@ -66,13 +69,15 @@
     "edit": "Edit Product",
     "deleteMsg": "Are you sure you want to delete the selected product from Product Manager?",
     "column": {
-      "type": "Type",
+      "productType": "Product Type",
       "price": "Price",
       "importPrice": "Import Price",
       "discountBy": "Discount By",
       "discountValue": "Discount Value",
       "description": "Description"
-    }
+    },
+    "Percent": "Percent",
+    "Value": "Value"
   },
   "productType": {
     "title": "Product Type"

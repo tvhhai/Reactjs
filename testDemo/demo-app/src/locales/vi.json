@@ -18,6 +18,9 @@
     "pageInform1": "Hiển thị <1>{{fromIndex}}</1> - <1>{{toIndex}}</1> trong số <1>{{rowCount}}</1> bản ghi",
     "pageInform2": "Trang <1>{{currentPage}}</1> / <1>{{totalPage}}</1>",
     "searchAll": "Tìm kiếm tất cả...",
+    "msg": {
+      "deleteSuccess": "Xóa Thành Công"
+    },
     "btn": {
       "add": "Thêm",
       "cancel": "Hủy",
@@ -29,7 +32,8 @@
     "validate": {
       "requite": "Trường này không được trống",
       "number": "Chỉ phải là chữ số",
-      "maxNumberLength": "Tối đa {{ length }} chũ số"
+      "maxNumberLength": "Tối đa {{ length }} chũ số",
+      "percentValue": "Giá trị không được vượt quá 100"
     }
   },
   "sidebar": {
@@ -65,12 +69,15 @@
     "edit": "Edit Product",
     "deleteMsg": "Are you sure you want to delete the selected product from Product Manager?",
     "column": {
-      "type": "Loại",
+      "productType": "Loại Sản Phẩm",
       "price": "Giá Bán",
       "importPrice": "Giá Nhập",
-      "sale": "Khuyến Mãi",
+      "discountBy": "Giảm giá Theo",
+      "discountValue": "Giá Trị Giảm Giá",
       "description": "Description"
-    }
+    },
+    "Percent": "Phần Trăm",
+    "Value": "Giá Trị"
   },
   "productType": {
     "title": "Loại Sản Phẩm"

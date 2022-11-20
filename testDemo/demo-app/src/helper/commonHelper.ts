@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 // compareValue falsy
-export const compareValue = function (val1: any, val2: any) {
+export const compareValue = function (val1: any, val2: any): boolean {
     if (_.isUndefined(val1) || _.isNull(val1)) {
         val1 = '';
     }
@@ -51,8 +51,20 @@ export const compareDeepObj = (obj1: object, obj2: object): boolean => {
     }
 }
 
-// Sort object in the array  by array keymap
-// If the array lengths are not equal, the residuals will be at the end of the array
+/**
+ * @description
+ * Sort object in the array  by array keymap
+ * If the array lengths are not equal, the residuals will be at the end of the array
+ *
+ * @example
+ * Input:
+ *      obj: [{key: 'c'}, {key: 'd'}, {key:'a'}, {key:'b'}]
+ *      arrMap: [a,b,c]
+ *      keySort: key
+ * Output :
+ *      obj: [{key:'a'}, {key:'b'}, {key:'c'}, {key:'d'} ]
+ *
+ * */
 export const sortObjByObjMap = (obj: any, arrMap: object[], keySort: string): object[] => {
     return obj.sort((a: { [x: string]: object; }, b: { [x: string]: object; }) => {
         const aIndex = arrMap.indexOf(a[keySort]);
@@ -61,7 +73,19 @@ export const sortObjByObjMap = (obj: any, arrMap: object[], keySort: string): ob
     });
 }
 
-// Remove the object from the array by another array object
+/**
+ * @description
+ * Remove the object from the array by another array object
+ *
+ * @example
+ * Input:
+ *      arr: [{key: 'c'}, {key: 'd'}, {key:'a'}, {key:'b'}]
+ *      arrRemove: [{key: 'c'}, {key:'b'}]
+ *      key: key
+ * Output :
+ *      obj: [{key: 'd'}, {key:'a'}]
+ *
+ * */
 export const removeArrByObjKey = (arr: any, arrRemove: any, key: string): any => {
     return arr.filter(function (objFromA: { [x: string]: any; }) {
         return !arrRemove.find(function (objFromB: { [x: string]: any; }) {
@@ -72,14 +96,9 @@ export const removeArrByObjKey = (arr: any, arrRemove: any, key: string): any =>
 
 
 // Is array and not empty
-export const arrNotEmpty = (arr: any[]) => {
+export const arrNotEmpty = (arr: any[]): boolean => {
     return Array.isArray(arr) && !_.isEmpty(arr)
 }
-
-export const getFunction = function (values: any, exp: any, defaultVal?: any) {
-    var val = _.get(values, exp);
-    return _.isFunction(val) ? val : defaultVal || _.noop();
-};
 
 export const getColumnList = (columns: any[]) => {
     let result: any[] = [];

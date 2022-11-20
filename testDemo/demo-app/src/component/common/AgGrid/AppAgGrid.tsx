@@ -8,34 +8,25 @@ import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AppIconBtn from "../Button/AppIconBtn";
-import {
-    FormControl,
-    Grid,
-    InputAdornment,
-    MenuItem,
-    Pagination,
-    Paper,
-    Select,
-    Stack,
-    TextField,
-} from "@mui/material";
+import {FormControl, Grid, InputAdornment, MenuItem, Pagination, Paper, Select, Stack, TextField,} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import _ from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import CardLayout from "../CardLayout/CardLayout";
 import AppDialogTransfer from "../Dialog/AppDialogTransfer";
-import {PAGINATION_PAGE_SIZE_OPTIONS, DEFAULT_COL_DEFS} from "../../../constant/agGridConstant";
-import {getStateAg, getTableConfig, saveTableConfig} from "./AppAgGridSlice";
 import {
-    arrNotEmpty,
-    removeArrByObjKey,
-    sortObjByObjMap
-} from "../../../helper/commonHelper";
+    AG_GRID_CHECKBOX_SELECTION,
+    DEFAULT_COL_DEFS,
+    PAGINATION_PAGE_SIZE_OPTIONS
+} from "../../../constant/agGridConstant";
+import {getStateAg, getTableConfig, saveTableConfig} from "./AppAgGridSlice";
+import {arrNotEmpty, removeArrByObjKey, sortObjByObjMap} from "../../../helper/commonHelper";
 import AppLoader from "../Loader/AppLoader";
 import {Trans} from "react-i18next";
 import i18n from "i18next";
 import {IAgGrid} from "../../../model/IAgGrid";
-import {DragStoppedEvent, SortChangedEvent} from "ag-grid-community";
+import {ColDef, ColumnResizedEvent, DragStoppedEvent} from "ag-grid-community";
+import {FirstDataRenderedEvent} from "ag-grid-community/dist/lib/events";
 
 const AppAgGrid = (props: IAgGrid) => {
     const {
@@ -64,7 +55,7 @@ const AppAgGrid = (props: IAgGrid) => {
     const {tableConfig, isLoading} = useSelector(getStateAg);
     const {showColumns, hiddenColumns} = tableConfig;
     const [fullScreen, setFulScreen] = React.useState(false);
-    const [columnDefs, setColumnDefs] = React.useState(initialColumnDefs);
+    const [columnDefs, setColumnDefs] = React.useState<ColDef[]>(initialColumnDefs);
     const [openDiaLog, setOpen] = React.useState(false);
     const [pageSize, setPageSize] = React.useState(
         paginationPageSize ? paginationPageSize : PAGINATION_PAGE_SIZE_OPTIONS[0]
@@ -85,6 +76,7 @@ const AppAgGrid = (props: IAgGrid) => {
 
     const tableFullScreen = () => {
         setFulScreen(!fullScreen);
+        sizeColumnToFit();
     };
 
     const openDialogSetting = () => {
@@ -96,23 +88,17 @@ const AppAgGrid = (props: IAgGrid) => {
     };
 
     const onBtnApply = (val: any) => {
-        console.log("onBtnApply");
         const {left, right} = val;
         if (enableTableConfig || enableSaveColDrag) {
             dispatch(saveTableConfig(requestTableConfig(right, left)));
             setColumnDefs(right);
+            sizeColumnToFit();
         }
-        // handleSaveTableConfig({columnState})
-        // dispatch(saveColumns(columns));
-        // dispatch(saveHideColumns(hideColumns));
-        // let columnDefs;
-        // if (selectMultiWithCheckbox) {
-        //     columnDefs = [AG_GRID_CHECKBOX_SELECTION, ...columns];
-        // } else {
-        //     columnDefs = [...columns];
-        // }
-        // arrNotEmpty(columns) && gridRef.current.api.setColumnDefs(columnDefs);
     };
+
+    const onColumnResized = (params: ColumnResizedEvent) => {
+        // params.api.sizeColumnsToFit();
+    }
 
     const handleChangePage = (
         event: React.ChangeEvent<unknown>,
@@ -123,19 +109,45 @@ const AppAgGrid = (props: IAgGrid) => {
     };
 
     const onDragStopped = (params: DragStoppedEvent) => {
-        console.log("---onDragStopped----");
+
         const getColumnStateOrder = params.columnApi.getColumnState();
-        handleSaveTableConfig(syncOrderColumns(getColumnStateOrder, columnDefs));
+        const columnRemoveCheckBox = removeCheckBox(getColumnStateOrder);
+
+        const mergedColumnsByColId = _.merge(
+            _.keyBy(getColumnStateOrder, "colId"),
+            _.keyBy(columnRemoveCheckBox, "colId")
+        );
+        handleSaveTableConfig(_.values(mergedColumnsByColId));
     };
 
-    const afterSortChanged = (params: SortChangedEvent) => {
-        // const getColumnState = params.columnApi.getColumnState();
-        // getColumnState.forEach((v: any, i: number) => {
-        //     columnDefs[i].sort = v.sort;
-        //     columnDefs[i].sortIndex = v.sortIndex;
-        // });
-        // handleSaveTableConfig(columnDefs);
-    };
+    const onFirstDataRendered = (params: FirstDataRenderedEvent) => {
+        sizeColumnToFit();
+    }
+
+    const sizeColumnToFit = () => {
+        window.setTimeout(() => {
+            gridRef.current.api.sizeColumnsToFit()
+        }, 500);
+    }
+
+    const removeCheckBox = (columnList: object[]): object[] => {
+        // @ts-ignore
+        _.remove(columnList, (column: { colId: string }) => {
+            if (column.colId === 'app-ag-grid-check-box') {
+                return column;
+            }
+        });
+        return columnList;
+    }
+
+    // const afterSortChanged = (params: SortChangedEvent) => {
+    // const getColumnState = params.columnApi.getColumnState();
+    // getColumnState.forEach((v: any, i: number) => {
+    //     columnDefs[i].sort = v.sort;
+    //     columnDefs[i].sortIndex = v.sortIndex;
+    // });
+    // handleSaveTableConfig(columnDefs);
+    // };
 
     const syncOrderColumns = (columnsOrder: object[], columnDefs: object[]) => {
         let columnDefsMap: Record<string, any> = {};
@@ -161,24 +173,27 @@ const AppAgGrid = (props: IAgGrid) => {
 
     const handleTableConfig = () => {
         if (gridRef.current.columnApi) {
-            const columnsState = getColumnsList();
             if (arrNotEmpty(showColumns)) {
-                const isAddNewOrDeleteColumns: boolean = showColumns.length + hiddenColumns.length !== columnsState.length;
+
+                if (selectMultiWithCheckbox) {
+                    initialColumnDefs.unshift(AG_GRID_CHECKBOX_SELECTION);
+                }
+                const columnsState = getColumnsList();
+                const lengthShowCol = selectMultiWithCheckbox ? showColumns.length + 1 : showColumns.length;
+                const isAddNewOrDeleteColumns: boolean = lengthShowCol + hiddenColumns.length !== columnsState.length;
 
                 // Remove hideColumn
                 const columnList = removeArrByObjKey(columnsState, hiddenColumns, 'colId');
                 const columnMapOrder = showColumns.map((v: any) => v.colId);
-
                 // Sort order current column based on column retrieved from DB
                 // If the current columns are not in the column list retrieved from the DB, those columns will be bossed at the end
                 const columnOrder = sortObjByObjMap(_.cloneDeep(columnList), columnMapOrder, 'colId');
 
                 if (isAddNewOrDeleteColumns) {
-                    handleSaveTableConfig(columnOrder);
+                    const columnRemoveCheckBox = removeCheckBox(columnOrder);
+                    handleSaveTableConfig(columnRemoveCheckBox);
                 }
-
                 setColumnDefs(columnOrder);
-
             } else {
                 if (gridRef.current.columnApi) {
                     const columnsState = getColumnsList();
@@ -189,19 +204,13 @@ const AppAgGrid = (props: IAgGrid) => {
         }
     };
 
-    React.useEffect(() => {
-        handleTableConfig();
-    }, [tableConfig]);
-
     const handleGetTableConfig = () => {
-        console.log("----handleGetTableConfig----");
         if (enableTableConfig || enableSaveColDrag) {
             dispatch(getTableConfig(gridName));
         }
     };
 
     const handleSaveTableConfig = (data: any) => {
-        console.log("----handleSaveTableConfig----");
         if (enableTableConfig || enableSaveColDrag) {
             dispatch(saveTableConfig(requestTableConfig(data, hiddenColumns)));
         }
@@ -245,6 +254,10 @@ const AppAgGrid = (props: IAgGrid) => {
     }, []);
 
     React.useEffect(() => {
+        handleTableConfig();
+    }, [tableConfig]);
+
+    React.useEffect(() => {
         let fromIndex = currentPage >= 1 ? (currentPage - 1) * pageSize + 1 : 0;
         let toIndex = Math.min(fromIndex + pageSize - 1, rowCount);
         setFromIndex(fromIndex);
@@ -265,8 +278,7 @@ const AppAgGrid = (props: IAgGrid) => {
 
     return (
         <div
-            className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen" : ""
-            }`}
+            className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen" : ""}`}
         >
             <AppLoader isLoading={loading || isLoading}/>
             <CardLayout titleHeader={title}>
@@ -361,10 +373,11 @@ const AppAgGrid = (props: IAgGrid) => {
                             // -------------default-----------------
                             ref={gridRef}
                             onDragStopped={onDragStopped}
-                            onSortChanged={afterSortChanged}
+                            // onSortChanged={afterSortChanged}
                             suppressCellFocus={true}
                             suppressPaginationPanel={true}
                             domLayout={"autoHeight"} // autoHeight/normal
+                            onFirstDataRendered={onFirstDataRendered}
                             // suppressCsvExport={true}
                             // suppressExcelExport={true}
                             // suppressFocusAfterRefresh={true}
@@ -389,6 +402,7 @@ const AppAgGrid = (props: IAgGrid) => {
                             defaultColDef={defaultColDef ? defaultColDef : DEFAULT_COL_DEFS}
                             onSelectionChanged={onSelectionChanged}
                             onPaginationChanged={onPaginationChanged}
+                            onColumnResized={onColumnResized}
                             onGridReady={onGridReady}
 
                             // TODO: research
@@ -472,8 +486,7 @@ const AppAgGrid = (props: IAgGrid) => {
                 open={openDiaLog}
                 onClose={closeDialogSetting}
                 apply={onBtnApply}
-                // columns={columnDefs}
-
+                columns={columnDefs}
             />
         </div>
     );

@@ -215,7 +215,7 @@ const ProductForm = (props: ProductProps) => {
                         value={value.discountBy || ""}
                     >
                         {DISCOUNT_BY.map((val: any, i: number) => (
-                            <MenuItem key={i} value={val.value}>{val.title}</MenuItem>
+                            <MenuItem key={i} value={val.value}>{t(val.title)}</MenuItem>
                         ))}
                     </Select>
                     <FormHelperText>{errors.discountBy && t(`${errors.discountBy.message}`)}</FormHelperText>

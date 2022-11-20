@@ -28,6 +28,7 @@ const ProductType = () => {
 
     const onGridReady = React.useCallback((param: any) => {
         setGridApi(param.api);
+
     }, []);
 
     const refresh = React.useCallback(() => {

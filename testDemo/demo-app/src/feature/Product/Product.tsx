@@ -13,7 +13,8 @@ import _ from "lodash";
 import ProductEdit from "./ProductEdit";
 import AppDialog from "../../component/common/Dialog/AppDialog";
 import i18n from "i18next";
-import NotificationUtils from "../../component/common/Notification/Notification";
+import {ValueFormatterParams} from "ag-grid-community";
+import {DISCOUNT_BY} from "../../constant/commonConstant";
 
 
 const Product = () => {
@@ -25,19 +26,27 @@ const Product = () => {
     const [openDialog, setOpenDialog] = React.useState(false);
     const [selectedRows, setSelectedRows] = React.useState<object[]>([]);
 
+
+    const formatterDiscountBy = (params: ValueFormatterParams) => {
+        const a = DISCOUNT_BY.filter((val) => {
+            return val.value === params.value;
+        })
+        return t(a[0].title)
+    }
+
+
     const columns = [
         {field: "name", headerName: t('common.name')},
-        {field: "productType", headerName: t('product.column.type')},
+        {field: "productType", headerName: t('product.column.productType')},
         {field: "price", headerName: t('product.column.price')},
         {field: "importPrice", headerName: t('product.column.importPrice')},
-        {field: "image", headerName: t('common.image'), },
-        {field: "discountBy", headerName: t('product.column.discountBy')},
+        {field: "image", headerName: t('common.image'),},
+        {field: "discountBy", headerName: t('product.column.discountBy'), valueFormatter: formatterDiscountBy},
         {field: "discountValue", headerName: t('product.column.discountValue')},
         {field: "description", headerName: t('product.column.description')},
     ]
 
     const [columnDefs, setColumnDefs] = React.useState(getColumnList(columns));
-
 
     const onSelectionChanged = React.useCallback(() => {
         gridApi && setSelectedRows(gridApi.getSelectedRows());
@@ -70,30 +79,26 @@ const Product = () => {
         setOpenDialog(false);
     };
 
-    const handleApply = async () => {
-        const ids = selectedRows.map((val:any)=>{
+    const handleApply = () => {
+        const ids = selectedRows.map((val: any) => {
             return val.id
         });
-
-        try {
-            await dispatch(deleteProduct(ids));
-            NotificationUtils.success('Success');
-        } catch (err) {
-            NotificationUtils.error(err);
-        } finally {
-            handleClose()
-        }
+        dispatch(deleteProduct(ids));
+        handleClose();
     }
 
-    const handleDisable = () => {
+    const handleDisable = (editAction: boolean) => {
         let selected;
         if (_.get(gridApi, 'getSelectedRows') && !gridApi.destroyCalled) {
             selected = gridApi.getSelectedRows();
         }
-        return !(
+        return editAction ? !(
             selected &&
             selected.length > 0 &&
             selected.length <= 1
+        ) : !(
+            selected &&
+            selected.length > 0
         );
     }
 
@@ -110,7 +115,7 @@ const Product = () => {
             id: "edit",
             i18nKey: "common.edit",
             onClick: handleEdit,
-            disable: handleDisable(),
+            disable: handleDisable(true),
             icon: <EditIcon/>,
             colorIcon: "success",
             // permission: Todo
@@ -119,7 +124,7 @@ const Product = () => {
             id: "delete",
             i18nKey: "common.delete",
             onClick: handleDelete,
-            // disable: handleDisable(),
+            disable: handleDisable(false),
             icon: <DeleteIcon/>,
             colorIcon: "error",
             // permission: Todo

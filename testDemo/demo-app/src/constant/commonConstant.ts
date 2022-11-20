@@ -20,11 +20,11 @@ export const DISCOUNT_BY = [
         value: "",
     },
     {
-        title: "Percent",
+        title: "product.Percent",
         value: "percent",
     },
     {
-        title: "Value",
+        title: "product.Value",
         value: "value",
     },
 ];

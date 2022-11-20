@@ -9,10 +9,10 @@ const StatusCellRender = (props: ICellRendererParams) => {
     const {t} = useTranslation();
     return (
         <div>
-            <span  className={cellValue}>
-                <>
-                    {i18n.t(`common.${cellValue}`)}
-                </>
+            <span className={cellValue}>
+                {
+                    cellValue && <> {i18n.t(`common.${cellValue}`)} </>
+                }
             </span>
         </div>
     );

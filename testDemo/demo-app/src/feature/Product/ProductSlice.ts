@@ -9,6 +9,7 @@ import {
     getProductByIdService
 } from "../../service/productService";
 import {IProduct} from "../../model/IProduct";
+import i18n from "i18next";
 
 const initialState: ProductState = {
     isLoading: true,
@@ -79,6 +80,7 @@ const productSlice = createSlice({
         }).addCase(deleteProduct.fulfilled, (state, action) => {
             state.isLoading = false;
             state.listProduct = [...state.listProduct].filter((value: any) => !action.payload.includes(value.id));
+            NotificationUtils.success(i18n.t('common.msg.deleteSuccess'));
         }).addCase(deleteProduct.rejected, (state, action) => {
             state.isLoading = false;
             console.log('rejected', action.payload)
@@ -91,7 +93,6 @@ export const getListProduct = createAsyncThunk(
     async () => {
         try {
             return await getListProductService().then((res) => {
-                NotificationUtils.success('Get Product successfully!');
                 return res.data
             }).catch((err) => {
                 NotificationUtils.error(err);
