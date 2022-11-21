@@ -15,6 +15,7 @@ export const AG_GRID_CHECKBOX_SELECTION =
         resizable: false,
     }
 export const DEFAULT_COL_DEFS = {
+
     editable: false,
     sortable: true,
     filter: true,

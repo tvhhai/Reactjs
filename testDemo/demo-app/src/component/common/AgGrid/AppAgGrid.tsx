@@ -276,6 +276,18 @@ const AppAgGrid = (props: IAgGrid) => {
         }
     }, [pageSize]);
 
+
+    React.useEffect(() => {
+        const debouncedHandleResize = _.debounce(function handleResize() {
+            const allColumnIds = gridRef.current.columnApi.getColumns().map((column:ColDef) => column.colId);
+            gridRef.current.columnApi.autoSizeColumns(allColumnIds);
+        }, 1000);
+
+        window.addEventListener('resize', debouncedHandleResize)
+
+        return () => window.removeEventListener('resize', debouncedHandleResize)
+    })
+
     return (
         <div
             className={`app-ag-grid ${fullScreen ? "full-screen-backdrop full-screen" : ""}`}
@@ -374,6 +386,8 @@ const AppAgGrid = (props: IAgGrid) => {
                             ref={gridRef}
                             onDragStopped={onDragStopped}
                             // onSortChanged={afterSortChanged}
+                            tooltipShowDelay={0}
+                            // enableBrowserTooltips={true}
                             suppressCellFocus={true}
                             suppressPaginationPanel={true}
                             domLayout={"autoHeight"} // autoHeight/normal

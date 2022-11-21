@@ -100,15 +100,29 @@ export const arrNotEmpty = (arr: any[]): boolean => {
     return Array.isArray(arr) && !_.isEmpty(arr)
 }
 
-export const getColumnList = (columns: any[]) => {
-    let result: any[] = [];
-    _.forEach(columns, (value) => {
+/**
+ * @description
+ * Convert regular javascript object whose value of each property is another object into an array of extracted object.
+ *
+ * @param {object} attrs An object to convert
+ *
+ * @returns {array} Array of all extracted items
+ */
+export const getColumnList = (attrs: any[]) => {
+    let result: any[] = [],
+        minDefaultAll = 200,
+        minDefaultWidth = 100;
+
+    _.forEach(attrs, (value) => {
         value.colId = _.isUndefined(value.id) ? value.field : value.key;
         value.field = _.isUndefined(value.field) ? value.key : value.field;
+        value.headerTooltip = value.headerName;
+        value.tooltipField = _.isUndefined(value.tooltipField) ? value.field : value.tooltipField;
         value.sortable = _.isUndefined(value.sortable) ? true : value.sortable;
         value.resizable = _.isUndefined(value.resizable) ? true : value.resizable;
-
+        value.width = value.width || value.minWidth || minDefaultAll;
+        value.minWidth = value.minWidth || minDefaultWidth;
         result.push(value);
-    })
+    });
     return result
 }

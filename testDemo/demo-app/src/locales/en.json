@@ -1,6 +1,7 @@
 {
   "common": {
-    "title": "",
+    "title": "Title",
+    "nullData": "Null Data",
     "intro": "",
     "enable": "Enable",
     "disable": "Disable",

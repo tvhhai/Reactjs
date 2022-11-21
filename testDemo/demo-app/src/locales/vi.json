@@ -1,6 +1,7 @@
 {
   "common": {
-    "title": "",
+    "title": "Tiêu đề",
+    "nullData": "Null Data",
     "intro": "",
     "enable": "Cho phép",
     "disable": "Vô hiệu hóa",

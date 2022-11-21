@@ -13,8 +13,9 @@ import _ from "lodash";
 import ProductEdit from "./ProductEdit";
 import AppDialog from "../../component/common/Dialog/AppDialog";
 import i18n from "i18next";
-import {ValueFormatterParams} from "ag-grid-community";
+import { ValueFormatterParams} from "ag-grid-community";
 import {DISCOUNT_BY} from "../../constant/commonConstant";
+import {tooltipValueGetter} from "../../helper/agGridHelper";
 
 
 const Product = () => {
@@ -28,12 +29,11 @@ const Product = () => {
 
 
     const formatterDiscountBy = (params: ValueFormatterParams) => {
-        const a = DISCOUNT_BY.filter((val) => {
+        const value = DISCOUNT_BY.filter((val) => {
             return val.value === params.value;
-        })
-        return t(a[0].title)
+        });
+        return t(value[0].title);
     }
-
 
     const columns = [
         {field: "name", headerName: t('common.name')},
@@ -41,7 +41,13 @@ const Product = () => {
         {field: "price", headerName: t('product.column.price')},
         {field: "importPrice", headerName: t('product.column.importPrice')},
         {field: "image", headerName: t('common.image'),},
-        {field: "discountBy", headerName: t('product.column.discountBy'), valueFormatter: formatterDiscountBy},
+        {
+            field: "discountBy",
+            tooltipField: '',
+            headerName: t('product.column.discountBy'),
+            valueFormatter: formatterDiscountBy,
+            tooltipValueGetter: tooltipValueGetter,
+        },
         {field: "discountValue", headerName: t('product.column.discountValue')},
         {field: "description", headerName: t('product.column.description')},
     ]
