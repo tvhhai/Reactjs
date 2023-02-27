@@ -7,7 +7,6 @@ import {
     deleteProductTypeService, editProductTypeService,
     getListProductTypeService, getProductTypeByIdService
 } from "../../service/productTypeService";
-import {addPhone, getListPhone} from "../Phone/PhoneSlice";
 
 const initialState: IProductTypeState = {
     isLoading: true,

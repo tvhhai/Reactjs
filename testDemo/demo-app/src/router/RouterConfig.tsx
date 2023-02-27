@@ -1,4 +1,4 @@
-import React from 'react';
+    import React from 'react';
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import SideBar from "../component/SideBar/SideBar";
 import Collapse from "../feature/Collapse";
