@@ -1,0 +1,97 @@
+@import './src/asset/style/variables';
+
+.sideBar {
+  height: 100%;
+  color: $primaryTextColor;
+  padding: 0 !important;
+  background-color: $primaryBgSideBar;
+
+  span {
+    color: $primaryColorSideBar;
+  }
+
+  .activeLink {
+    position: relative;
+    background: linear-gradient(270deg, $activeBgLink 0%, white 300%);
+
+    .sideBarTitle span {}
+
+    .dot {}
+
+    .sideBarIcon {}
+  }
+
+  .sideBarSection {
+
+    .sideBarSectionItem {
+      text-transform: uppercase;
+
+      >span {
+        color: $sideBarSectionItem;
+        font-weight: bold !important;
+      }
+    }
+
+    .sideBarLink {
+      &:hover:not(.activeLink) {
+        background: $sideBarLinkHover;
+      }
+    }
+
+
+
+    .openCollapse {
+      background-color: $openCollapse;
+
+      .sideBarTitle span {
+        font-weight: bold !important;
+      }
+    }
+
+    .activeCollapse {
+      position: relative;
+      background-color: $activeBgCollapse;
+
+      .sideBarTitle span {
+        font-weight: bold !important;
+      }
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 100%;
+      background: $primaryColorSideBarIcon;
+      display: inline-flex;
+      margin-right: 16px;
+    }
+
+    .sideBarItemCollapse {}
+  }
+
+  .sideBarIcon {
+    color: $primaryColorSideBarIcon;
+  }
+
+  .sideBarTitle {
+    &:hover {}
+  }
+}
+
+.main {
+  background: $primaryBgMain;
+  height: 100vh;
+  overflow: auto;
+
+  .mainWrapper {
+    position: relative;
+    color: $primaryColorWrapper;
+    background: $primaryBgMainWrapper;
+    //padding: 24px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 10%);
+    height: calc(100vh - 112px);
+    height: -moz-calc(100% - 112px);
+    height: -webkit-calc(100% - 112px);
+  }
+}

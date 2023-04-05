@@ -1,0 +1,29 @@
+@import './src/asset/style/variables';
+
+.app-card {
+  padding: 24px;
+  background: $white;
+
+  .app-card-header {
+    margin-bottom: 0;
+  }
+
+  .app-card-hr {
+    margin: 24px 0;
+  }
+
+  .app-card-body {}
+
+  .app-card-footer {
+    .app-card-footer-btn {
+      margin: 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      button {
+        margin-left: 16px;
+      }
+    }
+  }
+}

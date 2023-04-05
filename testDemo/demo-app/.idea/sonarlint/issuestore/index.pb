@@ -1,0 +1,19 @@
+
+S
+#src/feature/Product/ProductSlice.ts,9\b\9b7535926722ffed70d87930679ac1b5b15e7c7b
+Z
+*src/feature/ProductType/ProductTypeAdd.tsx,d\4\d491220306983549fff6216b571e17b289cee3c3
+a
+1src/feature/ProductType/ProductTypeFormAction.tsx,6\5\65289febb266670c1208354329769d459ddcd87f
+S
+#src/feature/Product/ProductEdit.tsx,1\6\16140503ecacf10bc93328c8846e1cfe34832f5d
+O
+src/feature/Product/Product.tsx,c\f\cfefeda8c4a8ee5514c64e28998463983d138893
+[
++src/feature/ProductType/ProductTypeSlice.ts,3\5\355d83a157a116e8ff07cd1c1680791d0687d1d7
+K
+src/router/RouterConfig.tsx,a\d\ad3517635f5a2e7d6a137d8fdd99f1058a198500
+[
++src/feature/ProductType/ProductTypeEdit.tsx,7\1\718fc65647d30395a6823203ac33f30593763028
+W
+'src/feature/ProductType/ProductType.tsx,e\1\e1ab1df6a47395a90aec8c5f2aa5e2f20652511c

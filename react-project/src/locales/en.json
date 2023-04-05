@@ -1,0 +1,89 @@
+{
+  "common": {
+    "title": "Title",
+    "nullData": "Null Data",
+    "intro": "",
+    "enable": "Enable",
+    "disable": "Disable",
+    "name": "Name",
+    "status": "Status",
+    "image": "Image",
+    "agGridNoData": "No items to show",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "setting": "Setting",
+    "refresh": "Refresh",
+    "fullScreen": "Full Screen",
+    "selectColShow": "Select Columns to Show",
+    "pageInform1": "Showing <1>{{fromIndex}}</1> - <1>{{toIndex}}</1> of <1>{{rowCount}}</1> records",
+    "pageInform2": "Page <1>{{currentPage}}</1> of <3>{{totalPage}}</3>",
+    "searchAll": "Search All...",
+    "msg": {
+      "deleteSuccess": "Delete Successfully"
+    },
+    "btn": {
+      "add": "Add",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "save": "Save",
+      "apply": "Apply",
+      "ok": "OK"
+    },
+    "validate": {
+      "requite": "This field is requite",
+      "number": "Must be only digits",
+      "maxNumberLength": "Max {{ length }} numbers",
+      "percentValue": "Value should not exceed 100"
+    }
+  },
+  "sidebar": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "test": "Test",
+    "about": "About",
+    "exercises": "Exercises",
+    "weather": "Weather",
+    "phone": "Phone",
+    "todo": "Todo",
+    "administration": "Administration",
+    "preferences": "Preferences",
+    "userSetting": "User Setting",
+    "systemSetting": "System Setting",
+    "product": "Product",
+    "productType": "Product Type"
+  },
+  "phone": {
+    "title": "Phone Manager",
+    "add": "Add Phone",
+    "edit": "Edit Phone",
+    "deleteMsg": "Are you sure you want to delete the selected phone from Phone Manager?",
+    "column": {
+      "name": "Name",
+      "price": "Price",
+      "image": "Image"
+    }
+  },
+  "product": {
+    "title": "Product Manager",
+    "add": "Add Product",
+    "edit": "Edit Product",
+    "deleteMsg": "Are you sure you want to delete the selected product from Product Manager?",
+    "column": {
+      "productType": "Product Type",
+      "price": "Price",
+      "importPrice": "Import Price",
+      "discountBy": "Discount By",
+      "discountValue": "Discount Value",
+      "description": "Description"
+    },
+    "Percent": "Percent",
+    "Value": "Value"
+  },
+  "productType": {
+    "title": "Product Type"
+  },
+  "todo": {
+    "title": "Todo App"
+  }
+}

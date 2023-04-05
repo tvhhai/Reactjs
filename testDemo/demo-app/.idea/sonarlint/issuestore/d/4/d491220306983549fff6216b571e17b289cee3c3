@@ -1,0 +1,7 @@
+
+Etypescript:S1128")Remove this unused import of 'AppLoader'.(§†ÃÜ
+Rtypescript:S1128"1Remove this unused import of 'NotificationUtils'.(ªáãˆÿÿÿÿÿ
+Stypescript:S1854"7Remove this useless assignment to variable "isLoading".(Óàüñ
+?typescript:S125"Remove this commented out code.(‹ì’ûÿÿÿÿ
+?typescript:S125"Remove this commented out code.(Ÿû›Ïûÿÿÿÿ
+~typescript:S18745"]'trimLeft' is deprecated. A legacy feature for browser compatibility. Use `trimStart` instead(€¬»ÿÿÿÿÿ

@@ -1,0 +1,89 @@
+{
+  "common": {
+    "title": "Tiêu đề",
+    "nullData": "Null Data",
+    "intro": "",
+    "enable": "Cho phép",
+    "disable": "Vô hiệu hóa",
+    "name": "Tên",
+    "status": "Trạng thái",
+    "image": "Hình ảnh",
+    "agGridNoData": "Không có dữ liệu để hiển thị",
+    "add": "Thêm",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "setting": "Cài đặt",
+    "refresh": "Làm mới",
+    "fullScreen": "Toàn màn hình",
+    "selectColShow": "Chọn các cột để hiển thị",
+    "pageInform1": "Hiển thị <1>{{fromIndex}}</1> - <1>{{toIndex}}</1> trong số <1>{{rowCount}}</1> bản ghi",
+    "pageInform2": "Trang <1>{{currentPage}}</1> / <1>{{totalPage}}</1>",
+    "searchAll": "Tìm kiếm tất cả...",
+    "msg": {
+      "deleteSuccess": "Xóa Thành Công"
+    },
+    "btn": {
+      "add": "Thêm",
+      "cancel": "Hủy",
+      "edit": "Sửa",
+      "save": "Lưu",
+      "apply": "Áp dụng",
+      "ok": "OK"
+    },
+    "validate": {
+      "requite": "Trường này không được trống",
+      "number": "Chỉ phải là chữ số",
+      "maxNumberLength": "Tối đa {{ length }} chũ số",
+      "percentValue": "Giá trị không được vượt quá 100"
+    }
+  },
+  "sidebar": {
+    "home": "Trang chủ",
+    "dashboard": "Trang quản trị",
+    "test": "Test",
+    "about": "Giới thiệu",
+    "exercises": "Bài tập",
+    "weather": "Thời tiết",
+    "phone": "Điện thoại",
+    "todo": "Việc cần làm",
+    "administration": "Quản trị",
+    "preferences":"Ưu tiên",
+    "userSetting": "Cài đặt người dùng",
+    "systemSetting": "Cài đặt hệ thống",
+    "product": "Sản Phẩm",
+    "productType": "Loại Sản Phẩm"
+  },
+  "phone": {
+    "title": "Quản lí điện thoại",
+    "add": "Thêm Điện Thoại",
+    "edit": "Chỉnh Sửa Điện Thoại",
+    "deleteMsg": "Bạn có chắc chắn muốn xóa điện thoại đã chọn khỏi Trình quản lý điện thoại không?",
+    "column": {
+      "name": "Tên",
+      "price": "Giá tiền",
+      "image": "Hình ảnh"
+    }
+  },
+  "product": {
+    "title": "Product Manager",
+    "add": "Add Product",
+    "edit": "Edit Product",
+    "deleteMsg": "Are you sure you want to delete the selected product from Product Manager?",
+    "column": {
+      "productType": "Loại Sản Phẩm",
+      "price": "Giá Bán",
+      "importPrice": "Giá Nhập",
+      "discountBy": "Giảm giá Theo",
+      "discountValue": "Giá Trị Giảm Giá",
+      "description": "Description"
+    },
+    "Percent": "Phần Trăm",
+    "Value": "Giá Trị"
+  },
+  "productType": {
+    "title": "Loại Sản Phẩm"
+  },
+  "todo": {
+    "title": "Việc cần làm"
+  }
+}

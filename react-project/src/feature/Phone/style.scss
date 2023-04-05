@@ -1,0 +1,11 @@
+.imgContain {
+  object-fit: contain !important;
+}
+
+.preview-img {
+  max-height: 450px;
+  img {
+    height: 100%;
+    max-width: 100%;
+  }
+}

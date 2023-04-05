@@ -1,0 +1,76 @@
+@import './src/asset/style/variables';
+
+.app-ag-grid {
+  //position: relative;
+  transition: .1s linear;
+  height: 100%;
+
+  .app-ag-grid-header {
+    background: $white;
+  }
+
+  .app-ag-grid-toolbar {
+    margin-bottom: 24px;
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+
+  .app-ag-grid-body {
+    position: relative;
+  }
+
+  .app-ag-grid-paging {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #babfc7;
+    padding: 0 8px;
+
+    .pull-left {
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .page-inform {
+      margin: 8px;
+    }
+
+    .app-ag-grid-pager-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+
+}
+
+.full-screen-backdrop {
+  background: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  padding: 24px;
+  z-index: 10;
+
+  &.full-screen {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+
+@media only screen and (max-width: 992px) {
+  .toolbar-right {
+    justify-content: start !important;
+  }
+}
